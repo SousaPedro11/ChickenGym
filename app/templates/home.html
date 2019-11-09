@@ -31,6 +31,7 @@
                             <li><a href="#">Link separado</a></li>
                             <li><a href="#">Outro link separado</a></li>
                         </ul>
+                    <li class="nav-item"><a href="{{ url_for('logout') }}">LogOut</a></li>
                     </li>
                 </ul>
                 <form class="navbar-form navbar-right">
@@ -45,7 +46,7 @@
     <style>
         nav.navbar, nav.navbar div.container div.navbar-collapse{
             background-color: darkgray;
-            border-color: darkred;
+            {#border-color: darkred;#}
         }
 
         nav.navbar div.container div.navbar-header button.navbar-toggle {
