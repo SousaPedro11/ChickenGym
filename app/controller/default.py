@@ -2,12 +2,12 @@ from urllib.parse import urlparse, urljoin
 
 from flask import render_template, flash, redirect, url_for, request, abort
 from flask_login import login_user, login_required, logout_user, current_user
+from werkzeug.security import check_password_hash
 
 from app import app, lm
 from app.model.forms import LoginForm
 from app.model.tables import User
 
-from werkzeug.security import check_password_hash
 
 @lm.user_loader
 def load_user(user_id):
@@ -51,7 +51,7 @@ def login():
             next_url = request.args.get('next')
             if not is_safe_url(next_url):
                 return abort(400)
-            return redirect(url_for("home"))
+            return redirect(next_url or url_for("home"))
         else:
             flash("Invalid Login")
     return render_template('login.html', form=form)
@@ -63,3 +63,8 @@ def logout():
     logout_user()
     flash("Logged Out")
     return redirect(url_for("cg"))
+
+
+@app.errorhandler(404)
+def not_found_page(e):
+    return render_template('404.html')
