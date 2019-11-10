@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="pt-br, en">
 <head>
+    {% block head %}
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -34,7 +35,7 @@
             bottom: 0;
         }
     </style>
-
+    {% endblock %}
 </head>
 
 <body>
@@ -44,13 +45,17 @@
     {% with messages = get_flashed_messages() %}
         {% if messages %}
             <div class="alert alert-danger" role="alert">
+
                 <ul class=flashes>
+                    {#<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span#}
+                    {#aria-hidden="true">&times;</span>#}
+                    {#</button>#}
                     {% for message in messages %}
                         <li>{{ message }}</li>
                     {% endfor %}
                 </ul>
             </div>
-            <meta http-equiv="refresh" content="3;"/>
+            {#            <meta http-equiv="refresh" content="3;"/>#}
         {% endif %}
     {% endwith %}
 
@@ -71,5 +76,6 @@
         crossorigin="anonymous"></script>
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/alerthide.js') }}"></script>
 </body>
 </html>

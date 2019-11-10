@@ -7,6 +7,7 @@ from app import app, lm
 from app.model.forms import LoginForm
 from app.model.tables import User
 
+from werkzeug.security import check_password_hash
 
 @lm.user_loader
 def load_user(user_id):
@@ -34,8 +35,7 @@ def home():
 def is_safe_url(target):
     ref_url = urlparse(request.host_url)
     test_url = urlparse(urljoin(request.host_url, target))
-    return test_url.scheme in ('http', 'https') and \
-           ref_url.netloc == test_url.netloc
+    return test_url.scheme in ('http', 'https') and ref_url.netloc == test_url.netloc
 
 
 @app.route('/cg/login/', methods=["GET", "POST"])
@@ -45,7 +45,7 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
-        if user and user.password == form.password.data:
+        if user and check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember_me.data)
             flash("Logged in")
             next_url = request.args.get('next')
