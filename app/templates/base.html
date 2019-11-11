@@ -4,10 +4,10 @@
     {% block head %}
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
         <meta name="description" content="">
-        <meta name="author" content="">
+        <meta name="author" content="Pedro Sousa">
         <link rel="icon" href="{{ url_for('static', filename="img/icon.png") }}">
         <link rel="canonical" href="https://getbootstrap.com/docs/3.4/examples/jumbotron-narrow/">
 
@@ -18,23 +18,34 @@
 
         <div class="banner">
             <a href="{{ url_for('index') }}">
-            <img class="img-responsive center-block" src="{{ url_for('static', filename="img/banner.svg") }}" alt=""
-                 height="250">
+                <img class="banner img-responsive center-block"
+                     src="{{ url_for('static', filename="img/banner.png") }}">
             </a>
         </div>
 
         <style>
             body {
-                min-height: 80vh;
+                background-size: cover;
+                background: url({{ url_for('static', filename="img/background.jpg") }}) fixed center center;
+                {#background-size: 100vw;#}
+                min-height: 40vh;
                 position: relative;
-                margin: 50px;
-                bottom: 50px;
+                margin: auto;
+                padding-bottom: auto;
             }
 
             .footer {
-                padding-bottom: auto;
-                position: absolute;
-                bottom: -30px;
+                position: fixed;
+                left: 0;
+                bottom: 0;
+                width: 100%;
+                background-color: darkred;
+                color: darkgray;
+                text-align: center;
+            }
+
+            img.banner {
+                max-width: 80vw;
             }
         </style>
     {% endblock %}
@@ -67,7 +78,11 @@
     {% block footer %}
         <footer class="footer">
             <div class="text-center">
-                <small>&copy; Copyright 2019, Chicken Dev Corporation</small>
+                <strong>
+                    <small>
+                        &copy; Copyright 2019, Chicken Dev Corporation
+                    </small>
+                </strong>
             </div>
         </footer>
     {% endblock %}

@@ -2,10 +2,10 @@ from urllib.parse import urlparse, urljoin
 
 from flask import render_template, flash, redirect, url_for, request, abort
 from flask_login import login_user, login_required, logout_user, current_user
-from werkzeug.security import check_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 
-from app import app, lm
-from app.model.forms import LoginForm
+from app import app, lm, db
+from app.model.forms import LoginForm, RegistrationForm, EquipamentoForm
 from app.model.tables import User
 
 
@@ -68,3 +68,34 @@ def logout():
 @app.errorhandler(404)
 def not_found_page(e):
     return render_template('404.html')
+
+
+@app.route('/pagina/usuario')
+def cadastrar_usuario():
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        name = form.name.data
+        username = form.username.data
+        email = form.email.data
+        password = generate_password_hash(form.password.data)
+        user = User(username, password, name, email)
+        db.session.add(user)
+        db.session.commit()
+        flash('Usuário cadastrado com sucesso!')
+        return redirect(url_for('login'))
+    return render_template('conteudo.html', form=form)
+
+
+@app.route('/pagina/<objeto>/', methods=['GET', 'POST'])
+def pagina(objeto):
+    # if current_user.is_authenticated:
+    #     return redirect(url_for('index'))
+    if objeto == 'usuario':
+        form = RegistrationForm()
+        cadastrar_usuario(form)
+        return redirect(url_for('login'))
+    elif objeto == 'equipamento':
+        form = EquipamentoForm()
+    else:
+        LoginForm()
+    return render_template('conteudo.html', objeto=objeto, title='Register', form=form)
