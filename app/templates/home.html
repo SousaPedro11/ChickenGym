@@ -3,6 +3,11 @@
 {% block head %}
     {{ super() }}
     <style>
+        /* For mobile phones: */
+        [class*="col-"] {
+            width: 100%;
+        }
+
         .navbar-conteudo-1 .divider {
             height: 1px;
             margin: 9px 0;
@@ -31,17 +36,12 @@
             border-color: red;
         }
 
-        {#.navbar .navbar-nav > .open > a,
-        .navbar .navbar-nav > .open > a:focus,
-        .navbar .navbar-nav > .open > a:hover {
-            color: black;
-        }#}
-
-        .botao-logout a{
+        .botao-logout a {
             color: darkred;
             text-decoration: none;
         }
-        .navbar, nav.navbar div.container-fluid div.navbar-conteudo ul{
+
+        .navbar, nav.navbar div.container-fluid div.navbar-conteudo ul {
             background-color: darkgray;
         }
     </style>

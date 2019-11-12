@@ -13,4 +13,5 @@ def __admin__():
     else:
         r.password = passwd
         db.session.commit()
+        db.session.close()
 

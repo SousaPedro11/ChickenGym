@@ -5,67 +5,61 @@
 {% block head %}
     {{ super() }}
     <style>
-        .cadastro {
-            color: darkred;
-            padding-bottom: 10vh;
-            min-width: 50vw;
+        /* For mobile phones: */
+        [class*="registrar"] {
+             padding-top: 5vh
         }
+        @media only screen and (min-width: 768px) {
+            .cadastro {
+                {#color: darkred;#}
+                {#padding-bottom: 10vh;#}
+                min-width: 50vw;
+            }
 
-        .titulo {
-            text-transform: uppercase;
-        }
+            .name {
+                max-width: 40vw;
+            }
 
-        .name {
-            max-width: 40vw;
-        }
+            .username {
+                max-width: 35vw;
+            }
 
-        .username {
-            max-width: 35vw;
-        }
+            .email {
+                max-width: 30vw;
+            }
 
-        .email {
-            max-width: 30vw;
-        }
-
-        .password {
-            max-width: 15vw;
+            .password {
+                max-width: 15vw;
+            }
         }
     </style>
 {% endblock %}
 {% block content %}
     {{ super() }}
-    <div class="cadastro container-fluid">
-        <h2 class="titulo">
+    <div class="cadastro col-md-6 col-md-offset-6" style="color: darkred; padding-bottom: 10vh;">
+        <h2 class="titulo" style="text-transform: uppercase">
             Cadastro de Usuário
         </h2>
         <form action="" method="post">
             {{ form.hidden_tag() }}
-            {#                <p>#}
             <div class="name">
                 {{ form.name.label }}<br>
-
-                {{ form.name(size=100, class="form-control") }}<br>
+                {{ form.name(size=100, class="form-control", placeholder='Informe seu nome') }}<br>
             </div>
-            {#                </p>#}
-            {#                <p>#}
             <div class="username">
                 {{ form.username.label }}<br>
-                {{ form.username(size=80, class="form-control") }}<br>
+                {{ form.username(size=80, class="form-control", placeholder='Cadastre um nome de usuário') }}<br>
                 {% for error in form.username.errors %}
                     <span class="alert-info">{{ error }}</span>
                 {% endfor %}
-                {#                </p>#}
             </div>
-            {#                <p>#}
             <div class="email">
                 {{ form.email.label }}<br>
-                {{ form.email(size=80, class="form-control") }}<br>
+                {{ form.email(size=80, class="form-control", placeholder='Informe seu e-mail') }}<br>
                 {% for error in form.email.errors %}
                     <span class="alert-info">{{ error }}</span>
                 {% endfor %}
             </div>
-            {#                </p>#}
-            {#                <p>#}
             <div class="password">
                 {{ form.password.label }}<br>
                 {{ form.password(size=32, class="form-control", placeholder='Cadastre uma senha') }}<br>
@@ -73,17 +67,16 @@
                     <span class="alert-info">{{ error }}</span>
                 {% endfor %}
             </div>
-            {#                </p>#}
-            {#                <p>#}
             <div class="password">
                 {{ form.password2.label }}<br>
-                {{ form.password2(size=32, class="form-control") }}<br>
+                {{ form.password2(size=32, class="form-control", placeholder='Repita a senha cadastrada') }}<br>
                 {% for error in form.password2.errors %}
                     <span class="alert-info">{{ error }}</span>
                 {% endfor %}
-                {#                </p>#}
             </div>
-            <p>{{ form.submit() }}</p>
+            <div class="registrar">
+                {{ form.submit() }}
+            </div>
         </form>
     </div>
 {% endblock %}

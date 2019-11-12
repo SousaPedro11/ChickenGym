@@ -17,7 +17,7 @@ manager.add_command('db', MigrateCommand)
 
 lm = LoginManager()
 lm.init_app(app)
-lm.login_view = "login"
+lm.login_view = "auth.login"
 lm.session_protection = "strong"
 
 from app.controller.auth import auth as auth_blueprint
