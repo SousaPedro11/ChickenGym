@@ -12,7 +12,7 @@ apresentará as views e o CRUD.
     * ```python3 run.py db init```
     * ```python3 run.py db migrate```
     * ```python3 run.py db upgrade```
-* Execute * ```python3 run.py runserver``` para iniciar a aplicação em localhost.
+* Execute ```python3 run.py runserver``` para iniciar a aplicação em localhost.
 * Acesse <http://localhost:5000/> para ver a interface inicial
 
 ***OBS:*** *O programa cadastra o usuário **admin** com senha **admin** para fins de teste*.
