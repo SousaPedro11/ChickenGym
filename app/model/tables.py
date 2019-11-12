@@ -34,37 +34,37 @@ class User(db.Model):
     def get_id(self):
         return str(self.id)
 
-
-class Post(db.Model):
-    __tablename__ = "posts"
-
-    id = db.Column(db.Integer, nullable=False, autoincrement=True, primary_key=True)
-    content = db.Column(db.Text, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id', name='FK_post_user'))
-
-    user = db.relationship("User", foreign_keys=user_id)
-
-    def __init__(self, content, user_id):
-        self.content = content
-        self.user_id = user_id
-
-    def __repr__(self):
-        return '<Post %r>' % self.id
-
-
-class Follow(db.Model):
-    __tablename__ = "follow"
-
-    id = db.Column(db.Integer, nullable=False, autoincrement=True, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id', name='FK_Follow_User'))
-    follower_id = db.Column(db.Integer, db.ForeignKey('users.id', name='FK_Follow_Follower'))
-
-    user = db.relationship('User', foreign_keys=user_id)
-    follower = db.relationship('User', foreign_keys=follower_id)
-
-    def __init__(self, user_id, post_id):
-        self.user_id = user_id
-        self.post_id = post_id
-
-    def __repr__(self):
-        return '<Follow %r>' % self.id
+# APENAS PARA MODELO DE RELACIONAMENTO
+# class Post(db.Model):
+#     __tablename__ = "posts"
+#
+#     id = db.Column(db.Integer, nullable=False, autoincrement=True, primary_key=True)
+#     content = db.Column(db.Text, nullable=False)
+#     user_id = db.Column(db.Integer, db.ForeignKey('users.id', name='FK_post_user'))
+#
+#     user = db.relationship("User", foreign_keys=user_id)
+#
+#     def __init__(self, content, user_id):
+#         self.content = content
+#         self.user_id = user_id
+#
+#     def __repr__(self):
+#         return '<Post %r>' % self.id
+#
+#
+# class Follow(db.Model):
+#     __tablename__ = "follow"
+#
+#     id = db.Column(db.Integer, nullable=False, autoincrement=True, primary_key=True)
+#     user_id = db.Column(db.Integer, db.ForeignKey('users.id', name='FK_Follow_User'))
+#     follower_id = db.Column(db.Integer, db.ForeignKey('users.id', name='FK_Follow_Follower'))
+#
+#     user = db.relationship('User', foreign_keys=user_id)
+#     follower = db.relationship('User', foreign_keys=follower_id)
+#
+#     def __init__(self, user_id, post_id):
+#         self.user_id = user_id
+#         self.post_id = post_id
+#
+#     def __repr__(self):
+#         return '<Follow %r>' % self.id
