@@ -39,6 +39,7 @@
 
         .botao-logout a{
             color: darkred;
+            text-decoration: none;
         }
         .navbar, nav.navbar div.container-fluid div.navbar-conteudo ul{
             background-color: darkgray;
@@ -68,7 +69,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a href="{{ url_for('cadastrar_usuario') }}">Usuário</a>
+                                <a href="{{ url_for('database_manipulation.cadastrar_usuario') }}">Usuário</a>
                             </li>
                             <li>
                                 <a href="#equipamento">Equipamento</a>
@@ -134,7 +135,7 @@
                     </li>
                 </ul>
                 <button class="botao-logout navbar-text navbar-right">
-                    <a href="{{ url_for('logout') }}">LogOut</a>
+                    <a href="{{ url_for('auth.logout') }}">LogOut</a>
                 </button>
             </div>
         </div>

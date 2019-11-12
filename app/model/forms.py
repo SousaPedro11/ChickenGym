@@ -1,3 +1,4 @@
+from flask import flash
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired, ValidationError, EqualTo, Email
@@ -10,14 +11,23 @@ class LoginForm(FlaskForm):
     password = PasswordField('password', validators=[DataRequired()])
     remember_me = BooleanField('remember_me')
 
+    def validate_username(self, username):
+        if '@' in username.data:
+            user = User.query.filter_by(email=username.data).first()
+        else:
+            user = User.query.filter_by(username=username.data).first()
+        if user is None:
+            flash(ValidationError('Usuário não existe!'))
+
 
 class RegistrationForm(FlaskForm):
-    name = StringField('Name', validators=[DataRequired()])
-    username = StringField('Username', validators=[DataRequired()])
+    name = StringField('Nome', validators=[DataRequired()])
+    username = StringField('Nome de Usuário', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
+    password = PasswordField('Senha', validators=[DataRequired()])
     password2 = PasswordField(
-        'Repeat Password', validators=[DataRequired(), EqualTo('password')])
+        'Repita a Senha',
+        validators=[DataRequired(), EqualTo('password', message='Este campo deve ser igual a senha informada')])
     submit = SubmitField('Cadastrar')
 
     def validate_username(self, username):
@@ -31,5 +41,5 @@ class RegistrationForm(FlaskForm):
             raise ValidationError('Use outro email, por favor!')
 
 
-class EquipamentoForm():
-    modelo = StringField('modelo')
+class EquipamentoForm(FlaskForm):
+    modelo = StringField('modelo', validators=[DataRequired()])

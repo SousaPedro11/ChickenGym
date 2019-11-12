@@ -1,21 +1,37 @@
 {% extends 'base.html' %}
-{% block title%}
+{% block title %}
     {{ super() }} - Página Não Encontrada
 {% endblock %}
+{% block head %}
+    {{ super() }}
+    <style>
+        .aviso-pagina {
+            width: 60vw;
+            {#border: 15px solid green;#}
+            border-radius: 10px;
+            padding: 20px;
+            margin: auto;
+            background-color: white;
+        }
+    </style>
+{% endblock %}
 {% block content %}
-    <div class="aviso-msg container-fluid">
-        <h1 class="text-center text-danger">
-            Desculpe, mas essa página não existe!
-        </h1>
-    </div>
-    <div class="aviso-conteudo container-fluid">
-        <div>
-            <h4 class="text-info text-center">
-                Verifique se você digitou o endereço corretamente ou retorne à
-                <a class="aviso-home" href="{{ url_for('index') }}">
-                    <strong>página inicial.</strong>
-                </a>
-            </h4>
+    <div class="aviso-pagina container-fluid">
+        <div class="aviso-msg container-fluid">
+            <h2 class="text-center text-danger">
+                Desculpe, mas essa página não está disponível!
+            </h2>
+        </div>
+        <div class="aviso-conteudo container-fluid">
+            <div>
+                <h4 class="text-info text-center">O link que você seguiu pode estar quebrado ou a página pode ter sido removida.</h4>
+                <h4 class="text-info text-center">
+                    Verifique se você digitou o endereço corretamente ou retorne à
+                    <a class="aviso-home" href="{{ url_for('home.index') }}">
+                        <strong>página inicial.</strong>
+                    </a>
+                </h4>
+            </div>
         </div>
     </div>
 {% endblock %}

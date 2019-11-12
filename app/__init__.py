@@ -20,7 +20,16 @@ lm.init_app(app)
 lm.login_view = "login"
 lm.session_protection = "strong"
 
+from app.controller.auth import auth as auth_blueprint
+from app.controller.database_manipulation import database_manipulation as database_manipulation_blueprint
+from app.controller.home import home as home_blueprint
+
+app.register_blueprint(auth_blueprint)
+app.register_blueprint(database_manipulation_blueprint)
+app.register_blueprint(home_blueprint)
+
 from app.model import tables, forms
-from app.controller import default, usuario
+from app.controller import default
+from app.controller.database_manipulation import usuario
 
 usuario.__admin__()
