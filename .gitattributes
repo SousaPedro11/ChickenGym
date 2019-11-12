@@ -23,9 +23,9 @@
 *.ipynb  text
 
 # HTML
-*.html	text
-*.css	text
-*.js	text
+*.html	binary
+*.css	binary
+*.js	binary
 
 # Note: .db, .p, and .pkl files are associated
 # with the python modules ``pickle``, ``dbm.*``,
