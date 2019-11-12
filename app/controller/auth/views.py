@@ -15,9 +15,9 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         if '@' in form.username.data:
-            user = User.query.filter_by(email=form.username.data).first()
+            user = User.query.filter_by(email=form.username.data.lower()).first()
         else:
-            user = User.query.filter_by(username=form.username.data).first()
+            user = User.query.filter_by(username=form.username.data.lower()).first()
         if user:
             if check_password_hash(user.password, form.password.data):
                 login_user(user, remember=form.remember_me.data)

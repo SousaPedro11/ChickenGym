@@ -11,9 +11,9 @@ from . import database_manipulation
 def cadastrar_usuario():
     form = RegistrationForm()
     if form.validate_on_submit():
-        name = form.name.data
-        username = form.username.data
-        email = form.email.data
+        name = form.name.data.upper()
+        username = form.username.data.lower()
+        email = form.email.data.lower()
         password = generate_password_hash(form.password.data)
         user = User(username, password, name, email)
         db.session.add(user)

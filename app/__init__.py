@@ -8,8 +8,7 @@ app = Flask(__name__)
 app.config.from_object('config')
 
 db = SQLAlchemy(app)
-db.drop_all()
-db.create_all()
+
 migrate = Migrate(app, db)
 
 manager = Manager(app)
@@ -32,4 +31,5 @@ from app.model import tables, forms
 from app.controller import default
 from app.controller.database_manipulation import usuario
 
+db.create_all()
 usuario.__admin__()

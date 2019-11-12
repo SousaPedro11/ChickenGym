@@ -13,9 +13,9 @@ class LoginForm(FlaskForm):
 
     def validate_username(self, username):
         if '@' in username.data:
-            user = User.query.filter_by(email=username.data).first()
+            user = User.query.filter_by(email=username.data.lower()).first()
         else:
-            user = User.query.filter_by(username=username.data).first()
+            user = User.query.filter_by(username=username.data.lower()).first()
         if user is None:
             flash(ValidationError('Usuário não existe!'))
 
@@ -23,7 +23,7 @@ class LoginForm(FlaskForm):
 class RegistrationForm(FlaskForm):
     name = StringField('Nome', validators=[DataRequired()])
     username = StringField('Nome de Usuário', validators=[DataRequired()])
-    email = StringField('Email', validators=[DataRequired(), Email()])
+    email = StringField('Email', validators=[DataRequired(), Email(message='Endereço de e-mail inválido!')])
     password = PasswordField('Senha', validators=[DataRequired()])
     password2 = PasswordField(
         'Repita a Senha',
@@ -31,12 +31,12 @@ class RegistrationForm(FlaskForm):
     submit = SubmitField('Cadastrar')
 
     def validate_username(self, username):
-        user = User.query.filter_by(username=username.data).first()
+        user = User.query.filter_by(username=username.data.lower()).first()
         if user is not None:
             raise ValidationError('Use outro nome de usuário, por favor!')
 
     def validate_email(self, email):
-        user = User.query.filter_by(email=email.data).first()
+        user = User.query.filter_by(email=email.data.lower()).first()
         if user is not None:
             raise ValidationError('Use outro email, por favor!')
 
