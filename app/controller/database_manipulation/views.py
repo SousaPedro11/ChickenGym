@@ -29,4 +29,8 @@ def cadastrar_usuario():
 @login_required
 @database_manipulation.route('/cg/usuario/visualizar/', methods=['GET', 'POST'])
 def visualizar_usuario():
-    return render_template('visualizar.html')
+    table = User.query.all()
+    for u in table:
+        for d in u.list_key:
+            print(d)
+    return render_template('visualizar.html', table=table)

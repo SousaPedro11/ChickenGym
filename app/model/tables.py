@@ -19,6 +19,20 @@ class User(db.Model):
     def __repr__(self):
         return '<User %r, %r>' % (self.username, self.name)
 
+    def dict_class(self):
+        dicionario = [{'Nome': self.name}, {'Usuário': self.username}, {"e-mail": self.email}]
+        return dicionario
+
+    @property
+    def list_key(self):
+        list = []
+        for _ in self.dict_class():
+            for k in _.keys():
+                if k not in list:
+                    list.append(k)
+        return list
+
+
     @property
     def is_authenticated(self):
         return True

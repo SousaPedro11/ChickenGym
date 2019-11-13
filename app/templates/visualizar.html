@@ -1,8 +1,65 @@
 {% extends 'home.html' %}
-{% block content %}
-    <table style="width: 100%">
-        <tr>
+{% block head %}
+    {{ super() }}
+    <style>
+        .tabela {
+            border: 2px solid darkred;
+            border-collapse: collapse;
+            background-color: white;
+            min-width: 50vh;
+            width: 100%;
+        }
 
+        .tabela-cabecalho, .tabela-valor {
+            border: 1px solid black;
+        }
+
+        .tabela-cabecalho, .tabela-valor {
+            padding-left: 2px;
+            text-transform: uppercase;
+        }
+    </style>
+{% endblock %}
+{% block boasvindas %}{% endblock %}
+{% block content %}
+    {{ super() }}
+    <table class="tabela">
+        <tr class="tabela-coluna">
+            <th class="tabela-cabecalho">
+                Nome
+            </th>
+            <th class="tabela-cabecalho">
+                Usuario
+            </th>
+            <th class="tabela-cabecalho">
+                E-mail
+            </th>
         </tr>
+{#        <tr>#}
+{#            {% for _ in table %}#}
+{#                {% for d in _.dict_class %}#}
+{##}
+{#                    <th>#}
+{#                        {{ d }}#}
+{#                    </th>#}
+{##}
+{#                {% endfor %}#}
+{#            {% endfor %}#}
+{#        </tr>#}
+        {% for x in table %}
+            {% if 'admin' not in x.username %}
+                <tr class="tabela-coluna">
+                    <td class="tabela-valor">
+                        {{ x.name }}
+                    </td>
+                    <td class="tabela-valor">
+                        {{ x.username }}
+                    </td>
+                    <td class="tabela-valor">
+                        {{ x.email }}
+                    </td>
+                </tr>
+            {% endif %}
+        {% endfor %}
     </table>
 {% endblock %}
