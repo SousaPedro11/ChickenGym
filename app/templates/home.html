@@ -8,6 +8,29 @@
             width: 100%;
         }
 
+        @media only screen and (min-width: 600px) {
+            .home {
+                min-width: 50vw;
+            }
+
+            .boasvindas{
+                padding-bottom: 10vh;
+            }
+
+            .boasvindas-conteudo {
+                margin-left: auto;
+                padding: 20px;
+                position: relative;
+                min-width: 50vw;
+            }
+
+            .boasvindas-box {
+                position: relative;
+                min-width: 50vw;
+                border-radius: 10px;
+            }
+        }
+
         .navbar-conteudo-1 .divider {
             height: 1px;
             margin: 9px 0;
@@ -47,97 +70,163 @@
     </style>
 {% endblock %}
 {% block content %}
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button class="menu-botao navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-            </div>
-            <div class="navbar-conteudo navbar-collapse collapse" id="navbar">
-                <ul class="navbar-conteudo-1 nav navbar-nav">
-                    {#<li class="nav-item"><a href="#">Home</a></li>
+    <div class="home">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button class="menu-botao navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="navbar-conteudo navbar-collapse collapse" id="navbar">
+                    <ul class="navbar-conteudo-1 nav navbar-nav">
+                        {#<li class="nav-item"><a href="#">Home</a></li>
                     <li class="nav-item"><a href="#about">Sobre</a></li>
                     <li class="nav-item"><a href="#contact">Contato</a></li>#}
-                    <li class="divider" role="separator"></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            Cadastrar
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
+                        <li class="divider" role="separator"></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                Cadastrar
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="{{ url_for('database_manipulation.cadastrar_usuario') }}">Usuário</a>
+                                </li>
+                                <li>
+                                    <a href="#equipamento">Equipamento</a>
+                                </li>
+                                <li>
+                                    <a href="#unidade">Unidade</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="divider" role="separator"></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                Editar
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="#usuario">Usuário</a>
+                                </li>
+                                <li>
+                                    <a href="#equipamento">Equipamento</a>
+                                </li>
+                                <li>
+                                    <a href="#unidade">Unidade</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="divider" role="separator"></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                Consultar
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="#usuario">Usuário</a>
+                                </li>
+                                <li>
+                                    <a href="#equipamento">Equipamento</a>
+                                </li>
+                                <li>
+                                    <a href="#unidade">Unidade</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="divider" role="separator"></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                Remover
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="#usuario">Usuário</a>
+                                </li>
+                                <li>
+                                    <a href="#equipamento">Equipamento</a>
+                                </li>
+                                <li>
+                                    <a href="#unidade">Unidade</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <button class="botao-logout navbar-text navbar-right">
+                        <a href="{{ url_for('auth.logout') }}">LogOut</a>
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </div>
+    {% block boasvindas %}
+        <div class="boasvindas">
+            <div class="boasvindas-box" style="background-color: white">
+                <div class="boasvindas-conteudo">
+                    <div class="boasvindas-titulo text-danger text-center">
+                        <h1>
+                            Bem vindo ao CG-Admin!
+                        </h1>
+                        <h2>
+                            Informações Básicas
+                        </h2>
+                    </div>
+                    <div class="boasvindas-info text-info" style="padding-top: 15px">
+                        <p>
+                            Este sistema foi desenvolvido com o intuito de facilitar a administração da academia Chiken
+                            Gym.
+                        </p>
+                        <p>
+                            No momento a funcionalidade básica corresponde ao cadastro e consultas dos recursos da
+                            academia
+                            (humanos e operacionais).
+                            Futuramente os módulos de pagamento, frequência,
+                            catraca, vendas e saúde poderão ser implementados segundo o
+                            pedido do cliente (Dono da Academia).
+                        </p>
+                        <p>
+                            O acesso as funcionalidades do sistema será pela barra de navegação que apresenta os botões
+                            necessários para cada tarefa.
+                        </p>
+                        <p>
+                            No momento, o perfil existente é o de administrador. Os perfis de usuário ainda não foram
+                            definidos no sistema.
+                        </p>
+                        <p>
+                            A proposta inicia em relação a usuários é, futuramente, a existência de perfis de usuário
+                            cada
+                            um com suas
+                            permissões. Cada perfil poderá acessar determinadas áreas e funções. Por exemplo:
+                        <ol>
                             <li>
-                                <a href="{{ url_for('database_manipulation.cadastrar_usuario') }}">Usuário</a>
+                                Administrador - Acesso a todos os conteúdos do Sistema.
                             </li>
                             <li>
-                                <a href="#equipamento">Equipamento</a>
+                                Gerente - Acesso ao cadatro de recursos, usuários, equipamentos e ao módulo de
+                                pagamentos.
                             </li>
                             <li>
-                                <a href="#unidade">Unidade</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="divider" role="separator"></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            Editar
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a href="#usuario">Usuário</a>
+                                Funcionario - Acesso ao cadastro de alunos.
                             </li>
                             <li>
-                                <a href="#equipamento">Equipamento</a>
+                                Funcionário (Professor) - Acesso ao cadastro de alunos, turmas, fichas, treinos e etc.
                             </li>
                             <li>
-                                <a href="#unidade">Unidade</a>
+                                Aluno - Acesso a visualização de seus dados pessoais, pagamento, ficha, turma,
+                                modalidade e
+                                treinos.
                             </li>
-                        </ul>
-                    </li>
-                    <li class="divider" role="separator"></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            Consultar
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a href="#usuario">Usuário</a>
-                            </li>
-                            <li>
-                                <a href="#equipamento">Equipamento</a>
-                            </li>
-                            <li>
-                                <a href="#unidade">Unidade</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="divider" role="separator"></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            Remover
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a href="#usuario">Usuário</a>
-                            </li>
-                            <li>
-                                <a href="#equipamento">Equipamento</a>
-                            </li>
-                            <li>
-                                <a href="#unidade">Unidade</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-                <button class="botao-logout navbar-text navbar-right">
-                    <a href="{{ url_for('auth.logout') }}">LogOut</a>
-                </button>
+                        </ol>
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
-    </nav>
+    {% endblock %}
 {% endblock %}

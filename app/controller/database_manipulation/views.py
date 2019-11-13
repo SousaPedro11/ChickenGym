@@ -8,7 +8,7 @@ from app.model.tables import User
 from . import database_manipulation
 
 
-@database_manipulation.route('/cg/usuario/cadastro', methods=['GET', 'POST'])
+@database_manipulation.route('/cg/usuario/cadastro/', methods=['GET', 'POST'])
 @login_required
 def cadastrar_usuario():
     form = RegistrationForm()
@@ -23,4 +23,10 @@ def cadastrar_usuario():
         db.session.close()
         flash('Usuário cadastrado com sucesso!')
         return redirect(url_for('auth.login'))
-    return render_template('conteudo.html', form=form)
+    return render_template('cadastro.html', form=form)
+
+
+@login_required
+@database_manipulation.route('/cg/usuario/visualizar/', methods=['GET', 'POST'])
+def visualizar_usuario():
+    return render_template('visualizar.html')
