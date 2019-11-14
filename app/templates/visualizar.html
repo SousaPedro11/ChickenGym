@@ -1,7 +1,7 @@
 {% extends 'home.html' %}
 {% block head %}
-    {{ super() }}
-    <style>
+{{ super() }}
+<style>
         .tabela {
             border: 2px solid darkred;
             border-collapse: collapse;
@@ -18,46 +18,32 @@
             padding-left: 2px;
             text-transform: uppercase;
         }
-    </style>
+
+</style>
 {% endblock %}
 {% block boasvindas %}{% endblock %}
 {% block content %}
-    {{ super() }}
-    <table class="tabela">
-{#        <tr class="tabela-coluna">#}
-{#            <th class="tabela-cabecalho">#}
-{#                Nome#}
-{#            </th>#}
-{#            <th class="tabela-cabecalho">#}
-{#                Usuario#}
-{#            </th>#}
-{#            <th class="tabela-cabecalho">#}
-{#                E-mail#}
-{#            </th>#}
-{#        </tr>#}
-        <tr class="tabela-coluna">
-            {% for e in table[0].dict_class %}
-                {% for k in e.keys() %}
-                    <th class="tabela-cabecalho">
-                        {{ k }}
-                    </th>
-                {% endfor %}
-            {% endfor %}
-        </tr>
-        {% for r in table %}
-            {% if 'admin' not in r.username %}
-                <tr class="tabela-coluna">
-                    <td class="tabela-valor">
-                        {{ r.name }}
-                    </td>
-                    <td class="tabela-valor">
-                        {{ r.username }}
-                    </td>
-                    <td class="tabela-valor">
-                        {{ r.email }}
-                    </td>
-                </tr>
-            {% endif %}
+{{ super() }}
+<table class="tabela">
+    <tr class="tabela-coluna">
+        {% for e in table[0].dict_class %}
+        {% for k in e.keys() %}
+        <th class="tabela-cabecalho">
+            {{ k }}
+        </th>
         {% endfor %}
-    </table>
+        {% endfor %}
+    </tr>
+    {% for r in table %}
+    <tr class="tabela-coluna">
+        {% for d in r.dict_class %}
+        {% for v in d.values() %}
+        <td class="tabela-valor">
+            {{ v }}
+        </td>
+        {% endfor %}
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
 {% endblock %}

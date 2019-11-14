@@ -30,7 +30,9 @@ def cadastrar_usuario():
 @database_manipulation.route('/cg/usuario/visualizar/', methods=['GET', 'POST'])
 def visualizar_usuario():
     table = User.query.all()
-    # for u in table[0].dict_class:
-    #     for k in u.keys():
-    #         print(k)
+    # print(table)
+    # for u in table:
+    #     for d in u.dict_class:
+    #         if 'admin' not in d.values():
+    #             print(d)
     return render_template('visualizar.html', table=table)
