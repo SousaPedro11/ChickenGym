@@ -1,3 +1,5 @@
+from builtins import property, str
+
 from app import db
 
 
@@ -19,6 +21,7 @@ class User(db.Model):
     def __repr__(self):
         return '<User %r, %r>' % (self.username, self.name)
 
+    @property
     def dict_class(self):
         dicionario = [{'Nome': self.name}, {'Usuário': self.username}, {"e-mail": self.email}]
         return dicionario
@@ -31,7 +34,6 @@ class User(db.Model):
                 if k not in list:
                     list.append(k)
         return list
-
 
     @property
     def is_authenticated(self):
