@@ -91,6 +91,7 @@ class Pessoa(db.Model):
     documento_tipo = db.Column(db.Enum('RG', 'CPF', 'CNH', 'PASSAPORTE', 'OUTRO'), nullable=False)
     documento_num = db.Column(db.VARCHAR(20), nullable=False)
     endereco_id = db.Column(db.SMALLINT, nullable=False)
+    user_id = db.Column(db.SMALLINT, nullable=False)
 
 
 class Funcionario(db.Model):
@@ -100,6 +101,7 @@ class Funcionario(db.Model):
     registro = db.Column(db.VARCHAR(10), nullable=False, unique=True)
     ativado = db.Column(db.BOOLEAN, default=True)
     cargo_id = db.Column(db.SMALLINT, nullable=False)
+    pessoa_id = db.Column(db.SMALLINT, nullable=False)
 
 
 class Aluno(db.Model):
@@ -109,6 +111,7 @@ class Aluno(db.Model):
     matricula = db.Column(db.VARCHAR(10), nullable=False, unique=True)
     ativado = db.Column(db.BOOLEAN, default=True)
     plano_id = db.Column(db.SMALLINT, nullable=False)
+    pessoa_id = db.Column(db.SMALLINT, nullable=False)
 
 
 class Pagamento(db.Model):
@@ -130,7 +133,6 @@ class Cargo(db.Model):
     nome = db.Column(db.VARCHAR(20), nullable=False)
 
 
-# TODO falta completar
 class AvaliacaoFisica(db.Model):
     __tablename__ = 'avaliacao_fisica'
 
@@ -140,3 +142,50 @@ class AvaliacaoFisica(db.Model):
     abdominal = db.Column(db.SMALLINT, nullable=True)
     flexoes_braco = db.Column(db.SMALLINT, nullable=True)
     altura = db.Column(db.DECIMAL(precision=3, scale=2), nullable=False)
+    peso = db.Column(db.DECIMAL(precision=5, scale=2), nullable=False)
+    busto = db.Column(db.DECIMAL(precision=5, scale=2), nullable=False)
+    braco_esquerdo = db.Column(db.DECIMAL(precision=4, scale=2), nullable=False)
+    braco_direito = db.Column(db.DECIMAL(precision=4, scale=2), nullable=False)
+    abdomen = db.Column(db.DECIMAL(precision=5, scale=2), nullable=False)
+    cintura = db.Column(db.DECIMAL(precision=5, scale=2), nullable=False)
+    quadril = db.Column(db.DECIMAL(precision=5, scale=2), nullable=False)
+    culote = db.Column(db.DECIMAL(precision=4, scale=2), nullable=False)
+    coxa_esquerda = db.Column(db.DECIMAL(precision=4, scale=2), nullable=False)
+    coxa_direita = db.Column(db.DECIMAL(precision=4, scale=2), nullable=False)
+    panturrilha_esquerda = db.Column(db.DECIMAL(precision=4, scale=2), nullable=False)
+    panturrilha_direita = db.Column(db.DECIMAL(precision=4, scale=2), nullable=False)
+    aluno_id = db.Column(db.SMALLINT, nullable=False)
+
+
+class Plano(db.Model):
+    __tablename__ = 'plano'
+
+    id = db.Column(db.SMALLINT, nullable=False, autoincrement=True, primary_key=True)
+    valor = db.Column(db.DECIMAL(precision=6, scale=2), nullable=False)
+
+
+class Sala(db.Model):
+    __tablename__ = 'sala'
+
+    id = db.Column(db.SMALLINT, nullable=False, autoincrement=True, primary_key=True)
+    numero = db.Column(db.VARCHAR(5), nullable=False)
+
+
+class Ficha(db.Model):
+    __tablename__ = 'ficha'
+
+    id = db.Column(db.SMALLINT, nullable=False, autoincrement=True, primary_key=True)
+    data_elaboracao = db.Column(db.DATE, nullable=False)
+    aluno_id = db.Column(db.SMALLINT, nullable=False)
+
+
+class Aparelho(db.Model):
+    __tablename__ = 'aparelho'
+
+    id = db.Column(db.SMALLINT, nullable=False, autoincrement=True, primary_key=True)
+    fabricante = db.Column(db.VARCHAR(20), nullable=False)
+    modelo = db.Column(db.VARCHAR(20), nullable=False)
+
+
+# TABELAS INTERMEDIARIAS
+

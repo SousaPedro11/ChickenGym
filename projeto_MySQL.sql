@@ -82,32 +82,32 @@
 --     nome VARCHAR(20) NOT NULL
 -- )  DEFAULT CHARSET UTF8MB4;
 
-CREATE TABLE IF NOT EXISTS academia.avaliacaofisica (
-    cod SMALLINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    avaliador VARCHAR(120) NOT NULL,
-    data_avaliacao DATE NOT NULL,
-    abdominal SMALLINT,
-    flexoes_braco SMALLINT,
-    altura DECIMAL(3 , 2 ) NOT NULL,
-    peso DECIMAL(5 , 2 ) NOT NULL,
-    busto DECIMAL(5 , 2 ) NOT NULL,
-    braco_esq DECIMAL(4 , 2 ) NOT NULL,
-    braco_dir DECIMAL(4 , 2 ) NOT NULL,
-    abdomen DECIMAL(5 , 2 ) NOT NULL,
-    cintura DECIMAL(5 , 2 ) NOT NULL,
-    quadril DECIMAL(5 , 2 ) NOT NULL,
-    culote DECIMAL(4 , 2 ) NOT NULL,
-    coxa_esq DECIMAL(4 , 2 ) NOT NULL,
-    coxa_dir DECIMAL(4 , 2 ) NOT NULL,
-    panturrilha_esq DECIMAL(4 , 2 ) NOT NULL,
-    panturrilha_dir DECIMAL(4 , 2 ) NOT NULL,
-    fk_aluno varchar(12)
-)  DEFAULT CHARSET UTF8MB4;
+-- CREATE TABLE IF NOT EXISTS academia.avaliacaofisica (
+--     cod SMALLINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+--     avaliador VARCHAR(120) NOT NULL,
+--     data_avaliacao DATE NOT NULL,
+--     abdominal SMALLINT,
+--     flexoes_braco SMALLINT,
+--     altura DECIMAL(3 , 2 ) NOT NULL,
+--     peso DECIMAL(5 , 2 ) NOT NULL,
+--     busto DECIMAL(5 , 2 ) NOT NULL,
+--     braco_esq DECIMAL(4 , 2 ) NOT NULL,
+--     braco_dir DECIMAL(4 , 2 ) NOT NULL,
+--     abdomen DECIMAL(5 , 2 ) NOT NULL,
+--     cintura DECIMAL(5 , 2 ) NOT NULL,
+--     quadril DECIMAL(5 , 2 ) NOT NULL,
+--     culote DECIMAL(4 , 2 ) NOT NULL,
+--     coxa_esq DECIMAL(4 , 2 ) NOT NULL,
+--     coxa_dir DECIMAL(4 , 2 ) NOT NULL,
+--     panturrilha_esq DECIMAL(4 , 2 ) NOT NULL,
+--     panturrilha_dir DECIMAL(4 , 2 ) NOT NULL,
+--     fk_aluno varchar(12)
+-- )  DEFAULT CHARSET UTF8MB4;
 
-CREATE TABLE IF NOT EXISTS academia.plano (
-    cod SMALLINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    valor decimal(6, 2) not null
-)  DEFAULT CHARSET UTF8MB4;
+-- CREATE TABLE IF NOT EXISTS academia.plano (
+--     cod SMALLINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+--     valor decimal(6, 2) not null
+-- )  DEFAULT CHARSET UTF8MB4;
 
 CREATE TABLE IF NOT EXISTS academia.sala (
     cod SMALLINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
