@@ -50,7 +50,7 @@ class User(db.Model):
 class Endereco(db.Model):
     __tablename__ = 'endereco'
 
-    id = db.Column(db.SMALLINT, nullable=False, autoincrement=True, primary_key=True)
+    id = db.Column(db.INTEGER, nullable=False, autoincrement=True, primary_key=True)
     rua = db.Column(db.VARCHAR(80), nullable=False)
     numero = db.Column(db.VARCHAR(5), nullable=False)
     cep = db.Column(db.VARCHAR(10), nullable=False)
@@ -69,9 +69,9 @@ class Endereco(db.Model):
 class Unidade(db.Model):
     __tablename__ = 'unidade'
 
-    id = db.Column(db.SMALLINT, nullable=False, autoincrement=True, primary_key=True)
+    id = db.Column(db.INTEGER, nullable=False, autoincrement=True, primary_key=True)
     nome = db.Column(db.VARCHAR(120), nullable=False)
-    endereco_id = db.Column(db.SMALLINT, db.ForeignKey('endereco.id', name='FK_unidade_endereco'), nullable=False,
+    endereco_id = db.Column(db.INTEGER, db.ForeignKey('endereco.id', name='FK_unidade_endereco'), nullable=False,
                             unique=True)
 
     # RELATIONSHIP
@@ -84,13 +84,13 @@ class Unidade(db.Model):
 class Modalidade(db.Model):
     __tablename__ = 'modalidade'
 
-    id = db.Column(db.SMALLINT, nullable=False, autoincrement=True, primary_key=True)
+    id = db.Column(db.INTEGER, nullable=False, autoincrement=True, primary_key=True)
     categoria = db.Column(db.VARCHAR(100), nullable=False)
     nivel = db.Column(db.VARCHAR(20), nullable=True)
-    categoria_pai_id = db.Column(db.SMALLINT, db.ForeignKey('modalidade.id', name='FK_modalidade_categoria'),
+    categoria_pai_id = db.Column(db.INTEGER, db.ForeignKey('modalidade.id', name='FK_modalidade_categoria'),
                                  nullable=True)
-    unidade_id = db.Column(db.SMALLINT, db.ForeignKey('unidade.id', name='FK_modalidade_unidade'), nullable=False)
-    professor_id = db.Column(db.SMALLINT, db.ForeignKey('funcionario.id', name='FK_modalidade_professor'),
+    unidade_id = db.Column(db.INTEGER, db.ForeignKey('unidade.id', name='FK_modalidade_unidade'), nullable=False)
+    professor_id = db.Column(db.INTEGER, db.ForeignKey('funcionario.id', name='FK_modalidade_professor'),
                              nullable=True)
 
     # RELATIONSHIP
@@ -106,9 +106,9 @@ class Modalidade(db.Model):
 class Turma(db.Model):
     __tablename__ = 'turma'
 
-    id = db.Column(db.SMALLINT, nullable=False, autoincrement=True, primary_key=True)
+    id = db.Column(db.INTEGER, nullable=False, autoincrement=True, primary_key=True)
     horario = db.Column(db.TIME, nullable=False)
-    modalidade_id = db.Column(db.SMALLINT, db.ForeignKey('modalidade.id', name='FK_turma_modalidade'), nullable=True)
+    modalidade_id = db.Column(db.INTEGER, db.ForeignKey('modalidade.id', name='FK_turma_modalidade'), nullable=True)
 
     # RELATIONSHIP
     # One to many
@@ -118,13 +118,13 @@ class Turma(db.Model):
 class Pessoa(db.Model):
     __tablename__ = 'pessoa'
 
-    id = db.Column(db.SMALLINT, nullable=False, autoincrement=True, primary_key=True)
+    id = db.Column(db.INTEGER, nullable=False, autoincrement=True, primary_key=True)
     nome = db.Column(db.VARCHAR(120), nullable=False)
     nome_mae = db.Column(db.VARCHAR(120), nullable=False)
     documento_tipo = db.Column(db.Enum('RG', 'CPF', 'CNH', 'PASSAPORTE', 'OUTRO'), nullable=False)
     documento_num = db.Column(db.VARCHAR(20), nullable=False)
-    endereco_id = db.Column(db.SMALLINT, db.ForeignKey('endereco.id', name='FK_pessoa_endereco'), nullable=False)
-    user_id = db.Column(db.SMALLINT, db.ForeignKey('user.id', name='FK_pessoa_user'), nullable=False)
+    endereco_id = db.Column(db.INTEGER, db.ForeignKey('endereco.id', name='FK_pessoa_endereco'), nullable=False)
+    user_id = db.Column(db.INTEGER, db.ForeignKey('user.id', name='FK_pessoa_user'), nullable=False)
 
     # RELATIONSHIP
     # One to one
@@ -137,11 +137,11 @@ class Pessoa(db.Model):
 class Funcionario(db.Model):
     __tablename__ = 'funcionario'
 
-    id = db.Column(db.SMALLINT, nullable=False, autoincrement=True, primary_key=True)
+    id = db.Column(db.INTEGER, nullable=False, autoincrement=True, primary_key=True)
     registro = db.Column(db.VARCHAR(10), nullable=False, unique=True)
     ativado = db.Column(db.BOOLEAN, default=True)
-    cargo_id = db.Column(db.SMALLINT, db.ForeignKey('cargo.id', name='FK_funcionario_cargo'), nullable=False)
-    pessoa_id = db.Column(db.SMALLINT, db.ForeignKey('pessoa.id', name='FK_funcionario_pessoa'), nullable=False)
+    cargo_id = db.Column(db.INTEGER, db.ForeignKey('cargo.id', name='FK_funcionario_cargo'), nullable=False)
+    pessoa_id = db.Column(db.INTEGER, db.ForeignKey('pessoa.id', name='FK_funcionario_pessoa'), nullable=False)
 
     # RELATIONSHIP
     # One to one
@@ -154,29 +154,29 @@ class Funcionario(db.Model):
 class Aluno(db.Model):
     __tablename__ = 'aluno'
 
-    id = db.Column(db.SMALLINT, nullable=False, autoincrement=True, primary_key=True)
+    id = db.Column(db.INTEGER, nullable=False, autoincrement=True, primary_key=True)
     matricula = db.Column(db.VARCHAR(10), nullable=False, unique=True)
     ativado = db.Column(db.BOOLEAN, default=True)
-    plano_id = db.Column(db.SMALLINT, nullable=False)
-    pessoa_id = db.Column(db.SMALLINT, nullable=False)
+    plano_id = db.Column(db.INTEGER, nullable=False)
+    pessoa_id = db.Column(db.INTEGER, nullable=False)
 
 
 class Pagamento(db.Model):
     __tablename__ = 'pagamento'
 
-    id = db.Column(db.SMALLINT, nullable=False, autoincrement=True, primary_key=True)
+    id = db.Column(db.INTEGER, nullable=False, autoincrement=True, primary_key=True)
     tipo = db.Column(db.Enum('DEBITO', 'CREDITO', 'DINHEIRO'), nullable=False)
     vencimento_data = db.Column(db.DATETIME, nullable=False)
     referencia = db.Column(db.DATE, nullable=False)
     status_pagamento = db.Column(db.Enum('EFETUADO', 'ATRASADO', 'PENDENTE'))
-    aluno_id = db.Column(db.SMALLINT, nullable=False)
-    valor_plano_id = db.Column(db.SMALLINT, nullable=False)
+    aluno_id = db.Column(db.INTEGER, nullable=False)
+    valor_plano_id = db.Column(db.INTEGER, nullable=False)
 
 
 class Cargo(db.Model):
     __tablename__ = 'cargo'
 
-    id = db.Column(db.SMALLINT, nullable=False, autoincrement=True, primary_key=True)
+    id = db.Column(db.INTEGER, nullable=False, autoincrement=True, primary_key=True)
     nome = db.Column(db.VARCHAR(20), nullable=False)
 
     # RELATIONSHIP
@@ -187,11 +187,11 @@ class Cargo(db.Model):
 class AvaliacaoFisica(db.Model):
     __tablename__ = 'avaliacaofisica'
 
-    id = db.Column(db.SMALLINT, nullable=False, autoincrement=True, primary_key=True)
-    avaliador = db.Column(db.SMALLINT, nullable=False)
+    id = db.Column(db.INTEGER, nullable=False, autoincrement=True, primary_key=True)
+    avaliador = db.Column(db.INTEGER, nullable=False)
     data_avaliacao = db.Column(db.DATE, nullable=False)
-    abdominal = db.Column(db.SMALLINT, nullable=True)
-    flexoes_braco = db.Column(db.SMALLINT, nullable=True)
+    abdominal = db.Column(db.INTEGER, nullable=True)
+    flexoes_braco = db.Column(db.INTEGER, nullable=True)
     altura = db.Column(db.DECIMAL(precision=3, scale=2), nullable=False)
     peso = db.Column(db.DECIMAL(precision=5, scale=2), nullable=False)
     busto = db.Column(db.DECIMAL(precision=5, scale=2), nullable=False)
@@ -205,46 +205,46 @@ class AvaliacaoFisica(db.Model):
     coxa_direita = db.Column(db.DECIMAL(precision=4, scale=2), nullable=False)
     panturrilha_esquerda = db.Column(db.DECIMAL(precision=4, scale=2), nullable=False)
     panturrilha_direita = db.Column(db.DECIMAL(precision=4, scale=2), nullable=False)
-    aluno_id = db.Column(db.SMALLINT, nullable=False)
+    aluno_id = db.Column(db.INTEGER, nullable=False)
 
 
 class Plano(db.Model):
     __tablename__ = 'plano'
 
-    id = db.Column(db.SMALLINT, nullable=False, autoincrement=True, primary_key=True)
+    id = db.Column(db.INTEGER, nullable=False, autoincrement=True, primary_key=True)
     valor = db.Column(db.DECIMAL(precision=6, scale=2), nullable=False)
 
 
 class Sala(db.Model):
     __tablename__ = 'sala'
 
-    id = db.Column(db.SMALLINT, nullable=False, autoincrement=True, primary_key=True)
+    id = db.Column(db.INTEGER, nullable=False, autoincrement=True, primary_key=True)
     numero = db.Column(db.VARCHAR(5), nullable=False)
 
 
 class Ficha(db.Model):
     __tablename__ = 'ficha'
 
-    id = db.Column(db.SMALLINT, nullable=False, autoincrement=True, primary_key=True)
+    id = db.Column(db.INTEGER, nullable=False, autoincrement=True, primary_key=True)
     data_elaboracao = db.Column(db.DATE, nullable=False)
-    aluno_id = db.Column(db.SMALLINT, nullable=False)
+    aluno_id = db.Column(db.INTEGER, nullable=False)
 
 
 class Aparelho(db.Model):
     __tablename__ = 'aparelho'
 
-    id = db.Column(db.SMALLINT, nullable=False, autoincrement=True, primary_key=True)
+    id = db.Column(db.INTEGER, nullable=False, autoincrement=True, primary_key=True)
     fabricante = db.Column(db.VARCHAR(20), nullable=False)
     modelo = db.Column(db.VARCHAR(20), nullable=False)
 
 
 # TABELAS INTERMEDIARIAS
 linha_ficha = db.Table('linha_ficha',
-                       db.Column('id', db.SMALLINT, nullable=False, autoincrement=True, primary_key=True),
+                       db.Column('id', db.INTEGER, nullable=False, autoincrement=True, primary_key=True),
                        db.Column('ciclo1', db.DECIMAL(precision=5, scale=2)),
                        db.Column('ciclo2', db.DECIMAL(precision=5, scale=2)),
                        db.Column('ciclo3', db.DECIMAL(precision=5, scale=2)),
                        db.Column('ciclo4', db.DECIMAL(precision=5, scale=2)),
-                       db.Column('aparelho_id', db.SMALLINT, db.ForeignKey('aparelho.id')),
-                       db.Column('ficha_id', db.SMALLINT, db.ForeignKey('ficha.id'))
+                       db.Column('aparelho_id', db.INTEGER, db.ForeignKey('aparelho.id')),
+                       db.Column('ficha_id', db.INTEGER, db.ForeignKey('ficha.id'))
                        )
