@@ -15,7 +15,7 @@ migrate = Migrate(app, db)
 manager = Manager(app)
 manager.add_command('db', MigrateCommand)
 
-admin = Admin(app, name='microblog', template_mode='bootstrap3')
+admin = Admin(app, name='ChickenGym', template_mode='bootstrap3')
 
 lm = LoginManager()
 lm.init_app(app)
