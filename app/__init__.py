@@ -1,5 +1,4 @@
 from flask import Flask
-from flask_admin import Admin
 from flask_login import LoginManager
 from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager
@@ -15,7 +14,7 @@ migrate = Migrate(app, db)
 manager = Manager(app)
 manager.add_command('db', MigrateCommand)
 
-admin = Admin(app, name='ChickenGym', template_mode='bootstrap3')
+# admin = Admin(app, name='ChickenGym', template_mode='bootstrap3')
 
 lm = LoginManager()
 lm.init_app(app)
@@ -25,12 +24,13 @@ lm.session_protection = "strong"
 from app.controller.auth import auth as auth_blueprint
 from app.controller.database_manipulation import database_manipulation as database_manipulation_blueprint
 from app.controller.home import home as home_blueprint
-from app.controller.admin import admin_blueprint
+
+# from app.controller.admin import admin_blueprint
 
 app.register_blueprint(auth_blueprint)
 app.register_blueprint(database_manipulation_blueprint)
 app.register_blueprint(home_blueprint)
-app.register_blueprint(admin_blueprint)
+# app.register_blueprint(admin_blueprint)
 
 from app.model import tables, forms
 from app.controller import default

@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from app import db
 
 
@@ -11,6 +13,8 @@ class User(db.Model):
     password = db.Column(db.VARCHAR(95), nullable=False)
     name = db.Column(db.VARCHAR(200), nullable=False)
     email = db.Column(db.VARCHAR(120), unique=True, nullable=False)
+    active = db.Column(db.BOOLEAN, default=True)
+    confirmed_at = db.Column(db.DATETIME)
 
     # RELATIONSHIP
     # One to one
@@ -21,6 +25,7 @@ class User(db.Model):
         self.password = password
         self.name = name
         self.email = email
+        self.confirmed_at = datetime.now()
 
     def __repr__(self):
         return '<User %r, %r>' % (self.username, self.name)
@@ -42,7 +47,6 @@ class User(db.Model):
     def is_anonymous(self):
         return False
 
-    @property
     def get_id(self):
         return str(self.id)
 
