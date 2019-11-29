@@ -1,14 +1,47 @@
 from datetime import datetime
 
-from app import db
+from flask_security import RoleMixin, SQLAlchemyUserDatastore, Security
+from sqlalchemy import UniqueConstraint
+from sqlalchemy.orm import backref
+
+from app import db, app, Util
 
 
 # TODO falta fazer os relacionamentos
+class RolesUsers(db.Model):
+    __tablename__ = "roles_users"
+
+    id = db.Column(db.VARCHAR(36), primary_key=True, default=Util.__generate_id__())
+    user_id = db.Column(db.VARCHAR(36), db.ForeignKey('user.id'))
+    role_id = db.Column(db.VARCHAR(36), db.ForeignKey('role.id'))
+
+    __table_args__ = (
+        UniqueConstraint('user_id', 'role_id', name='unique_role_user'),
+    )
+
+    def __repr__(self):
+        return '<RoleUsers %r: %r, %r>' % (self.id, self.user_id, self.role_id)
+
+
+class Role(db.Model, RoleMixin):
+    __tablename__ = "role"
+
+    id = db.Column(db.VARCHAR(36), primary_key=True, default=Util.__generate_id__())
+    name = db.Column(db.String(80), unique=True)
+    description = db.Column(db.String(255))
+
+    def __repr__(self):
+        return '<Role %r: %r>' % (self.id, self.name)
+
+    # @property
+    def get_id(self):
+        return str(self.id)
+
 
 class User(db.Model):
     __tablename__ = "user"
 
-    id = db.Column(db.INTEGER, autoincrement=True, primary_key=True, nullable=False)
+    id = db.Column(db.VARCHAR(36), primary_key=True, default=Util.__generate_id__())
     username = db.Column(db.VARCHAR(80), unique=True, nullable=False)
     password = db.Column(db.VARCHAR(95), nullable=False)
     name = db.Column(db.VARCHAR(200), nullable=False)
@@ -19,6 +52,8 @@ class User(db.Model):
     # RELATIONSHIP
     # One to one
     pessoa = db.relationship('Pessoa', uselist=False, back_populates='usuario')
+    # many to many
+    roles = db.relationship('Role', secondary='roles_users', backref=backref('users', lazy='dynamic'))
 
     def __init__(self, username, password, name, email):
         self.username = username
@@ -28,7 +63,7 @@ class User(db.Model):
         self.confirmed_at = datetime.now()
 
     def __repr__(self):
-        return '<User %r, %r>' % (self.username, self.name)
+        return '<User %r: %r, %r>' % (self.id, self.username, self.name)
 
     @property
     def dict_class(self):
@@ -128,7 +163,7 @@ class Pessoa(db.Model):
     documento_tipo = db.Column(db.Enum('RG', 'CPF', 'CNH', 'PASSAPORTE', 'OUTRO'), nullable=False)
     documento_num = db.Column(db.VARCHAR(20), nullable=False)
     endereco_id = db.Column(db.INTEGER, db.ForeignKey('endereco.id', name='FK_pessoa_endereco'), nullable=False)
-    user_id = db.Column(db.INTEGER, db.ForeignKey('user.id', name='FK_pessoa_user'), nullable=False)
+    user_id = db.Column(db.VARCHAR(36), db.ForeignKey('user.id', name='FK_pessoa_user'), nullable=False)
 
     # RELATIONSHIP
     # One to one
@@ -252,3 +287,7 @@ linha_ficha = db.Table('linha_ficha',
                        db.Column('aparelho_id', db.INTEGER, db.ForeignKey('aparelho.id')),
                        db.Column('ficha_id', db.INTEGER, db.ForeignKey('ficha.id'))
                        )
+
+# Setup Flask-Security
+user_datastore = SQLAlchemyUserDatastore(db, User, Role)
+security = Security(app, user_datastore)

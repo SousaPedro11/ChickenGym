@@ -16,17 +16,22 @@ def __admin__():
         DAO.transacao(user)
 
 
-# def __role__():
-#     role = DAO.buscar_por_criterio(tables.Role, name='ADMINISTRADOR')
-#     if not role:
-#         role = tables.Role(name="ADMINISTRADOR")
-#         DAO.transacao(role)
-#
-#     user = DAO.buscar_por_criterio(tables.User, username='admin')
-#     role = DAO.buscar_por_criterio(tables.Role, name='ADMINISTRADOR')
-#     user_id = int(user.get_id())
-#     role_id = int(role.get_id())
-#     roles_user = DAO.buscar_por_criterio(RolesUsers, user_id=user_id, role_id=role_id)
-#     if not roles_user:
-#         roles_user = tables.RolesUsers(user_id=user_id, role_id=role_id)
-#         DAO.transacao(roles_user)
+def __role__():
+    role = DAO.buscar_por_criterio(tables.Role, name='ADMINISTRADOR')
+    if not role:
+        role = tables.Role(name="ADMINISTRADOR")
+        DAO.transacao(role)
+
+    user = DAO.buscar_por_criterio(tables.User, username='admin')
+
+    # join = DAO.busca_join_composto_com_criterio(
+    #     tables.RolesUsers,
+    #     tables.User,
+    #     tables.Role,
+    #     tables.User.username == 'admin',
+    #     tables.Role.name == "ADMINISTRADOR")
+    #
+    # print(join)
+    if not user.roles:
+        user.roles.append(role)
+        DAO.transacao(user)

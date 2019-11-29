@@ -38,3 +38,4 @@ from app.controller.database_manipulation import usuario
 
 db.create_all()
 usuario.__admin__()
+usuario.__role__()
