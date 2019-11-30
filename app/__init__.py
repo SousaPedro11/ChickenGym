@@ -34,8 +34,9 @@ app.register_blueprint(home_blueprint)
 
 from app.model import tables, forms
 from app.controller import default
-from app.controller.database_manipulation import usuario
 
 db.create_all()
-usuario.__admin__()
-usuario.__role__()
+
+# from app.controller.database_manipulation import usuario
+# usuario.__admin__()
+# usuario.__role__()

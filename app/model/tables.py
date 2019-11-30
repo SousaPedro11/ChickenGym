@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from flask_security import RoleMixin, SQLAlchemyUserDatastore, Security
+from flask_security import RoleMixin, SQLAlchemyUserDatastore, Security, UserMixin
 from sqlalchemy import UniqueConstraint
 from sqlalchemy.orm import backref
 
@@ -8,6 +8,14 @@ from app import db, app, Util
 
 
 # TODO falta fazer os relacionamentos
+class ObjetoBase:
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        else:
+            return False
+
+
 class RolesUsers(db.Model):
     __tablename__ = "roles_users"
 
@@ -30,6 +38,10 @@ class Role(db.Model, RoleMixin):
     name = db.Column(db.String(80), unique=True)
     description = db.Column(db.String(255))
 
+    def __init__(self, name, description):
+        self.name = name
+        self.description = description
+
     def __repr__(self):
         return '<Role %r: %r>' % (self.id, self.name)
 
@@ -38,7 +50,7 @@ class Role(db.Model, RoleMixin):
         return str(self.id)
 
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     __tablename__ = "user"
 
     id = db.Column(db.VARCHAR(36), primary_key=True, default=Util.__generate_id__())

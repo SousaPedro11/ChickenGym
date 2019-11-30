@@ -1,6 +1,6 @@
 from werkzeug.security import generate_password_hash
 
-from app import tables
+from app import tables, app, Util
 from app.controller.database_manipulation import DAO
 
 
@@ -11,27 +11,33 @@ def __admin__():
     if not user:
         user = tables.User("admin", passwd, "ADMINISTRADOR", "admin@admin.com")
         DAO.transacao(user)
-    else:
+    elif user.password != passwd:
         user.password = passwd
         DAO.transacao(user)
 
 
 def __role__():
-    role = DAO.buscar_por_criterio(tables.Role, name='ADMINISTRADOR')
-    if not role:
-        role = tables.Role(name="ADMINISTRADOR")
-        DAO.transacao(role)
+    roles = ["ADMINISTRADOR", "FUNCIONARIO", "GERENTE", "SECRETARIA", "PROFESSOR", "ALUNO"]
+
+    for role_name in roles:
+        cadastrar_role(role_name)
 
     user = DAO.buscar_por_criterio(tables.User, username='admin')
 
-    # join = DAO.busca_join_composto_com_criterio(
-    #     tables.RolesUsers,
-    #     tables.User,
-    #     tables.Role,
-    #     tables.User.username == 'admin',
-    #     tables.Role.name == "ADMINISTRADOR")
-    #
-    # print(join)
     if not user.roles:
-        user.roles.append(role)
+        user.roles.append(DAO.buscar_por_criterio(tables.Role, name='ADMINISTRADOR'))
         DAO.transacao(user)
+
+
+def cadastrar_role(nome):
+    role = DAO.buscar_por_criterio(tables.Role, name=nome)
+    if not role:
+        role = tables.Role(name=nome, description='')
+        role.id = Util.__generate_id__()
+        DAO.transacao(role)
+
+
+@app.before_first_request
+def seed():
+    __admin__()
+    __role__()
