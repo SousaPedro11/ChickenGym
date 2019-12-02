@@ -36,7 +36,3 @@ from app.model import tables, forms
 from app.controller import default
 
 db.create_all()
-
-# from app.controller.database_manipulation import usuario
-# usuario.__admin__()
-# usuario.__role__()

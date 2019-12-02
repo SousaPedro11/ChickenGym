@@ -8,20 +8,15 @@ from app import db, app, Util
 
 
 # TODO falta fazer os relacionamentos
-class ObjetoBase:
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.__dict__ == other.__dict__
-        else:
-            return False
-
-
 class RolesUsers(db.Model):
     __tablename__ = "roles_users"
 
     id = db.Column(db.VARCHAR(36), primary_key=True, default=Util.__generate_id__())
     user_id = db.Column(db.VARCHAR(36), db.ForeignKey('user.id'))
     role_id = db.Column(db.VARCHAR(36), db.ForeignKey('role.id'))
+
+    def __init__(self):
+        self.id = Util.__generate_id__()
 
     __table_args__ = (
         UniqueConstraint('user_id', 'role_id', name='unique_role_user'),
@@ -68,6 +63,7 @@ class User(db.Model, UserMixin):
     roles = db.relationship('Role', secondary='roles_users', backref=backref('users', lazy='dynamic'))
 
     def __init__(self, username, password, name, email):
+        self.id = Util.__generate_id__()
         self.username = username
         self.password = password
         self.name = name

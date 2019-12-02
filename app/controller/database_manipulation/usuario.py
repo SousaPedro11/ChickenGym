@@ -20,7 +20,7 @@ def __role__():
     roles = ["ADMINISTRADOR", "FUNCIONARIO", "GERENTE", "SECRETARIA", "PROFESSOR", "ALUNO"]
 
     for role_name in roles:
-        cadastrar_role(role_name)
+        _cadastrar_role(role_name)
 
     user = DAO.buscar_por_criterio(tables.User, username='admin')
 
@@ -29,7 +29,7 @@ def __role__():
         DAO.transacao(user)
 
 
-def cadastrar_role(nome):
+def _cadastrar_role(nome):
     role = DAO.buscar_por_criterio(tables.Role, name=nome)
     if not role:
         role = tables.Role(name=nome, description='')
