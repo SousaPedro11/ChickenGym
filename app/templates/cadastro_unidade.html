@@ -1,0 +1,49 @@
+{% extends 'cadastro.html' %}
+{% block form %}
+    <h2 class="titulo" style="text-transform: uppercase">
+        Cadastro de Unidade
+    </h2>
+
+    <form action="" method="post">
+        {{ eform.hidden_tag() }}
+        <div class="unidade">
+            {{ uform.nome.label }}<br>
+            {{ uform.nome(size=80, class="form-control", placeholder='Unidade') }}<br>
+            {#            {% for error in uform.nome.errors %}#}
+            {#                <span class="alert-info">{{ error }}</span>#}
+            {#            {% endfor %}#}
+        </div>
+        <div class="telefone">
+            {{ uform.telefone.label }}<br>
+            {{ uform.telefone(size=15, class="form-control", placeholder='Telefone') }}<br>
+        </div>
+        <div class="rua">
+            {{ eform.rua.label }}<br>
+            {{ eform.rua(size=80, class="form-control", placeholder='Informe a rua') }}<br>
+        </div>
+        <div class="numero">
+            {{ eform.numero.label }}<br>
+            {{ eform.numero(size=5, class="form-control", placeholder='Número') }}<br>
+        </div>
+        <div class="cep">
+            {{ eform.cep.label }}<br>
+            {{ eform.cep(size=10, class="form-control", placeholder='CEP') }}<br>
+        </div>
+        <div class="complemento">
+            {{ eform.complemento.label }}<br>
+            {{ eform.complemento(size=80, class="form-control", placeholder='Complemento') }}<br>
+        </div>
+        <div class="cidade">
+            {{ eform.cidade.label }}<br>
+            {{ eform.cidade(size=30, class="form-control", placeholder='Cidade') }}<br>
+        </div>
+        <div class="bairro">
+            {{ eform.bairro.label }}<br>
+            {{ eform.bairro(size=20, class="form-control", placeholder='Bairro') }}<br>
+        </div>
+        <div class="registrar">
+            <button class="btn" type="submit">Registrar</button>
+        </div>
+    </form>
+{% endblock %}
+

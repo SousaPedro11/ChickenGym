@@ -13,7 +13,7 @@
                 min-width: 50vw;
             }
 
-            .boasvindas{
+            .boasvindas {
                 padding-bottom: 10vh;
             }
 
@@ -64,6 +64,10 @@
             text-decoration: none;
         }
 
+        .navbar-conteudo-1 .botao-home .botao-home {
+            color: darkred;
+        }
+
         .navbar, nav.navbar div.container-fluid div.navbar-conteudo ul {
             background-color: darkgray;
         }
@@ -86,6 +90,12 @@
                     <li class="nav-item"><a href="#about">Sobre</a></li>
                     <li class="nav-item"><a href="#contact">Contato</a></li>#}
                         <li class="divider" role="separator"></li>
+                        <li class="botao-home">
+                            <a href="{{ url_for('home.index') }}" class="botao-home">
+                                Home
+                            </a>
+                        </li>
+                        <li class="divider" role="separator"></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 Cadastrar
@@ -93,67 +103,13 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a href="{{ url_for('database_manipulation.cadastrar_usuario') }}">Usuário</a>
+                                    <a href="{{ url_for('database_manipulation.cadastro', objeto='usuario') }}">Usuário</a>
                                 </li>
                                 <li>
-                                    <a href="#equipamento">Equipamento</a>
+                                    <a href="{{ url_for('database_manipulation.cadastro', objeto='equipamento') }}">Equipamento</a>
                                 </li>
                                 <li>
-                                    <a href="#unidade">Unidade</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="divider" role="separator"></li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                Editar
-                                <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a href="#usuario">Usuário</a>
-                                </li>
-                                <li>
-                                    <a href="#equipamento">Equipamento</a>
-                                </li>
-                                <li>
-                                    <a href="#unidade">Unidade</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="divider" role="separator"></li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                Consultar
-                                <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a href="{{ url_for('database_manipulation.visualizar_usuario') }}">Usuário</a>
-                                </li>
-                                <li>
-                                    <a href="#equipamento">Equipamento</a>
-                                </li>
-                                <li>
-                                    <a href="#unidade">Unidade</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="divider" role="separator"></li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                Remover
-                                <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a href="#usuario">Usuário</a>
-                                </li>
-                                <li>
-                                    <a href="#equipamento">Equipamento</a>
-                                </li>
-                                <li>
-                                    <a href="#unidade">Unidade</a>
+                                    <a href="{{ url_for('database_manipulation.cadastro', objeto='unidade') }}">Unidade</a>
                                 </li>
                             </ul>
                         </li>

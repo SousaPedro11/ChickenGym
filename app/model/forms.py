@@ -42,4 +42,22 @@ class RegistrationForm(FlaskForm):
 
 
 class EquipamentoForm(FlaskForm):
+    fabricante = StringField('fabricante', validators=[DataRequired()])
     modelo = StringField('modelo', validators=[DataRequired()])
+    submit = SubmitField('Cadastrar')
+
+
+class EnderecoForm(FlaskForm):
+    rua = StringField('rua', validators=[DataRequired()])
+    numero = StringField('numero', validators=[DataRequired()])
+    cep = StringField('cep', validators=[DataRequired()])
+    complemento = StringField('complemento')
+    cidade = StringField('cidade', validators=[DataRequired()])
+    bairro = StringField('bairro', validators=[DataRequired()])
+    submit = SubmitField('Cadastrar')
+
+
+class UnidadeForm(FlaskForm):
+    nome = StringField('nome da unidade', validators=[DataRequired()])
+    telefone = StringField('telefone', validators=[DataRequired()])
+    submit = SubmitField('Cadastrar')

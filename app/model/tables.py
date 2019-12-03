@@ -101,16 +101,23 @@ class Endereco(db.Model):
     rua = db.Column(db.VARCHAR(80), nullable=False)
     numero = db.Column(db.VARCHAR(5), nullable=False)
     cep = db.Column(db.VARCHAR(10), nullable=False)
-    complemento = db.Column(db.TEXT, nullable=True)
+    complemento = db.Column(db.TEXT, nullable=True, default=None)
     cidade = db.Column(db.VARCHAR(30), nullable=False)
     bairro = db.Column(db.VARCHAR(20), nullable=False)
-    telefone = db.Column(db.VARCHAR(15), nullable=True)
 
     # RELATIONSHIP
     # One to one
-    unidade = db.relationship('Unidade', uselist=False, back_populates='endereco')
+    # unidade = db.relationship('Unidade', uselist=False, back_populates='endereco')
     # One to many
     pessoas = db.relationship('Pessoa', back_populates='endereco')
+
+    def __init__(self, rua, numero, cep, complemento, cidade, bairro):
+        self.rua = rua
+        self.numero = numero
+        self.cep = cep
+        self.complemento = complemento
+        self.cidade = cidade
+        self.bairro = bairro
 
 
 class Unidade(db.Model):
@@ -118,14 +125,19 @@ class Unidade(db.Model):
 
     id = db.Column(db.INTEGER, nullable=False, autoincrement=True, primary_key=True)
     nome = db.Column(db.VARCHAR(120), nullable=False)
+    telefone = db.Column(db.VARCHAR(15), nullable=True, default=None)
     endereco_id = db.Column(db.INTEGER, db.ForeignKey('endereco.id', name='FK_unidade_endereco'), nullable=False,
                             unique=True)
 
     # RELATIONSHIP
     # One to one
-    endereco = db.relationship('Endereco', back_populates='unidade')
+    endereco = db.relationship('Endereco', backref=backref('unidade', uselist=False), cascade="save-update")
     # Many to one
     modalidades = db.relationship('Modalidade', back_populates='unidade')
+
+    def __init__(self, nome, telefone):
+        self.nome = nome
+        self.telefone = telefone
 
 
 class Modalidade(db.Model):
@@ -171,6 +183,7 @@ class Pessoa(db.Model):
     documento_tipo = db.Column(db.Enum('RG', 'CPF', 'CNH', 'PASSAPORTE', 'OUTRO'), nullable=False)
     documento_num = db.Column(db.VARCHAR(20), nullable=False)
     endereco_id = db.Column(db.INTEGER, db.ForeignKey('endereco.id', name='FK_pessoa_endereco'), nullable=False)
+    telefone = db.Column(db.VARCHAR(15), nullable=True, default=None)
     user_id = db.Column(db.VARCHAR(36), db.ForeignKey('user.id', name='FK_pessoa_user'), nullable=False)
 
     # RELATIONSHIP
@@ -283,6 +296,10 @@ class Aparelho(db.Model):
     id = db.Column(db.INTEGER, nullable=False, autoincrement=True, primary_key=True)
     fabricante = db.Column(db.VARCHAR(20), nullable=False)
     modelo = db.Column(db.VARCHAR(20), nullable=False)
+
+    def __init__(self, fabricante, modelo):
+        self.fabricante = fabricante
+        self.modelo = modelo
 
 
 # TABELAS INTERMEDIARIAS

@@ -1,0 +1,50 @@
+{% extends 'cadastro.html' %}
+{% block title %}
+    {{ super() }}Usuário
+{% endblock %}
+{% block form %}
+    <h2 class="titulo" style="text-transform: uppercase">
+        Cadastro de Usuário
+    </h2>
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <div class="name">
+            {{ form.name.label }}<br>
+            {{ form.name(size=100, class="form-control", placeholder='Informe seu nome') }}<br>
+            {#            {% for error in form.name.errors %}
+                <span class="alert-info">{{ error }}</span>
+            {% endfor %}#}
+        </div>
+        <div class="username">
+            {{ form.username.label }}<br>
+            {{ form.username(size=80, class="form-control", placeholder='Cadastre um nome de usuário') }}<br>
+            {% for error in form.username.errors %}
+                <span class="alert-info">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div class="email">
+            {{ form.email.label }}<br>
+            {{ form.email(size=80, class="form-control", placeholder='Informe seu e-mail') }}<br>
+            {% for error in form.email.errors %}
+                <span class="alert-info">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div class="password">
+            {{ form.password.label }}<br>
+            {{ form.password(size=32, class="form-control", placeholder='Cadastre uma senha') }}<br>
+            {% for error in form.password.errors %}
+                <span class="alert-info">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div class="password">
+            {{ form.password2.label }}<br>
+            {{ form.password2(size=32, class="form-control", placeholder='Repita a senha cadastrada') }}<br>
+            {% for error in form.password2.errors %}
+                <span class="alert-info">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div class="registrar">
+            {{ form.submit() }}
+        </div>
+    </form>
+{% endblock %}

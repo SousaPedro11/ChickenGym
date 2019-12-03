@@ -25,3 +25,9 @@ def buscar_todos(table):
 
 def buscar_todos_por_criterio(table, *filtros):
     return table.query.filter(*filtros).all()
+
+
+def deletar(objeto):
+    db.session.delete(objeto)
+    db.session.commit()
+    db.session.close()
