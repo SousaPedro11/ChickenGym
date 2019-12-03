@@ -119,6 +119,9 @@ class Endereco(db.Model):
         self.cidade = cidade
         self.bairro = bairro
 
+    def __repr__(self):
+        return '%s, %s %s - %s' % (self.rua, self.numero, self.bairro, self.cidade)
+
 
 class Unidade(db.Model):
     __tablename__ = 'unidade'
@@ -138,6 +141,11 @@ class Unidade(db.Model):
     def __init__(self, nome, telefone):
         self.nome = nome
         self.telefone = telefone
+
+    @property
+    def dict_class(self):
+        dicionario = [{'Nome': self.nome}, {'Telefone': self.telefone}, {"endereco": self.endereco}]
+        return dicionario
 
 
 class Modalidade(db.Model):
@@ -300,6 +308,17 @@ class Aparelho(db.Model):
     def __init__(self, fabricante, modelo):
         self.fabricante = fabricante
         self.modelo = modelo
+
+    @property
+    def dict_class(self):
+        dicionario = [{'Fabricante': self.fabricante}, {'Modelo': self.modelo}]
+        return dicionario
+
+    # @staticmethod
+    # @property
+    @classmethod
+    def dict_att(cls):
+        return [{'Fabricante', 'Modelo'}]
 
 
 # TABELAS INTERMEDIARIAS

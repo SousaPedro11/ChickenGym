@@ -1,4 +1,9 @@
 {% extends 'cadastro.html' %}
+{% block tabela %}
+    {% if table|length > 0 %}
+        {{ super() }}
+    {% endif %}
+{% endblock %}
 {% block form %}
     <h2 class="titulo" style="text-transform: uppercase">
         Cadastro de Equipamento
@@ -12,9 +17,6 @@
         <div class="modelo">
             {{ form.modelo.label }}<br>
             {{ form.modelo(size=20, class="form-control", placeholder='Informe o modelo do equipamento') }}<br>
-            {#            {% for error in form.modelo.errors %}
-                <span class="alert-info">{{ error }}</span>
-            {% endfor %}#}
         </div>
         <div class="registrar">
             {{ form.submit() }}

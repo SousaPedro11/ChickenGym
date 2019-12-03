@@ -23,10 +23,53 @@
                 padding: auto;
             }
         }
+
+        .tabela {
+            border: 2px solid darkred;
+            border-collapse: collapse;
+            background-color: white;
+            min-width: 50vh;
+            width: 100%;
+        }
+
+        .tabela-cabecalho, .tabela-valor {
+            border: 1px solid black;
+        }
+
+        .tabela-cabecalho, .tabela-valor {
+            padding-left: 2px;
+            text-transform: uppercase;
+        }
     </style>
 {% endblock %}
 {% block content %}
     {{ super() }}
+    {% block tabela %}
+        <table class="tabela">
+            <tr class="tabela-coluna">
+                {% for e in table[0].dict_class %}
+                    {% for k in e.keys() %}
+                        <th class="tabela-cabecalho">
+                            {{ k }}
+                        </th>
+                    {% endfor %}
+                {% endfor %}
+            </tr>
+            {% for r in table %}
+                <tr class="tabela-coluna">
+                    {% for d in r.dict_class %}
+                        {% if d.values()|length > 0 %}
+                            {% for v in d.values() %}
+                                <td class="tabela-valor">
+                                    {{ v }}
+                                </td>
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+    {% endblock %}
     <div class="cadastro col-md-6 col-md-offset-6" style="color: darkred; padding-bottom: 10vh;">
         {% block form %}
         {% endblock %}

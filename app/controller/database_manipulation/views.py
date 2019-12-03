@@ -1,3 +1,5 @@
+import inspect
+
 from flask import flash, redirect, url_for, render_template
 from flask_login import login_required
 from werkzeug.security import generate_password_hash
@@ -12,6 +14,7 @@ from . import database_manipulation
 @login_required
 def cadastrar_usuario():
     form = RegistrationForm()
+    table = User.query.order_by(User.name, User.username).all()
     if form.validate_on_submit():
         name = form.name.data.upper()
         username = form.username.data.lower()
@@ -21,40 +24,44 @@ def cadastrar_usuario():
         DAO.transacao(user)
         flash('Usuário cadastrado com sucesso!')
         return redirect(url_for('auth.login'))
-    return render_template('cadastro_usuario.html', form=form)
+    return render_template('cadastro_usuario.html', form=form, table=table)
 
 
 @login_required
 @database_manipulation.route('/cg/usuario/visualizar/', methods=['GET', 'POST'])
 def visualizar_usuario():
     table = User.query.all()
-    return render_template('visualizar.html', table=table)
+    return render_template('visualizar.html')
 
 
 @login_required
 @database_manipulation.route('/cg/cadastrar/<objeto>/', methods=['GET', 'POST'])
-def cadastro(objeto):
+def cadastro(objeto, tabela=None):
     if objeto == 'usuario':
+        # tabela = User.query.all()
         return redirect(url_for('database_manipulation.cadastrar_usuario'))
     elif objeto == 'equipamento':
+        # tabela = Aparelho.query.all()
         return redirect(url_for('database_manipulation.cadastrar_equipamento'))
     elif objeto == 'unidade':
+        # tabela = Unidade.query.all()
         return redirect(url_for('database_manipulation.cadastrar_unidade'))
-    return render_template('cadastro.html', objeto=objeto)
+    return render_template('cadastro.html', objeto=objeto, table=tabela)
 
 
 @login_required
 @database_manipulation.route('/cg/cadastrar/equipamento/novo/', methods=['GET', 'POST'])
 def cadastrar_equipamento():
     form = EquipamentoForm()
+    tabela = Aparelho.query.all()
     if form.validate_on_submit():
         fabricante = form.fabricante.data.upper()
         modelo = form.modelo.data.upper()
         aparelho = Aparelho(fabricante, modelo)
         DAO.transacao(aparelho)
         flash('Equipamento cadastrado com sucesso!')
-        # return redirect(url_for('home.index'))
-    return render_template('cadastro_equipamento.html', form=form)
+        return redirect(url_for('home.index'))
+    return render_template('cadastro_equipamento.html', form=form, table=tabela)
 
 
 @login_required
@@ -62,6 +69,7 @@ def cadastrar_equipamento():
 def cadastrar_unidade():
     uform = UnidadeForm(prefix='u')
     eform = EnderecoForm(prefix='e')
+    tabela = Unidade.query.all()
     if eform.validate_on_submit():
         rua = eform.rua.data.upper()
         numero = eform.numero.data.upper()
@@ -81,4 +89,4 @@ def cadastrar_unidade():
         DAO.transacao(unidade)
         flash('Unidade cadastrada com sucesso!')
 
-    return render_template('cadastro_unidade.html', eform=eform, uform=uform)
+    return render_template('cadastro_unidade.html', eform=eform, uform=uform, table=tabela)
