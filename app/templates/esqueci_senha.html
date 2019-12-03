@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block head %}
+    {{ super() }}
+    <style>
+        /* For mobile phones: */
+        [class*="registrar"] {
+            padding-top: 5vh
+        }
+
+        @media only screen and (min-width: 600px) {
+            .cadastro {
+            {#color: darkred;#}{#padding-bottom: 10vh;#} margin-left: auto;
+                padding-right: auto;
+                position: absolute;
+                min-width: 50vw;
+            }
+
+            .form-control {
+                max-width: fit-content;
+                padding: auto;
+            }
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    {{ super() }}
+    <div class="cadastro col-md-6 col-md-offset-6" style="color: darkred; padding-bottom: 10vh;">
+        <form action="" method="post">
+            {{ form.csrf_token }}
+            <div class="username">
+                {{ form.username.label }}<br>
+                {{ form.username(size=80, class="form-control", placeholder='Usuário') }}<br>
+                {% for error in form.username.errors %}
+                    <span class="alert-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="email">
+                {{ form.email.label }}<br>
+                {{ form.email(size=80, class="form-control", placeholder='Informe seu e-mail') }}<br>
+                {% for error in form.email.errors %}
+                    <span class="alert-info">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="senha">
+                {{ form.nova.label }}<br>
+                {{ form.nova(size=32, class="form-control", placeholder='Informe a nova senha') }}
+                {% for error in form.nova.errors %}
+                    <span class="alert-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="senha">
+                {{ form.repetir_nova.label }}<br>
+                {{ form.repetir_nova(size=32, class="form-control", placeholder='Informe a nova senha') }}
+                {% for error in form.repetir_nova.errors %}
+                    <span class="alert-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="registrar">
+                {{ form.submit() }}
+            </div>
+        </form>
+    </div>
+{% endblock %}

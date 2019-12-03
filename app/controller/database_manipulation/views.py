@@ -2,7 +2,6 @@ from flask import flash, redirect, url_for, render_template
 from flask_login import login_required
 from werkzeug.security import generate_password_hash
 
-from app import db
 from app.controller.database_manipulation import DAO
 from app.model.forms import RegistrationForm, EquipamentoForm, UnidadeForm, EnderecoForm
 from app.model.tables import User, Aparelho, Endereco, Unidade

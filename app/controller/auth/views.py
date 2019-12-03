@@ -1,9 +1,11 @@
 from flask import render_template, flash, redirect, url_for, request, abort
 from flask_login import login_user, current_user, logout_user, login_required
-from werkzeug.security import check_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 
+from app import db
+from app.controller.database_manipulation import DAO
 from app.controller.default import is_safe_url
-from app.model.forms import LoginForm
+from app.model.forms import LoginForm, RedefinirSenhaForm
 from app.model.tables import User
 from . import auth
 
@@ -37,3 +39,16 @@ def logout():
     logout_user()
     flash("Sessão Finalizada")
     return redirect(url_for("home.cg"))
+
+
+@auth.route("/cg/redefinir_senha/", methods=['GET', 'POST'])
+def redefinir_senha():
+    form = RedefinirSenhaForm()
+    if form.validate_on_submit():
+        user = DAO.buscar_por_criterio(User, username=form.username.data.lower())
+        senha = generate_password_hash(form.nova.data)
+        user.password = senha
+        DAO.transacao(user)
+        flash("Senha atualizada com sucesso!")
+        return redirect(url_for('auth.login'))
+    return render_template('esqueci_senha.html', form=form)

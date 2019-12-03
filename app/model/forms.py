@@ -41,6 +41,26 @@ class RegistrationForm(FlaskForm):
             raise ValidationError('Use outro email, por favor!')
 
 
+class RedefinirSenhaForm(FlaskForm):
+    username = StringField('Nome de Usuário', validators=[DataRequired()])
+    email = StringField('Email cadastrado')
+    nova = PasswordField('Nova senha', validators=[DataRequired()])
+    repetir_nova = PasswordField('Repita a nova senha',
+                                 validators=[DataRequired(),
+                                             EqualTo('nova', message='Este campo deve ser igual a senha informada')])
+    submit = SubmitField('Atualizar Senha')
+
+    def validate_username(self, username):
+        user = User.query.filter_by(username=username.data.lower()).first()
+        if user is None:
+            raise ValidationError('Usuário não existe!')
+
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data.lower()).first()
+        if user is None:
+            raise ValidationError('Email não cadastrado!')
+
+
 class EquipamentoForm(FlaskForm):
     fabricante = StringField('fabricante', validators=[DataRequired()])
     modelo = StringField('modelo', validators=[DataRequired()])

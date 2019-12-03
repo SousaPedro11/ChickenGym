@@ -12,7 +12,12 @@
         }
 
         .sessionlogin {
-            padding-bottom: 50px;
+            {#width: 60%;#}
+            margin: 0 auto;
+            padding: 20px;
+            {#padding-bottom: 50px;#}
+            max-width: 60vw;
+            {#position: relative;#}
         }
 
         .esqueci {
@@ -45,7 +50,7 @@
                 </div>
             </form>
             <p class="esqueci">
-                <a class="fpwd" href="#">Esqueceu sua senha?</a>
+                <a class="fpwd" href="{{url_for('auth.redefinir_senha') }}">Esqueceu sua senha?</a>
             </p>
         </div>
     </div>

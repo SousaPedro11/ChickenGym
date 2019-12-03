@@ -14,6 +14,7 @@ def __admin__():
     elif user.password != passwd:
         user.password = passwd
         DAO.transacao(user)
+    # print('Usuario cadastrado')
 
 
 def __role__():
@@ -27,6 +28,7 @@ def __role__():
     if not user.roles:
         user.roles.append(DAO.buscar_por_criterio(tables.Role, name='ADMINISTRADOR'))
         DAO.transacao(user)
+    # print("Role cadastrado")
 
 
 def _cadastrar_role(nome):
