@@ -7,7 +7,7 @@ from sqlalchemy.orm import backref
 from app import db, app, Util
 
 
-# TODO falta fazer os relacionamentos
+# TODO falta fazer os relacionamentos de algumas tabelas
 class RolesUsers(db.Model):
     __tablename__ = "roles_users"
 
@@ -134,7 +134,8 @@ class Unidade(db.Model):
 
     # RELATIONSHIP
     # One to one
-    endereco = db.relationship('Endereco', backref=backref('unidade', uselist=False), cascade="save-update")
+    endereco = db.relationship('Endereco', backref=backref('unidade', uselist=False, lazy='joined'),
+                               cascade="save-update")
     # Many to one
     modalidades = db.relationship('Modalidade', back_populates='unidade')
 
@@ -219,6 +220,7 @@ class Funcionario(db.Model):
     modalidades = db.relationship('Modalidade', back_populates='professor')
 
 
+# TODO falta
 class Aluno(db.Model):
     __tablename__ = 'aluno'
 
@@ -322,6 +324,7 @@ class Aparelho(db.Model):
 
 
 # TABELAS INTERMEDIARIAS
+# TODO alterar de TABLE para Model
 linha_ficha = db.Table('linha_ficha',
                        db.Column('id', db.INTEGER, nullable=False, autoincrement=True, primary_key=True),
                        db.Column('ciclo1', db.DECIMAL(precision=5, scale=2)),

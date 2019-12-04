@@ -23,7 +23,7 @@ def cadastrar_usuario():
         user = User(username, password, name, email)
         DAO.transacao(user)
         flash('Usuário cadastrado com sucesso!')
-        return redirect(url_for('auth.login'))
+        return redirect(url_for('database_manipulation.cadastrar_usuario'))
     return render_template('cadastro_usuario.html', form=form, table=table)
 
 
@@ -60,7 +60,7 @@ def cadastrar_equipamento():
         aparelho = Aparelho(fabricante, modelo)
         DAO.transacao(aparelho)
         flash('Equipamento cadastrado com sucesso!')
-        return redirect(url_for('home.index'))
+        return redirect(url_for('database_manipulation.cadastrar_equipamento'))
     return render_template('cadastro_equipamento.html', form=form, table=tabela)
 
 
@@ -88,5 +88,6 @@ def cadastrar_unidade():
 
         DAO.transacao(unidade)
         flash('Unidade cadastrada com sucesso!')
+        return redirect(url_for('database_manipulation.cadastrar_unidade'))
 
     return render_template('cadastro_unidade.html', eform=eform, uform=uform, table=tabela)
