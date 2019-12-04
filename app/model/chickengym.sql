@@ -1,0 +1,69 @@
+ 
+-- EXCLUIR BASE
+DROP DATABASE IF EXISTS chickengym;
+
+---------------------------------------------------------------------------------
+-- CRIACAO DA BASE
+CREATE DATABASE IF NOT EXISTS chickengym
+DEFAULT CHARACTER SET utf8mb4
+COLLATE utf8mb4_general_ci;
+
+---------------------------------------------------------------------------------
+-- TABELAS
+CREATE TABLE IF NOT EXISTS role(
+id VARCHAR(36) PRIMARY KEY NOT NULL,
+tx_nome VARCHAR(80) NOT NULL UNIQUE,
+tx_descricao VARCHAR(255) DEFAULT NULL
+);
+
+CREATE TABLE IF NOT EXISTS usuario(
+id VARCHAR(36) PRIMARY KEY NOT NULL,
+tx_login VARCHAR(80) UNIQUE NOT NULL,
+tx_senha VARCHAR(95) NOT NULL,
+tx_email VARCHAR(120) UNIQUE NOT NULL,
+bo_ativo BOOL DEFAULT TRUE,
+dt_cadastro DATETIME NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS pessoa(
+id VARCHAR(36) PRIMARY KEY NOT NULL,
+tx_nome VARCHAR(120) NOT NULL,
+tx_nome_mae VARCHAR(120) NOT NULL,
+en_documento_tipo ENUM('RG', 'CPF', 'CNH', 'PASSAPORTE', 'OUTRO') NOT NULL,
+tx_documento_num VARCHAR(20) NOT NULL,
+tx_telefone VARCHAR(15) NULL,
+id_endereco VARCHAR(36) NOT NULL,
+id_usuario VARCHAR(36) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS funcionario(
+id VARCHAR(36) PRIMARY KEY NOT NULL,
+tx_registro VARCHAR(10) UNIQUE NOT NULL,
+bo_ativo BOOL DEFAULT TRUE,
+id_cargo VARCHAR(36) NOT NULL,
+id_pessoa VARCHAR(36) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS aluno(
+id VARCHAR(36) PRIMARY KEY NOT NULL,
+tx_matricula VARCHAR(10) UNIQUE NOT NULL,
+bo_ativo BOOL DEFAULT TRUE,
+id_plano VARCHAR(36) NOT NULL,
+id_pessoa VARCHAR(36) NOT NULL
+);
+
+-- TABELAS INTERMEDIARIAS
+CREATE TABLE IF NOT EXISTS role(
+id VARCHAR(36) PRIMARY KEY NOT NULL,
+id_usuario VARCHAR(36),
+id_role VARCHAR(36),
+CONSTRAINT ak_role_user UNIQUE (id_usuario, id_role)
+);
+
+-- FK
+ALTER TABLE aluno
+ADD CONSTRAINT FK_aluno_pessoa FOREIGN KEY (id_pessoa)
+REFERENCES pessoa (id)
+ON UPDATE NO ACTION
+ON DELETE NO ACTION
+;
