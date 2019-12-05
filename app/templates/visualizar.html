@@ -1,7 +1,29 @@
 {% extends 'home.html' %}
+{% block title %}
+    CGManager - Cadastro de
+{% endblock %}
 {% block head %}
     {{ super() }}
     <style>
+        /* For mobile phones: */
+        [class*="registrar"] {
+            padding-top: 5vh
+        }
+
+        @media only screen and (min-width: 600px) {
+            .cadastro {
+            {#color: darkred;#}{#padding-bottom: 10vh;#} margin-left: auto;
+                padding-right: auto;
+                position: absolute;
+                min-width: 50vw;
+            }
+
+            .form-control {
+                max-width: fit-content;
+                padding: auto;
+            }
+        }
+
         .tabela {
             border: 2px solid darkred;
             border-collapse: collapse;
@@ -18,32 +40,40 @@
             padding-left: 2px;
             text-transform: uppercase;
         }
-
     </style>
 {% endblock %}
-{% block boasvindas %}{% endblock %}
 {% block content %}
     {{ super() }}
-    <table class="tabela">
-        <tr class="tabela-coluna">
-            {% for e in table[0].dict_class %}
-                {% for k in e.keys() %}
-                    <th class="tabela-cabecalho">
-                        {{ k }}
-                    </th>
-                {% endfor %}
-            {% endfor %}
-        </tr>
-        {% for r in table %}
+    {% block tabela %}
+        <table class="tabela">
             <tr class="tabela-coluna">
-                {% for d in r.dict_class %}
-                    {% for v in d.values() %}
-                        <td class="tabela-valor">
-                            {{ v }}
-                        </td>
+                {% for e in table[0].dict_class %}
+                    {% for k in e.keys() %}
+                        <th class="tabela-cabecalho">
+                            {{ k }}
+                        </th>
                     {% endfor %}
                 {% endfor %}
             </tr>
-        {% endfor %}
-    </table>
+            {% for r in table %}
+                <tr class="tabela-coluna">
+                    {% for d in r.dict_class %}
+                        {% if d.values()|length > 0 %}
+                            {% for v in d.values() %}
+                                <td class="tabela-valor">
+                                    {{ v }}
+                                </td>
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+    {% endblock %}
+    <div class="cadastro col-md-6 col-md-offset-6" style="color: darkred; padding-bottom: 10vh;">
+        {% block form %}
+        {% endblock %}
+    </div>
+{% endblock %}
+{% block boasvindas %}
 {% endblock %}

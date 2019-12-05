@@ -46,28 +46,45 @@
     {{ super() }}
     {% block tabela %}
         <table class="tabela">
-            <tr class="tabela-coluna">
-                {% for e in table[0].dict_class %}
-                    {% for k in e.keys() %}
-                        <th class="tabela-cabecalho">
-                            {{ k }}
-                        </th>
-                    {% endfor %}
-                {% endfor %}
-            </tr>
-            {% for r in table %}
+            {% if table|length > 0 %}
                 <tr class="tabela-coluna">
-                    {% for d in r.dict_class %}
-                        {% if d.values()|length > 0 %}
-                            {% for v in d.values() %}
-                                <td class="tabela-valor">
-                                    {{ v }}
-                                </td>
-                            {% endfor %}
-                        {% endif %}
+                    {% for e in table[0].dict_class %}
+                        {% for k in e.keys() %}
+                            <th class="tabela-cabecalho">
+                                {{ k }}
+                            </th>
+                        {% endfor %}
                     {% endfor %}
                 </tr>
-            {% endfor %}
+                {% for r in table %}
+                    <tr class="tabela-coluna">
+                        {% for d in r.dict_class %}
+                            {% if d.values()|length > 0 %}
+                                {% for v in d.values() %}
+                                    <td class="tabela-valor">
+                                        {{ v }}
+                                    </td>
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr class="tabela-coluna">
+                    {% for e in tabela2.dict_class %}
+                        {% for k in e.keys() %}
+                            <th class="tabela-cabecalho">
+                                {{ k }}
+                            </th>
+                        {% endfor %}
+                    {% endfor %}
+                </tr>
+                <tr>
+                <td colspan="{{ tabela2.dict_class|length }}" class="text-center">
+                    Sem registro
+                </td>
+                </tr>
+            {% endif %}
         </table>
     {% endblock %}
     <div class="cadastro col-md-6 col-md-offset-6" style="color: darkred; padding-bottom: 10vh;">

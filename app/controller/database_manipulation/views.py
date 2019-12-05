@@ -28,25 +28,49 @@ def cadastrar_usuario():
 
 
 @login_required
-@database_manipulation.route('/cg/usuario/visualizar/', methods=['GET', 'POST'])
-def visualizar_usuario():
-    table = User.query.all()
-    return render_template('visualizar.html')
+@database_manipulation.route('/cg/visualizar/<objeto>', methods=['GET', 'POST'])
+def visualizar(objeto, tabela=None):
+    if objeto == 'usuario':
+        tabela = DAO.buscar_todos(User)
+    elif objeto == 'equipamento':
+        tabela = DAO.buscar_todos(Aparelho)
+    elif objeto == 'unidade':
+        tabela = DAO.buscar_todos(Unidade)
+    return render_template('visualizar.html', objeto=objeto, table=tabela)
 
 
 @login_required
 @database_manipulation.route('/cg/cadastrar/<objeto>/', methods=['GET', 'POST'])
-def cadastro(objeto, tabela=None):
+def cadastro(objeto, tabela=None, tabela2=None):
+    # if objeto == 'usuario':
+    #     # tabela = User.query.all()
+    #     return redirect(url_for('database_manipulation.cadastrar_usuario'))
+    # elif objeto == 'equipamento':
+    #     # tabela = Aparelho.query.all()
+    #     return redirect(url_for('database_manipulation.cadastrar_equipamento'))
+    # elif objeto == 'unidade':
+    #     # tabela = Unidade.query.all()
+    #     return redirect(url_for('database_manipulation.cadastrar_unidade'))
+    classe = object
     if objeto == 'usuario':
-        # tabela = User.query.all()
-        return redirect(url_for('database_manipulation.cadastrar_usuario'))
+        classe = User
+        tabela = DAO.buscar_todos(User)
     elif objeto == 'equipamento':
-        # tabela = Aparelho.query.all()
-        return redirect(url_for('database_manipulation.cadastrar_equipamento'))
+        classe = Aparelho
+        tabela = DAO.buscar_todos(Aparelho)
     elif objeto == 'unidade':
-        # tabela = Unidade.query.all()
-        return redirect(url_for('database_manipulation.cadastrar_unidade'))
-    return render_template('cadastro.html', objeto=objeto, table=tabela)
+        classe = Unidade
+        tabela = DAO.buscar_todos(Unidade)
+
+    if not (len(tabela) > 0):
+        if objeto == 'usuario':
+            tabela2 = User('', '', '', '')
+        elif objeto == 'equipamento':
+            tabela2 = Aparelho('', '')
+        elif objeto == 'unidade':
+            tabela2 = Unidade('', '')
+
+    return render_template('cadastro.html', objeto=objeto, table=tabela, tabela2=tabela2)
 
 
 @login_required
