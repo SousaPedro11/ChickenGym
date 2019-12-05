@@ -42,24 +42,11 @@ def visualizar(objeto, tabela=None):
 @login_required
 @database_manipulation.route('/cg/cadastrar/<objeto>/', methods=['GET', 'POST'])
 def cadastro(objeto, tabela=None, tabela2=None):
-    # if objeto == 'usuario':
-    #     # tabela = User.query.all()
-    #     return redirect(url_for('database_manipulation.cadastrar_usuario'))
-    # elif objeto == 'equipamento':
-    #     # tabela = Aparelho.query.all()
-    #     return redirect(url_for('database_manipulation.cadastrar_equipamento'))
-    # elif objeto == 'unidade':
-    #     # tabela = Unidade.query.all()
-    #     return redirect(url_for('database_manipulation.cadastrar_unidade'))
-    classe = object
     if objeto == 'usuario':
-        classe = User
         tabela = DAO.buscar_todos(User)
     elif objeto == 'equipamento':
-        classe = Aparelho
         tabela = DAO.buscar_todos(Aparelho)
     elif objeto == 'unidade':
-        classe = Unidade
         tabela = DAO.buscar_todos(Unidade)
 
     if not (len(tabela) > 0):

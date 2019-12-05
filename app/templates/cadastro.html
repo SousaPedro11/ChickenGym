@@ -80,9 +80,9 @@
                     {% endfor %}
                 </tr>
                 <tr>
-                <td colspan="{{ tabela2.dict_class|length }}" class="text-center">
-                    Sem registro
-                </td>
+                    <td colspan="{{ tabela2.dict_class|length }}" class="text-center">
+                        Sem registro
+                    </td>
                 </tr>
             {% endif %}
         </table>
@@ -90,6 +90,12 @@
     <div class="cadastro col-md-6 col-md-offset-6" style="color: darkred; padding-bottom: 10vh;">
         {% block form %}
         {% endblock %}
+    </div>
+    <div>
+        <button>
+            <a class="btn-default" type="button"
+               href="{{ url_for('database_manipulation.cadastro', objeto=objeto) }}">Novo</a>
+        </button>
     </div>
 {% endblock %}
 {% block boasvindas %}
