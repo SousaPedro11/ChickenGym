@@ -1,14 +1,15 @@
-from flask import flash, redirect, url_for, render_template
-from flask_login import login_required
+from flask import flash, redirect, url_for, render_template, request
+from flask_login import login_required, current_user
 from werkzeug.security import generate_password_hash
 
 from app.controller.database_manipulation import DAO
 from app.model.forms import RegistrationForm, EquipamentoForm, UnidadeForm, EnderecoForm
 from app.model.tables import User, Aparelho, Endereco, Unidade
 from . import database_manipulation
+import wtforms
 
 
-@database_manipulation.route('/cg/cadastrar/usuario/novo/', methods=['GET', 'POST'])
+@database_manipulation.route('/cg/cadastrar/user/novo/', methods=['GET', 'POST'])
 @login_required
 def cadastrar_usuario():
     form = RegistrationForm()
@@ -21,16 +22,16 @@ def cadastrar_usuario():
         user = User(username, password, name, email)
         DAO.transacao(user)
         flash('Usuário cadastrado com sucesso!')
-        return redirect(url_for('database_manipulation.cadastrar_usuario'))
+        return redirect(url_for('database_manipulation.cadastro', objeto='user'))
     return render_template('cadastro_usuario.html', form=form, table=table)
 
 
 @login_required
 @database_manipulation.route('/cg/visualizar/<objeto>', methods=['GET', 'POST'])
 def visualizar(objeto, tabela=None):
-    if objeto == 'usuario':
+    if objeto == 'user':
         tabela = DAO.buscar_todos(User)
-    elif objeto == 'equipamento':
+    elif objeto == 'aparelho':
         tabela = DAO.buscar_todos(Aparelho)
     elif objeto == 'unidade':
         tabela = DAO.buscar_todos(Unidade)
@@ -40,17 +41,17 @@ def visualizar(objeto, tabela=None):
 @login_required
 @database_manipulation.route('/cg/cadastrar/<objeto>/', methods=['GET', 'POST'])
 def cadastro(objeto, tabela=None, tabela2=None):
-    if objeto == 'usuario':
+    if objeto == 'user':
         tabela = DAO.buscar_todos(User, User.name, User.username)
-    elif objeto == 'equipamento':
+    elif objeto == 'aparelho':
         tabela = DAO.buscar_todos(Aparelho, Aparelho.fabricante, Aparelho.modelo)
     elif objeto == 'unidade':
         tabela = DAO.buscar_todos(Unidade)
 
     if not (len(tabela) > 0):
-        if objeto == 'usuario':
+        if objeto == 'user':
             tabela2 = User('', '', '', '')
-        elif objeto == 'equipamento':
+        elif objeto == 'aparelho':
             tabela2 = Aparelho('', '')
         elif objeto == 'unidade':
             tabela2 = Unidade('', '')
@@ -59,7 +60,7 @@ def cadastro(objeto, tabela=None, tabela2=None):
 
 
 @login_required
-@database_manipulation.route('/cg/cadastrar/equipamento/novo/', methods=['GET', 'POST'])
+@database_manipulation.route('/cg/cadastrar/aparelho/novo/', methods=['GET', 'POST'])
 def cadastrar_equipamento():
     form = EquipamentoForm()
     if form.validate_on_submit():
@@ -68,7 +69,7 @@ def cadastrar_equipamento():
         aparelho = Aparelho(fabricante, modelo)
         DAO.transacao(aparelho)
         flash('Equipamento cadastrado com sucesso!')
-        return redirect(url_for('database_manipulation.cadastro', objeto='equipamento'))
+        return redirect(url_for('database_manipulation.cadastro', objeto='aparelho'))
     return render_template('cadastro_equipamento.html', form=form)
 
 
@@ -78,6 +79,7 @@ def cadastrar_unidade():
     uform = UnidadeForm(prefix='u')
     eform = EnderecoForm(prefix='e')
     tabela = Unidade.query.all()
+    list_end = DAO.buscar_todos(Endereco)
     if eform.validate_on_submit():
         rua = eform.rua.data.upper()
         numero = eform.numero.data.upper()
@@ -91,11 +93,31 @@ def cadastrar_unidade():
 
         endereco = Endereco(rua, numero, cep, complemento, cidade, bairro)
 
+        if endereco in list_end:
+            print('endereco já existe')
+            endereco = list_end[endereco]
+
         unidade = Unidade(nome, telefone)
         unidade.endereco = endereco
 
         DAO.transacao(unidade)
         flash('Unidade cadastrada com sucesso!')
-        return redirect(url_for('database_manipulation.cadastrar_unidade'))
+        return redirect(url_for('database_manipulation.cadastro', objeto='unidade'))
 
     return render_template('cadastro_unidade.html', eform=eform, uform=uform, table=tabela)
+
+
+@login_required
+@database_manipulation.route('/cg/deletar/<objeto>/<id>', methods=['GET', 'POST'])
+def deletar(objeto, id):
+    string = objeto.capitalize()
+    registro = DAO.buscar_por_criterio(globals()[string], id=id)
+    if isinstance(registro, User) and registro == current_user:
+        flash('Usuário não pode excluir a própria conta!')
+        return redirect(url_for('database_manipulation.cadastro', objeto=objeto))
+
+    if request.method == 'POST':
+        DAO.deletar(registro)
+        return redirect(url_for('database_manipulation.cadastro', objeto=objeto))
+
+    return render_template('deletar.html', registro=registro, objeto=objeto)

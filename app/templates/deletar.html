@@ -1,0 +1,20 @@
+{% extends 'home.html' %}
+{% block boasvindas %}
+{% endblock %}
+{% block content %}
+    {{ super() }}
+    <div>
+        <form action="" method="post">
+            {% for k in registro.dict_class %}
+                {% for i in k.keys() %}
+                    <strong style="color: darkred">{{ i }}</strong>
+                    <input class="form-control" type="text" value="{{ k[i] }}" readonly><br>
+                {% endfor %}
+            {% endfor %}
+
+            <div class="btn-group" style="padding-top: 10px; margin-left: 0">
+                <input type="submit" value="Deletar" style="color: darkred">
+            </div>
+        </form>
+    </div>
+{% endblock %}

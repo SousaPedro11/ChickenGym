@@ -16,6 +16,7 @@ class Role(db.Model, RoleMixin):
     descricao = db.Column(db.VARCHAR(255))
 
     def __init__(self, name, description):
+        self.id = Util.__generate_id__()
         self.nome = name
         self.descricao = description
 
