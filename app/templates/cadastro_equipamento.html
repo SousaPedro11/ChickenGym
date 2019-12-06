@@ -1,8 +1,5 @@
 {% extends 'cadastro.html' %}
 {% block tabela %}
-    {% if table|length > 0 %}
-        {{ super() }}
-    {% endif %}
 {% endblock %}
 {% block form %}
     <h2 class="titulo" style="text-transform: uppercase">
@@ -23,4 +20,5 @@
         </div>
     </form>
 {% endblock %}
-
+{% block botao %}
+{% endblock %}

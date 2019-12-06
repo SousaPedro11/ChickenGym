@@ -1,5 +1,3 @@
-import inspect
-
 from flask import flash, redirect, url_for, render_template
 from flask_login import login_required
 from werkzeug.security import generate_password_hash
@@ -10,7 +8,7 @@ from app.model.tables import User, Aparelho, Endereco, Unidade
 from . import database_manipulation
 
 
-@database_manipulation.route('/cg/cadastro/usuario/novo/', methods=['GET', 'POST'])
+@database_manipulation.route('/cg/cadastrar/usuario/novo/', methods=['GET', 'POST'])
 @login_required
 def cadastrar_usuario():
     form = RegistrationForm()
@@ -43,9 +41,9 @@ def visualizar(objeto, tabela=None):
 @database_manipulation.route('/cg/cadastrar/<objeto>/', methods=['GET', 'POST'])
 def cadastro(objeto, tabela=None, tabela2=None):
     if objeto == 'usuario':
-        tabela = DAO.buscar_todos(User)
+        tabela = DAO.buscar_todos(User, User.name, User.username)
     elif objeto == 'equipamento':
-        tabela = DAO.buscar_todos(Aparelho)
+        tabela = DAO.buscar_todos(Aparelho, Aparelho.fabricante, Aparelho.modelo)
     elif objeto == 'unidade':
         tabela = DAO.buscar_todos(Unidade)
 
@@ -64,15 +62,14 @@ def cadastro(objeto, tabela=None, tabela2=None):
 @database_manipulation.route('/cg/cadastrar/equipamento/novo/', methods=['GET', 'POST'])
 def cadastrar_equipamento():
     form = EquipamentoForm()
-    tabela = Aparelho.query.all()
     if form.validate_on_submit():
         fabricante = form.fabricante.data.upper()
         modelo = form.modelo.data.upper()
         aparelho = Aparelho(fabricante, modelo)
         DAO.transacao(aparelho)
         flash('Equipamento cadastrado com sucesso!')
-        return redirect(url_for('database_manipulation.cadastrar_equipamento'))
-    return render_template('cadastro_equipamento.html', form=form, table=tabela)
+        return redirect(url_for('database_manipulation.cadastro', objeto='equipamento'))
+    return render_template('cadastro_equipamento.html', form=form)
 
 
 @login_required

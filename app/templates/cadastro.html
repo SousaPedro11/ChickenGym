@@ -13,14 +13,14 @@
         @media only screen and (min-width: 600px) {
             .cadastro {
             {#color: darkred;#}{#padding-bottom: 10vh;#} margin-left: auto;
-                padding-right: auto;
+                padding-right: 0;
                 position: absolute;
                 min-width: 50vw;
             }
 
             .form-control {
                 max-width: fit-content;
-                padding: auto;
+                padding: 0;
             }
         }
 
@@ -86,17 +86,18 @@
                 </tr>
             {% endif %}
         </table>
+        {% block botao %}
+            <div class="btn-group" style="padding-top: 10px; margin-left: 0">
+                <button href="https://www.google.com" class="button">
+                    <a href="/cg/cadastrar/{{ objeto }}/novo/" class="button"
+                       style="text-decoration: none; color: darkred">Novo</a>
+                </button>
+            </div>
+        {% endblock %}
     {% endblock %}
     <div class="cadastro col-md-6 col-md-offset-6" style="color: darkred; padding-bottom: 10vh;">
         {% block form %}
         {% endblock %}
     </div>
-    <div>
-        <button>
-            <a class="btn-default" type="button"
-               href="{{ url_for('database_manipulation.cadastro', objeto=objeto) }}">Novo</a>
-        </button>
-    </div>
 {% endblock %}
-{% block boasvindas %}
-{% endblock %}
+{% block boasvindas %}{% endblock %}

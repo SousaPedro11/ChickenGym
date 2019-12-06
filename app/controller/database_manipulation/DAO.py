@@ -19,8 +19,8 @@ def busca_join_composto_com_criterio(table1, table2, table3, *filtro):
     return table1.query.join(table2).join(table3).filter(*filtro).add_entity(table2).add_entity(table3).all()
 
 
-def buscar_todos(table):
-    return table.query.all()
+def buscar_todos(table, *order_by):
+    return table.query.order_by(*order_by).all()
 
 
 def buscar_todos_por_criterio(table, *filtros):
