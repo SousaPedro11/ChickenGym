@@ -8,7 +8,9 @@
         <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
         <meta name="description" content="">
         <meta name="author" content="Pedro Sousa">
+
         <link rel="icon" href="{{ url_for('static', filename="img/icon.png") }}">
+
         <link rel="canonical" href="https://getbootstrap.com/docs/3.4/examples/jumbotron-narrow/">
 
         <title>{% block title %}CGManager{% endblock %}</title>
@@ -27,8 +29,7 @@
             body {
                 background-size: cover;
                 background: url({{ url_for('static', filename="img/background.jpg") }}) fixed center center;
-                {#background-size: 100vw;#}
-                min-height: 40vh;
+            {#background-size: 100vw;#} min-height: 40vh;
                 position: relative;
                 margin: auto;
                 padding-bottom: auto;
@@ -46,6 +47,75 @@
 
             img.banner {
                 max-width: 60vw;
+            }
+
+            /* For mobile phones: */
+            [class*="col-"] {
+                width: 100%;
+            }
+
+            @media only screen and (min-width: 600px) {
+                .home {
+                    min-width: 50vw;
+                }
+
+                .boasvindas {
+                    padding-bottom: 10vh;
+                }
+
+                .boasvindas-conteudo {
+                    margin-left: auto;
+                    padding: 20px;
+                    position: relative;
+                    min-width: 50vw;
+                }
+
+                .boasvindas-box {
+                    position: relative;
+                    min-width: 50vw;
+                    border-radius: 10px;
+                }
+            }
+
+            .navbar-conteudo-1 .divider {
+                height: 1px;
+                margin: 9px 0;
+                overflow: hidden;
+                background-color: darkred;
+                border-color: darkred;
+            }
+
+            .navbar-conteudo-1 .dropdown a, .navbar-conteudo-1 .dropdown .dropdown-toggle {
+                color: darkred;
+            }
+
+            .navbar {
+                border-color: darkred;
+            }
+
+            .navbar-header .menu-botao {
+                border-color: darkred;
+            }
+
+            .navbar-header .menu-botao .icon-bar {
+                background-color: darkred;
+            }
+
+            .dropdown .dropdown-toggle {
+                border-color: red;
+            }
+
+            .botao-logout a {
+                color: darkred;
+                text-decoration: none;
+            }
+
+            .navbar-conteudo-1 .botao-home .botao-home {
+                color: darkred;
+            }
+
+            .navbar, nav.navbar div.container-fluid div.navbar-conteudo ul {
+                background-color: darkgray;
             }
         </style>
     {% endblock %}
