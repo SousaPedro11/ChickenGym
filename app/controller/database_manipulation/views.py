@@ -13,7 +13,7 @@ import wtforms
 @login_required
 def cadastrar_usuario():
     form = RegistrationForm()
-    table = Usuario.query.order_by(Usuario.name, Usuario.username).all()
+    table = Usuario.query.order_by(Usuario.nome, Usuario.username).all()
     if form.validate_on_submit():
         name = form.name.data.upper()
         username = form.username.data.lower()
@@ -41,15 +41,15 @@ def visualizar(objeto, tabela=None):
 @login_required
 @database_manipulation.route('/cg/cadastrar/<objeto>/', methods=['GET', 'POST'])
 def cadastro(objeto, tabela=None, tabela2=None):
-    if objeto == 'user':
-        tabela = DAO.buscar_todos(Usuario, Usuario.name, Usuario.username)
+    if objeto == 'usuario':
+        tabela = DAO.buscar_todos(Usuario, Usuario.nome, Usuario.username)
     elif objeto == 'aparelho':
         tabela = DAO.buscar_todos(Aparelho, Aparelho.fabricante, Aparelho.modelo)
     elif objeto == 'unidade':
         tabela = DAO.buscar_todos(Unidade)
 
     if not (len(tabela) > 0):
-        if objeto == 'user':
+        if objeto == 'usuario':
             tabela2 = Usuario('', '', '', '')
         elif objeto == 'aparelho':
             tabela2 = Aparelho('', '')
