@@ -24,8 +24,8 @@ class Aluno(db.Model):
     # many to many
     planos = db.relationship('Plano', secondary='planos_alunos', backref=backref('aluno', lazy='dynamic'))
     # one to many
-    avaliacoes = db.relationship('AvaliacaoFisica', backref=backref('aluno', lazy='dynamic'))
-    fichas = db.relationship('Ficha', backref=backref('aluno', lazy='dynamic'))
+    avaliacoes = db.relationship('AvaliacaoFisica', backref=backref('aluno', lazy='joined'))
+    fichas = db.relationship('Ficha', backref=backref('aluno', lazy='joined'))
 
 
 class Aparelho(db.Model):
@@ -146,7 +146,7 @@ class Ficha(db.Model):
         self.data_elaboracao = data
 
     # one to many
-    linhas_ficha = db.relationship('LinhasFicha', backref=backref('ficha', lazy='dynamic'))
+    linhas_ficha = db.relationship('LinhasFicha', backref=backref('ficha', lazy='joined'))
 
 
 class Funcionario(db.Model):
@@ -288,12 +288,12 @@ class Role(db.Model, RoleMixin):
     __tablename__ = "role"
 
     id = db.Column(db.VARCHAR(36), primary_key=True, default=Util.__generate_id__())
-    nome = db.Column(db.VARCHAR(80), unique=True)
+    name = db.Column(db.VARCHAR(80), unique=True)
     descricao = db.Column(db.VARCHAR(255))
 
     def __init__(self, name, description):
         self.id = Util.__generate_id__()
-        self.nome = name
+        self.name = name
         self.descricao = description
 
     def __repr__(self):
