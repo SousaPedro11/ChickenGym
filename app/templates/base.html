@@ -8,9 +8,7 @@
         <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
         <meta name="description" content="">
         <meta name="author" content="Pedro Sousa">
-
         <link rel="icon" href="{{ url_for('static', filename="img/icon.png") }}">
-
         <link rel="canonical" href="https://getbootstrap.com/docs/3.4/examples/jumbotron-narrow/">
 
         <title>{% block title %}CGManager{% endblock %}</title>
@@ -29,7 +27,8 @@
             body {
                 background-size: cover;
                 background: url({{ url_for('static', filename="img/background.jpg") }}) fixed center center;
-            {#background-size: 100vw;#} min-height: 40vh;
+                {#background-size: 100vw;#}
+                min-height: 40vh;
                 position: relative;
                 margin: auto;
                 padding-bottom: auto;
@@ -47,34 +46,6 @@
 
             img.banner {
                 max-width: 60vw;
-            }
-
-            /* For mobile phones: */
-            [class*="col-"] {
-                width: 100%;
-            }
-
-            @media only screen and (min-width: 600px) {
-                .home {
-                    min-width: 50vw;
-                }
-
-                .boasvindas {
-                    padding-bottom: 10vh;
-                }
-
-                .boasvindas-conteudo {
-                    margin-left: auto;
-                    padding: 20px;
-                    position: relative;
-                    min-width: 50vw;
-                }
-
-                .boasvindas-box {
-                    position: relative;
-                    min-width: 50vw;
-                    border-radius: 10px;
-                }
             }
         </style>
     {% endblock %}
