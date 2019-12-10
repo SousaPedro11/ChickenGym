@@ -35,7 +35,6 @@ def _cadastrar_role(nome):
     role = DAO.buscar_por_criterio(tables.Role, name=nome)
     if not role:
         role = tables.Role(name=nome, description='')
-        role.id = Util.__generate_id__()
         DAO.transacao(role)
 
 
