@@ -12,17 +12,18 @@ class Aluno(db.Model):
     __tablename__ = 'aluno'
 
     id = db.Column(db.VARCHAR(36), primary_key=True, default=Util.__generate_id__())
-    matricula = db.Column(db.VARCHAR(10), nullable=False, unique=True)
+    matricula = db.Column(db.VARCHAR(15), nullable=False, unique=True, default=('A' + Util.__gerar_num_matricula__()))
     ativado = db.Column(db.BOOLEAN, default=True)
-    plano_id = db.Column(db.VARCHAR(36), db.ForeignKey('plano.id', name='FK_aluno_plano'), nullable=False)
+    # plano_id = db.Column(db.VARCHAR(36), db.ForeignKey('plano.id', name='FK_aluno_plano'))
     pessoa_id = db.Column(db.VARCHAR(36), db.ForeignKey('pessoa.id', name='FK_aluno_pessoa'), nullable=False)
 
-    def __init__(self, matricula):
-        self.matricula = matricula
+    def __init__(self):
+        self.id = Util.__generate_id__()
+        self.matricula = 'A' + Util.__gerar_num_matricula__()
 
     # Relacionamento
     # many to one
-    plano = db.relationship("Plano", backref='alunos', lazy='dynamic')
+    # plano = db.relationship("Plano", backref='alunos', lazy='dynamic')
 
 
 # todo falta relacionar com linha_ficha
@@ -387,6 +388,17 @@ class Usuario(db.Model, UserMixin):
 
 
 # Tabelas intermediarias
+class PlanoAluno:
+    __tablename__ = 'plano_aluno'
+
+    id = db.Column(db.VARCHAR(36), primary_key=True, default=Util.__generate_id__())
+    plano_id = db.Column(db.VARCHAR(36), db.ForeignKey('plano.id'))
+    aluno_id = db.Column(db.VARCHAR(36), db.ForeignKey('aluno.id'))
+
+    def __init__(self):
+        self.id = Util.__generate_id__()
+
+
 class RolesUsers(db.Model):
     __tablename__ = "roles_users"
 

@@ -3,12 +3,12 @@ from urllib.parse import urlparse, urljoin
 from flask import render_template, request
 
 from app import app, lm
-from app.model.tables import User
+from app.model.tables import Usuario
 
 
 @lm.user_loader
 def load_user(user_id):
-    return User.query.filter_by(id=user_id).first()
+    return Usuario.query.filter_by(id=user_id).first()
 
 
 def is_safe_url(target):

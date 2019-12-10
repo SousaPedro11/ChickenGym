@@ -3,7 +3,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired, ValidationError, EqualTo, Email
 
-from app.model.tables import User
+from app.model.tables import Usuario
 
 
 class LoginForm(FlaskForm):
@@ -13,9 +13,9 @@ class LoginForm(FlaskForm):
 
     def validate_username(self, username):
         if '@' in username.data:
-            user = User.query.filter_by(email=username.data.lower()).first()
+            user = Usuario.query.filter_by(email=username.data.lower()).first()
         else:
-            user = User.query.filter_by(username=username.data.lower()).first()
+            user = Usuario.query.filter_by(username=username.data.lower()).first()
         if user is None:
             flash(ValidationError('Usuário não existe!'))
 
@@ -31,12 +31,12 @@ class RegistrationForm(FlaskForm):
     submit = SubmitField('Cadastrar')
 
     def validate_username(self, username):
-        user = User.query.filter_by(username=username.data.lower()).first()
+        user = Usuario.query.filter_by(username=username.data.lower()).first()
         if user is not None:
             raise ValidationError('Use outro nome de usuário, por favor!')
 
     def validate_email(self, email):
-        user = User.query.filter_by(email=email.data.lower()).first()
+        user = Usuario.query.filter_by(email=email.data.lower()).first()
         if user is not None:
             raise ValidationError('Use outro email, por favor!')
 
@@ -51,12 +51,12 @@ class RedefinirSenhaForm(FlaskForm):
     submit = SubmitField('Atualizar Senha')
 
     def validate_username(self, username):
-        user = User.query.filter_by(username=username.data.lower()).first()
+        user = Usuario.query.filter_by(username=username.data.lower()).first()
         if user is None:
             raise ValidationError('Usuário não existe!')
 
     def validate_email(self, email):
-        user = User.query.filter_by(email=email.data.lower()).first()
+        user = Usuario.query.filter_by(email=email.data.lower()).first()
         if user is None:
             raise ValidationError('Email não cadastrado!')
 

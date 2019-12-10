@@ -5,11 +5,11 @@ from app.controller.database_manipulation import DAO
 
 
 def __admin__():
-    user = DAO.buscar_por_criterio(tables.User, username='admin')
+    user = DAO.buscar_por_criterio(tables.Usuario, username='admin')
     passwd = generate_password_hash("admin")
 
     if not user:
-        user = tables.User("admin", passwd, "ADMINISTRADOR", "admin@admin.com")
+        user = tables.Usuario("admin", passwd, "ADMINISTRADOR", "admin@admin.com")
         DAO.transacao(user)
     elif user.password != passwd:
         user.password = passwd
@@ -23,7 +23,7 @@ def __role__():
     for role_name in roles:
         _cadastrar_role(role_name)
 
-    user = DAO.buscar_por_criterio(tables.User, username='admin')
+    user = DAO.buscar_por_criterio(tables.Usuario, username='admin')
 
     if not user.roles:
         user.roles.append(DAO.buscar_por_criterio(tables.Role, name='ADMINISTRADOR'))

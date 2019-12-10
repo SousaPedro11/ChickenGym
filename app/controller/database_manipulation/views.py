@@ -4,7 +4,7 @@ from werkzeug.security import generate_password_hash
 
 from app.controller.database_manipulation import DAO
 from app.model.forms import RegistrationForm, EquipamentoForm, UnidadeForm, EnderecoForm
-from app.model.tables import User, Aparelho, Endereco, Unidade
+from app.model.tables import Usuario, Aparelho, Endereco, Unidade
 from . import database_manipulation
 import wtforms
 
@@ -13,13 +13,13 @@ import wtforms
 @login_required
 def cadastrar_usuario():
     form = RegistrationForm()
-    table = User.query.order_by(User.name, User.username).all()
+    table = Usuario.query.order_by(Usuario.name, Usuario.username).all()
     if form.validate_on_submit():
         name = form.name.data.upper()
         username = form.username.data.lower()
         email = form.email.data.lower()
         password = generate_password_hash(form.password.data)
-        user = User(username, password, name, email)
+        user = Usuario(username, password, name, email)
         DAO.transacao(user)
         flash('Usuário cadastrado com sucesso!')
         return redirect(url_for('database_manipulation.cadastro', objeto='user'))
@@ -30,7 +30,7 @@ def cadastrar_usuario():
 @database_manipulation.route('/cg/visualizar/<objeto>', methods=['GET', 'POST'])
 def visualizar(objeto, tabela=None):
     if objeto == 'user':
-        tabela = DAO.buscar_todos(User)
+        tabela = DAO.buscar_todos(Usuario)
     elif objeto == 'aparelho':
         tabela = DAO.buscar_todos(Aparelho)
     elif objeto == 'unidade':
@@ -42,7 +42,7 @@ def visualizar(objeto, tabela=None):
 @database_manipulation.route('/cg/cadastrar/<objeto>/', methods=['GET', 'POST'])
 def cadastro(objeto, tabela=None, tabela2=None):
     if objeto == 'user':
-        tabela = DAO.buscar_todos(User, User.name, User.username)
+        tabela = DAO.buscar_todos(Usuario, Usuario.name, Usuario.username)
     elif objeto == 'aparelho':
         tabela = DAO.buscar_todos(Aparelho, Aparelho.fabricante, Aparelho.modelo)
     elif objeto == 'unidade':
@@ -50,7 +50,7 @@ def cadastro(objeto, tabela=None, tabela2=None):
 
     if not (len(tabela) > 0):
         if objeto == 'user':
-            tabela2 = User('', '', '', '')
+            tabela2 = Usuario('', '', '', '')
         elif objeto == 'aparelho':
             tabela2 = Aparelho('', '')
         elif objeto == 'unidade':
@@ -112,7 +112,7 @@ def cadastrar_unidade():
 def deletar(objeto, id):
     string = objeto.capitalize()
     registro = DAO.buscar_por_criterio(globals()[string], id=id)
-    if isinstance(registro, User) and registro == current_user:
+    if isinstance(registro, Usuario) and registro == current_user:
         flash('Usuário não pode excluir a própria conta!')
         return redirect(url_for('database_manipulation.cadastro', objeto=objeto))
 

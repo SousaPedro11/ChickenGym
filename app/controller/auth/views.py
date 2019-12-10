@@ -6,7 +6,7 @@ from app import db
 from app.controller.database_manipulation import DAO
 from app.controller.default import is_safe_url
 from app.model.forms import LoginForm, RedefinirSenhaForm
-from app.model.tables import User
+from app.model.tables import Usuario
 from . import auth
 
 
@@ -17,9 +17,9 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         if '@' in form.username.data:
-            user = User.query.filter_by(email=form.username.data.lower()).first()
+            user = Usuario.query.filter_by(email=form.username.data.lower()).first()
         else:
-            user = User.query.filter_by(username=form.username.data.lower()).first()
+            user = Usuario.query.filter_by(username=form.username.data.lower()).first()
         if user:
             if check_password_hash(user.password, form.password.data):
                 login_user(user, remember=form.remember_me.data)
@@ -45,7 +45,7 @@ def logout():
 def redefinir_senha():
     form = RedefinirSenhaForm()
     if form.validate_on_submit():
-        user = DAO.buscar_por_criterio(User, username=form.username.data.lower())
+        user = DAO.buscar_por_criterio(Usuario, username=form.username.data.lower())
         senha = generate_password_hash(form.nova.data)
         user.password = senha
         DAO.transacao(user)
