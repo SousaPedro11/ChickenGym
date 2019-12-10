@@ -28,7 +28,6 @@ class Aluno(db.Model):
     fichas = db.relationship('Ficha', backref=backref('aluno', lazy='dynamic'))
 
 
-# todo falta relacionar com linha_ficha
 class Aparelho(db.Model):
     __tablename__ = 'aparelho'
 
@@ -51,7 +50,6 @@ class Aparelho(db.Model):
     #     return [{'Fabricante', 'Modelo'}]
 
 
-# todo falta relacionar com aluno e funcionario(avaliador)
 class AvaliacaoFisica(db.Model):
     __tablename__ = 'avaliacaofisica'
 
@@ -136,7 +134,6 @@ class Endereco(db.Model):
         return '%s, %s %s - %s' % (self.rua, self.numero, self.bairro, self.cidade)
 
 
-# todo falta relacionar com aluno e linha_ficha
 class Ficha(db.Model):
     __tablename__ = 'ficha'
 
@@ -170,7 +167,6 @@ class Funcionario(db.Model):
     cargo = db.relationship('Cargo', backref=backref('funcionarios', lazy='dynamic'))
 
 
-# todo falta relacionar com aparelho e ficha
 class LinhasFicha(db.Model):
     __tablename__ = 'linhas_ficha'
 
@@ -217,7 +213,6 @@ class Modalidade(db.Model):
                             backref=backref('modalidade', lazy='dynamic'))
 
 
-# todo falta relacionar com valor e aluno
 class Pagamento(db.Model):
     __tablename__ = 'pagamento'
 
@@ -285,6 +280,8 @@ class Plano(db.Model):
     # many to many
     modalidades = db.relationship('Modalidade', secondary='planos_modalidades',
                                   backref=backref('plano', lazy='dynamic'))
+    turmas = db.relationship('Turma', secondary='planos_turmas',
+                             backref=backref('plano', lazy='dynamic'))
 
 
 class Role(db.Model, RoleMixin):
@@ -306,7 +303,6 @@ class Role(db.Model, RoleMixin):
         return str(self.id)
 
 
-# todo falta relacionar com turma e modalidade
 class Sala(db.Model):
     __tablename__ = 'sala'
 
@@ -316,6 +312,11 @@ class Sala(db.Model):
     def __init__(self, numero):
         self.id = Util.__generate_id__()
         self.numero = numero
+
+    # Relationship
+    # many to many
+    turmas = db.relationship('Sala', secondary='salas_turmas',
+                             backref=backref('turma', lazy='dynamic'))
 
 
 class Turma(db.Model):
@@ -461,6 +462,28 @@ class PlanosModalidades(db.Model):
     id = db.Column(db.VARCHAR(36), primary_key=True, default=Util.__generate_id__())
     plano_id = db.Column(db.VARCHAR(36), db.ForeignKey('plano.id', name='FK_planosmodalidade_plano'))
     modalidade_id = db.Column(db.VARCHAR(36), db.ForeignKey('modalidade.id', name='FK_planosmodalidade_modalidade'))
+
+    def __init__(self):
+        self.id = Util.__generate_id__()
+
+
+class PlanosTurmas(db.Model):
+    __tablename__ = 'planos_turmas'
+
+    id = db.Column(db.VARCHAR(36), primary_key=True, default=Util.__generate_id__())
+    plano_id = db.Column(db.VARCHAR(36), db.ForeignKey('plano.id', name='FK_planosturmas_plano'))
+    turma_id = db.Column(db.VARCHAR(36), db.ForeignKey('turma.id', name='FK_planosturmas_turma'))
+
+    def __init__(self):
+        self.id = Util.__generate_id__()
+
+
+class SalasTurmas(db.Model):
+    __tablename__ = 'salas_turmas'
+
+    id = db.Column(db.VARCHAR(36), primary_key=True, default=Util.__generate_id__())
+    sala_id = db.Column(db.VARCHAR(36), db.ForeignKey('sala.id', name='FK_salasturmas_sala'))
+    turma_id = db.Column(db.VARCHAR(36), db.ForeignKey('turma.id', name='FK_salasturmas_turma'))
 
     def __init__(self):
         self.id = Util.__generate_id__()
