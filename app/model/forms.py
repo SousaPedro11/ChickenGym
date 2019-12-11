@@ -3,7 +3,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired, ValidationError, EqualTo, Email
 
-from app.model.tables import Usuario
+from app.model.tables import Usuario, Unidade
 
 
 class LoginForm(FlaskForm):
@@ -78,6 +78,16 @@ class EnderecoForm(FlaskForm):
 
 
 class UnidadeForm(FlaskForm):
-    nome = StringField('nome da unidade', validators=[DataRequired()])
+    nome = StringField('Nome da Unidade', validators=[DataRequired()])
     telefone = StringField('telefone', validators=[DataRequired()])
     submit = SubmitField('Cadastrar')
+
+    def validate_nome(self, nome):
+        unidade = Unidade.query.filter_by(nome=nome.data.lower()).first()
+        if unidade is not None:
+            raise ValidationError('Use outro nome, por favor!')
+
+    def validate_telefone(self, telefone):
+        unidade = Unidade.query.filter_by(telefone=telefone.data).first()
+        if unidade is not None:
+            raise ValidationError('Use outro telefone, por favor!')

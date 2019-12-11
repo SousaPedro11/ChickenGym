@@ -45,9 +45,12 @@ class Aparelho(db.Model):
         dicionario = [{'Fabricante': self.fabricante}, {'Modelo': self.modelo}]
         return dicionario
 
-    # @classmethod
-    # def dict_att(cls):
-    #     return [{'Fabricante', 'Modelo'}]
+    @property
+    def dict_fieldname(self):
+        return {'Fabricante': 'fabricante', 'Modelo': 'modelo'}
+
+    def __repr__(self):
+        return '<Aparelho %r: %r, %r>' % (self.id, self.fabricante, self.modelo)
 
 
 class AvaliacaoFisica(db.Model):
@@ -129,6 +132,17 @@ class Endereco(db.Model):
         self.complemento = complemento
         self.cidade = cidade
         self.bairro = bairro
+
+    @property
+    def dict_class(self):
+        dicionario = [{'Rua': self.rua}, {'Numero': self.numero}, {"CEP": self.cep}, {"Complemento": self.complemento},
+                      {"Cidade": self.cidade}, {"Bairro": self.bairro}]
+        return dicionario
+
+    @property
+    def dict_fieldname(self):
+        return {'Rua': 'rua', 'Numero': 'numero', 'CEP': 'cep', 'Complemento': 'complemento',
+                'Cidade': 'cidade', 'Bairro': 'bairro'}
 
     def __repr__(self):
         return '%s, %s %s - %s' % (self.rua, self.numero, self.bairro, self.cidade)
@@ -358,6 +372,10 @@ class Unidade(db.Model):
         dicionario = [{'Nome': self.nome}, {'Telefone': self.telefone}, {"endereco": self.endereco}]
         return dicionario
 
+    @property
+    def dict_fieldname(self):
+        return {'Nome': 'nome', 'Telefone': 'telefone'}
+
 
 class Usuario(db.Model, UserMixin):
     __tablename__ = "usuario"
@@ -385,12 +403,16 @@ class Usuario(db.Model, UserMixin):
         self.confirmed_at = datetime.now()
 
     def __repr__(self):
-        return '<User %r: %r, %r>' % (self.id, self.username, self.name)
+        return '<User %r: %r, %r>' % (self.id, self.username, self.nome)
 
     @property
     def dict_class(self):
-        dicionario = [{'Nome': self.name}, {'Usuário': self.username}, {"e-mail": self.email}]
+        dicionario = [{'Nome': self.nome}, {'Usuário': self.username}, {"e-mail": self.email}]
         return dicionario
+
+    @property
+    def dict_fieldname(self):
+        return {'Nome': 'nome', 'Usuário': 'username', 'e-mail': 'email'}
 
     @property
     def is_authenticated(self):

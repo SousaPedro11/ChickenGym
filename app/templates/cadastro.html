@@ -26,9 +26,7 @@
 
         .tabela {
             border: 2px solid darkred;
-            {#border-radius: 10px;#}
-            {#border-collapse: collapse;#}
-            background-color: white;
+        {#border-radius: 10px;#}{#border-collapse: collapse;#} background-color: white;
             min-width: 50vh;
             width: 100%;
         }
@@ -49,6 +47,7 @@
         .icone_acao {
             color: black;
         }
+
     </style>
 {% endblock %}
 {% block content %}
@@ -81,7 +80,8 @@
                             <a class="icone_acao fa fa-eye glyphicon glyphicon-eye-open"
                                href="/cg/visualuzar/{{ objeto }}/"></a>
                             <a class="icone_acao fa fa-pencil glyphicon glyphicon-pencil"
-                               href="/cg/editar/{{ objeto }}/"></a>
+                               href="
+                                       {{ url_for('database_manipulation.editar', objeto=r.__class__.__name__.lower(), id=r.id) }}"></a>
                             <a class="icone_acao fa fa-trash glyphicon glyphicon-trash"
                                href="{{ url_for('database_manipulation.deletar', objeto=r.__class__.__name__.lower(), id=r.id) }}"></a>
                         </td>

@@ -5,48 +5,49 @@
     <h2 class="titulo" style="text-transform: uppercase">
         Cadastro de Unidade
     </h2>
-
     <form action="" method="post" autocomplete="on">
         {{ eform.hidden_tag() }}
-        <div class="unidade">
+        <div class="form-group">
             {{ uform.nome.label }}<br>
-            {{ uform.nome(size=80, class="form-control", placeholder='Unidade') }}<br>
-            {#            {% for error in uform.nome.errors %}#}
-            {#                <span class="alert-info">{{ error }}</span>#}
-            {#            {% endfor %}#}
+            {{ uform.nome(id="nome", size=80, class="form-control", placeholder='Unidade') }}<br>
+            {% for error in uform.nome.errors %}
+                <span class="alert-info">{{ error }}</span>
+            {% endfor %}
         </div>
-        <div class="telefone">
+        <div class="form-group">
             {{ uform.telefone.label }}<br>
-            {{ uform.telefone(size=15, class="form-control", placeholder='Telefone') }}<br>
+            {{ uform.telefone(id="telefone", size=15, class="form-control", placeholder='Telefone') }}<br>
+            {% for error in uform.telefone.errors %}
+                <span class="alert-info">{{ error }}</span>
+            {% endfor %}
         </div>
-        <div class="rua">
-            {{ eform.rua.label }}<br>
-            {{ eform.rua(size=80, class="form-control", placeholder='Informe a rua') }}<br>
-        </div>
-        <div class="numero">
-            {{ eform.numero.label }}<br>
-            {{ eform.numero(size=5, class="form-control", placeholder='Número') }}<br>
-        </div>
-        <div class="cep">
+        <div class="form-group">
             {{ eform.cep.label }}<br>
             {{ eform.cep(size=10, class="form-control", placeholder='CEP') }}<br>
         </div>
-        <div class="complemento">
+        <div class="form-group">
+            {{ eform.rua.label }}<br>
+            {{ eform.rua(size=80, class="form-control", placeholder='Informe a rua') }}<br>
+        </div>
+        <div class="form-group">
+            {{ eform.numero.label }}<br>
+            {{ eform.numero(size=5, class="form-control", placeholder='Número') }}<br>
+        </div>
+        <div class="form-group">
             {{ eform.complemento.label }}<br>
             {{ eform.complemento(size=80, class="form-control", placeholder='Complemento') }}<br>
         </div>
-        <div class="cidade">
+        <div class="form-group">
             {{ eform.cidade.label }}<br>
             {{ eform.cidade(size=30, class="form-control", placeholder='Cidade') }}<br>
         </div>
-        <div class="bairro">
+        <div class="form-group">
             {{ eform.bairro.label }}<br>
             {{ eform.bairro(size=20, class="form-control", placeholder='Bairro') }}<br>
         </div>
         <div class="registrar">
-{#            <button class="btn" type="submit">Cadastrar</button>#}
+            {#            <button class="btn" type="submit">Cadastrar</button>#}
             {{ uform.submit }}
         </div>
     </form>
 {% endblock %}
-

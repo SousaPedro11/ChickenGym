@@ -23,8 +23,8 @@ def buscar_todos(table, *order_by):
     return table.query.order_by(*order_by).all()
 
 
-def buscar_todos_por_criterio(table, *filtros):
-    return table.query.filter(*filtros).all()
+def buscar_todos_por_criterio(table, **filtros):
+    return table.query.filter_by(**filtros).all()
 
 
 def deletar(objeto):

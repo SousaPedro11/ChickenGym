@@ -46,6 +46,6 @@
             {% endfor %}
         </div>
         <input type="submit" name="cadastrar" value="Cadastrar">
-        <a href=""><input type="text"></a>
+        <a href="{{ url_for('database_manipulation.cadastro', objeto='usuario') }}"><input type="button" name="cancelar" value="Cancelar"></a>
     </form>
 {% endblock %}

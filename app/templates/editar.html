@@ -1,0 +1,37 @@
+{% extends 'home.html' %}
+{% block boasvindas %}
+{% endblock %}
+{% block content %}
+    {{ super() }}
+    <div>
+        <form action="" method="post">
+            {% for k in registro.dict_class %}
+                {% for i in k.keys() %}
+                    <strong style="color: darkred">{{ i.capitalize() }}</strong>
+                    {% if i == 'Usuário' %}
+                        <input id="{{ i }}" class="form-control" name="{{ i }}" type="text" value="{{ k[i] }}" readonly>
+                        <br>
+                    {% elif i.capitalize() == 'Endereco' %}
+                        <div class="form-group">
+                            <input id="{{ i }}" class="form-control" name="{{ i }}" type="text" value="{{ k[i] }}"
+                                   readonly>
+                            <span class="form-g"></span>
+                            <a class="icone_acao fa fa-pencil glyphicon glyphicon-pencil"
+                               href="{{ url_for('database_manipulation.editar', objeto=registro.endereco.__class__.__name__.lower(), id=registro.endereco.id) }}"></a>
+                            <br>
+                        </div>
+                    {% else %}
+                        <input id="{{ i }}" class="form-control" name="{{ i }}" type="text" value="{{ k[i] }}"><br>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+
+            <div class="btn-group" style="padding-top: 10px; margin-left: 0">
+                <input type="submit" value="Editar" style="color: darkred">
+                <a href="{{ url_for('database_manipulation.cadastro', objeto=objeto) }}"><input type="button"
+                                                                                                name="cancelar"
+                                                                                                value="Cancelar"></a>
+            </div>
+        </form>
+    </div>
+{% endblock %}

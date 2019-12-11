@@ -4,12 +4,12 @@ from werkzeug.security import generate_password_hash
 
 from app.controller.database_manipulation import DAO
 from app.model.forms import RegistrationForm, EquipamentoForm, UnidadeForm, EnderecoForm
-from app.model.tables import Usuario, Aparelho, Endereco, Unidade
+from app.model.tables import Usuario, Aparelho, Endereco, Unidade, Pessoa
 from . import database_manipulation
 import wtforms
 
 
-@database_manipulation.route('/cg/cadastrar/user/novo/', methods=['GET', 'POST'])
+@database_manipulation.route('/cg/cadastrar/usuario/novo/', methods=['GET', 'POST'])
 @login_required
 def cadastrar_usuario():
     form = RegistrationForm()
@@ -22,14 +22,14 @@ def cadastrar_usuario():
         user = Usuario(username, password, name, email)
         DAO.transacao(user)
         flash('Usuário cadastrado com sucesso!')
-        return redirect(url_for('database_manipulation.cadastro', objeto='user'))
+        return redirect(url_for('database_manipulation.cadastro', objeto='usuario'))
     return render_template('cadastro_usuario.html', form=form, table=table)
 
 
 @login_required
 @database_manipulation.route('/cg/visualizar/<objeto>', methods=['GET', 'POST'])
 def visualizar(objeto, tabela=None):
-    if objeto == 'user':
+    if objeto == 'usuario':
         tabela = DAO.buscar_todos(Usuario)
     elif objeto == 'aparelho':
         tabela = DAO.buscar_todos(Aparelho)
@@ -47,6 +47,8 @@ def cadastro(objeto, tabela=None, tabela2=None):
         tabela = DAO.buscar_todos(Aparelho, Aparelho.fabricante, Aparelho.modelo)
     elif objeto == 'unidade':
         tabela = DAO.buscar_todos(Unidade)
+    elif objeto == 'endereco':
+        tabela = DAO.buscar_todos(Endereco)
 
     if not (len(tabela) > 0):
         if objeto == 'usuario':
@@ -55,6 +57,8 @@ def cadastro(objeto, tabela=None, tabela2=None):
             tabela2 = Aparelho('', '')
         elif objeto == 'unidade':
             tabela2 = Unidade('', '')
+        elif objeto == 'endereco':
+            tabela2 = Endereco('', '', '', '', '', '')
 
     return render_template('cadastro.html', objeto=objeto, table=tabela, tabela2=tabela2)
 
@@ -80,7 +84,7 @@ def cadastrar_unidade():
     eform = EnderecoForm(prefix='e')
     tabela = Unidade.query.all()
     list_end = DAO.buscar_todos(Endereco)
-    if eform.validate_on_submit():
+    if eform.validate_on_submit() and uform.validate_on_submit():
         rua = eform.rua.data.upper()
         numero = eform.numero.data.upper()
         cep = eform.cep.data.upper()
@@ -108,16 +112,45 @@ def cadastrar_unidade():
 
 
 @login_required
-@database_manipulation.route('/cg/deletar/<objeto>/<id>', methods=['GET', 'POST'])
+@database_manipulation.route('/cg/deletar/<objeto>/<id>/', methods=['GET', 'POST'])
 def deletar(objeto, id):
     string = objeto.capitalize()
     registro = DAO.buscar_por_criterio(globals()[string], id=id)
     if isinstance(registro, Usuario) and registro == current_user:
         flash('Usuário não pode excluir a própria conta!')
         return redirect(url_for('database_manipulation.cadastro', objeto=objeto))
+    elif isinstance(registro, Endereco):
+        ue = DAO.buscar_todos_por_criterio(Unidade, endereco_id=id)
+        pe = DAO.buscar_todos_por_criterio(Pessoa, endereco_id=id)
+        if ue or pe:
+            flash('Endereço está associado a outro usuário ou unidade!')
+            return redirect(url_for('database_manipulation.cadastro', objeto=objeto))
 
     if request.method == 'POST':
         DAO.deletar(registro)
         return redirect(url_for('database_manipulation.cadastro', objeto=objeto))
 
     return render_template('deletar.html', registro=registro, objeto=objeto)
+
+
+@login_required
+@database_manipulation.route('/cg/editar/<objeto>/<id>/', methods=['GET', 'POST'])
+def editar(objeto, id):
+    string = objeto.capitalize()
+    print(string)
+    registro = DAO.buscar_por_criterio(globals()[string], id=id)
+    print(registro)
+
+    if request.method == 'POST':
+        print(request.form)
+        print(registro)
+
+        for x in registro.dict_fieldname:
+            attr = registro.dict_fieldname[x]
+            attr_val = request.form.get(x).upper()
+            setattr(registro, attr, attr_val)
+        print(registro)
+        DAO.transacao(registro)
+        return redirect(url_for('database_manipulation.cadastro', objeto=objeto))
+
+    return render_template('editar.html', registro=registro, objeto=objeto)
