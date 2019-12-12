@@ -137,20 +137,25 @@ def deletar(objeto, id):
 @database_manipulation.route('/cg/editar/<objeto>/<id>/', methods=['GET', 'POST'])
 def editar(objeto, id):
     string = objeto.capitalize()
-    print(string)
+    # print(string)
     registro = DAO.buscar_por_criterio(globals()[string], id=id)
-    print(registro)
-
+    # old = registro
+    print(old)
+    print(objeto)
     if request.method == 'POST':
-        print(request.form)
-        print(registro)
+        # print(request.form)
+        # print(registro)
 
         for x in registro.dict_fieldname:
             attr = registro.dict_fieldname[x]
             attr_val = request.form.get(x).upper()
             setattr(registro, attr, attr_val)
-        print(registro)
         DAO.transacao(registro)
+        print(registro)
+        # if old == registro:
+        #     flash('Sem alterações')
+        # else:
+        #     flash('Alterações efetuadas com sucesso!')
         return redirect(url_for('database_manipulation.cadastro', objeto=objeto))
 
     return render_template('editar.html', registro=registro, objeto=objeto)

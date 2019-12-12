@@ -28,9 +28,13 @@
 
             <div class="btn-group" style="padding-top: 10px; margin-left: 0">
                 <input type="submit" value="Editar" style="color: darkred">
-                <a href="{{ url_for('database_manipulation.cadastro', objeto=objeto) }}"><input type="button"
-                                                                                                name="cancelar"
-                                                                                                value="Cancelar"></a>
+                {% if objeto=='unidade' or objeto=='usuario' %}
+                    <a href="{{ url_for('database_manipulation.cadastro', objeto=objeto) }}">
+                {% else %}
+                    <a href="{{ request.referrer }}">
+                {% endif %}
+                <input type="button" name="cancelar" value="Cancelar">
+                </a>
             </div>
         </form>
     </div>
