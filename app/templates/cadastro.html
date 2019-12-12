@@ -77,8 +77,8 @@
                             {% endif %}
                         {% endfor %}
                         <td class="tabela-valor" style="width: 60px; text-align: center">
-                            <a class="icone_acao fa fa-eye glyphicon glyphicon-eye-open"
-                               href="/cg/visualuzar/{{ objeto }}/"></a>
+{#                            <a class="icone_acao fa fa-eye glyphicon glyphicon-eye-open"#}
+{#                               href="/cg/visualuzar/{{ objeto }}/"></a>#}
                             <a class="icone_acao fa fa-pencil glyphicon glyphicon-pencil"
                                href="
                                        {{ url_for('database_manipulation.editar', objeto=r.__class__.__name__.lower(), id=r.id) }}"></a>
