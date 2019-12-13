@@ -2,6 +2,7 @@ from flask import flash, redirect, url_for, render_template, request
 from flask_login import login_required, current_user
 from werkzeug.security import generate_password_hash
 
+from app import Util
 from app.controller.database_manipulation import DAO
 from app.model.forms import RegistrationForm, EquipamentoForm, UnidadeForm, EnderecoForm
 from app.model.tables import Usuario, Aparelho, Endereco, Unidade, Pessoa
@@ -137,25 +138,18 @@ def deletar(objeto, id):
 @database_manipulation.route('/cg/editar/<objeto>/<id>/', methods=['GET', 'POST'])
 def editar(objeto, id):
     string = objeto.capitalize()
-    # print(string)
     registro = DAO.buscar_por_criterio(globals()[string], id=id)
-    # old = registro
-    print(old)
-    print(objeto)
+    hold = hash(frozenset(vars(registro).items()))
     if request.method == 'POST':
-        # print(request.form)
-        # print(registro)
-
         for x in registro.dict_fieldname:
             attr = registro.dict_fieldname[x]
             attr_val = request.form.get(x).upper()
             setattr(registro, attr, attr_val)
+        hregistro = hash(frozenset(vars(registro).items()))
         DAO.transacao(registro)
-        print(registro)
-        # if old == registro:
-        #     flash('Sem alterações')
-        # else:
-        #     flash('Alterações efetuadas com sucesso!')
+        if hold == hregistro:
+            flash('Sem alterações')
+        else:
+            flash('Alterações efetuadas com sucesso!')
         return redirect(url_for('database_manipulation.cadastro', objeto=objeto))
-
     return render_template('editar.html', registro=registro, objeto=objeto)
