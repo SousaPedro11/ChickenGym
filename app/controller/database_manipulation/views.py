@@ -2,12 +2,10 @@ from flask import flash, redirect, url_for, render_template, request
 from flask_login import login_required, current_user
 from werkzeug.security import generate_password_hash
 
-from app import Util
 from app.controller.database_manipulation import DAO
 from app.model.forms import RegistrationForm, EquipamentoForm, UnidadeForm, EnderecoForm
 from app.model.tables import Usuario, Aparelho, Endereco, Unidade, Pessoa
 from . import database_manipulation
-import wtforms
 
 
 @database_manipulation.route('/cg/cadastrar/usuario/novo/', methods=['GET', 'POST'])
@@ -84,8 +82,7 @@ def cadastrar_unidade():
     uform = UnidadeForm(prefix='u')
     eform = EnderecoForm(prefix='e')
     tabela = Unidade.query.all()
-    list_end = DAO.buscar_todos(Endereco)
-    if eform.validate_on_submit() and uform.validate_on_submit():
+    if uform.validate_on_submit():
         rua = eform.rua.data.upper()
         numero = eform.numero.data.upper()
         cep = eform.cep.data.upper()
@@ -96,17 +93,20 @@ def cadastrar_unidade():
         nome = uform.nome.data.upper()
         telefone = uform.telefone.data.upper()
 
-        endereco = Endereco(rua, numero, cep, complemento, cidade, bairro)
-
-        if endereco in list_end:
-            print('endereco já existe')
-            endereco = list_end[endereco]
-
         unidade = Unidade(nome, telefone)
-        unidade.endereco = endereco
 
-        DAO.transacao(unidade)
-        flash('Unidade cadastrada com sucesso!')
+        endereco = Endereco(rua, numero, cep, complemento, cidade, bairro)
+        list_end = DAO.buscar_por_criterio(Endereco, rua=rua, numero=numero, cidade=cidade, bairro=bairro)
+
+        if list_end:
+            unid_end = DAO.buscar_por_criterio(Unidade, endereco_id=list_end.id)
+            if unid_end:
+                flash('Unidade não cadastrada!')
+                flash('Endereço associado a unidade %s' % unid_end.nome)
+        else:
+            unidade.endereco = endereco
+            DAO.transacao(unidade)
+            flash('Unidade cadastrada com sucesso!')
         return redirect(url_for('database_manipulation.cadastro', objeto='unidade'))
 
     return render_template('cadastro_unidade.html', eform=eform, uform=uform, table=tabela)

@@ -3,7 +3,7 @@
 {% endblock %}
 {% block content %}
     {{ super() }}
-    <div>
+    <div style="padding-bottom: 50px">
         <form action="" method="post">
             {% for k in registro.dict_class %}
                 {% for i in k.keys() %}
@@ -12,13 +12,14 @@
                         <input id="{{ i }}" class="form-control" name="{{ i }}" type="text" value="{{ k[i] }}" readonly>
                         <br>
                     {% elif i.capitalize() == 'Endereco' %}
-                        <div class="form-group">
+                        <div class="input-group">
                             <input id="{{ i }}" class="form-control" name="{{ i }}" type="text" value="{{ k[i] }}"
                                    readonly>
-                            <span class="form-g"></span>
-                            <a class="icone_acao fa fa-pencil glyphicon glyphicon-pencil"
-                               href="{{ url_for('database_manipulation.editar', objeto=registro.endereco.__class__.__name__.lower(), id=registro.endereco.id) }}"></a>
-                            <br>
+                            <div class="input-group-addon">
+                                <a class="icone_acao fa fa-pencil glyphicon glyphicon-pencil"
+                                   href="{{ url_for('database_manipulation.editar', objeto=registro.endereco.__class__.__name__.lower(), id=registro.endereco.id) }}"></a>
+                                <br>
+                            </div>
                         </div>
                     {% else %}
                         <input id="{{ i }}" class="form-control" name="{{ i }}" type="text" value="{{ k[i] }}"><br>

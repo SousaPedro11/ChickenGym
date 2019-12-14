@@ -83,7 +83,7 @@ class UnidadeForm(FlaskForm):
     submit = SubmitField('Cadastrar')
 
     def validate_nome(self, nome):
-        unidade = Unidade.query.filter_by(nome=nome.data.lower()).first()
+        unidade = Unidade.query.filter_by(nome=nome.data.upper()).first()
         if unidade is not None:
             raise ValidationError('Use outro nome, por favor!')
 

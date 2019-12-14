@@ -15,10 +15,9 @@
             {{ form.modelo.label }}<br>
             {{ form.modelo(size=20, class="form-control", placeholder='Informe o modelo do equipamento') }}<br>
         </div>
-        <input type="submit" name="cadastrar" value="Cadastrar">
-        <a href="{{ url_for('database_manipulation.cadastro', objeto='aparelho') }}">
-            <input type="button" name="cancelar" value="Cancelar">
-        </a>
+        <div class="registrar">
+            {{ form.submit() }}
+        </div>
     </form>
 {% endblock %}
 {% block botao %}

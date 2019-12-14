@@ -16,7 +16,11 @@ def buscar_por_criterio_bool(table, *filtros):
 
 
 def busca_join_composto_com_criterio(table1, table2, table3, *filtro):
-    return table1.query.join(table2).join(table3).filter(*filtro).add_entity(table2).add_entity(table3).all()
+    return table1.query.join(table2).join(table3).filter(*filtro).add_entity(table2).add_entity(table3).first()
+
+
+def buscar_por_join(table1, table2, *filtro):
+    return table1.query.join(table2).filter(*filtro).add_entity(table2).first()
 
 
 def buscar_todos(table, *order_by):
