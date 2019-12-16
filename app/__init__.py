@@ -8,12 +8,11 @@ from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager, Command, Option
 from flask_sqlalchemy import SQLAlchemy
 
+# Originally from https://gist.github.com/menghan/9a632bbb0acb445f4f3a
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 sys.path.insert(0, os.path.join(BASE_DIR, 'src'))
 
-
-# Originally from https://gist.github.com/menghan/9a632bbb0acb445f4f3a
 class GunicornServer(Command):
     """Run the app within Gunicorn"""
 
@@ -53,7 +52,7 @@ migrate = Migrate(app, db)
 
 manager = Manager(app)
 manager.add_command('db', MigrateCommand)
-manager.add_command('runserver', GunicornServer())
+manager.add_command('gunicorn', GunicornServer())
 
 # admin = Admin(app, name='ChickenGym', template_mode='bootstrap3')
 
