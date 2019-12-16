@@ -8,3 +8,4 @@ SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://iec_desenv:iec_desenv@localhost:3307/
 # SQLALCHEMY_DATABASE_URI = 'sqlite+pysqlite:///' + os.path.join(basedir, 'storage.db')
 SQLALCHEMY_TRACK_MODIFICATIONS = True
 SECRET_KEY = 'Miguel@12345'
+THREADED = True

@@ -1,12 +1,10 @@
+#!./venv/bin/python3
+
 import os
 import subprocess
 
 import sys
-from flask import Flask
-from flask_login import LoginManager
-from flask_migrate import Migrate, MigrateCommand
-from flask_script import Manager, Command, Option
-from flask_sqlalchemy import SQLAlchemy
+from flask_script import Command, Option
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -41,39 +39,13 @@ class GunicornServer(Command):
         subprocess.Popen([os.path.join(os.path.dirname(sys.executable), 'gunicorn')] + run_args).wait()
 
 
-# inicializa a aplicacao
-app = Flask(__name__)
-app.config.from_object('config')
+# !!!!! Change your app here !!!!!
+from app import manager
 
-db = SQLAlchemy(app, session_options={
-    'expire_on_commit': False
-})
+#Não excluir
+from app.controller.database_manipulation import usuario
 
-migrate = Migrate(app, db)
-
-manager = Manager(app)
-manager.add_command('db', MigrateCommand)
 manager.add_command('runserver', GunicornServer())
 
-# admin = Admin(app, name='ChickenGym', template_mode='bootstrap3')
-
-lm = LoginManager()
-lm.init_app(app)
-lm.login_view = "auth.login"
-lm.session_protection = "strong"
-
-from app.controller.auth import auth as auth_blueprint
-from app.controller.database_manipulation import database_manipulation as database_manipulation_blueprint
-from app.controller.home import home as home_blueprint
-
-# from app.controller.admin import admin_blueprint
-
-app.register_blueprint(auth_blueprint)
-app.register_blueprint(database_manipulation_blueprint)
-app.register_blueprint(home_blueprint)
-# app.register_blueprint(admin_blueprint)
-
-from app.model import tables, forms
-from app.controller import default
-
-db.create_all()
+if __name__ == '__main__':
+    manager.run()

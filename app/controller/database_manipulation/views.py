@@ -45,9 +45,9 @@ def cadastro(objeto, tabela=None, tabela2=None):
     elif objeto == 'aparelho':
         tabela = DAO.buscar_todos(Aparelho, Aparelho.fabricante, Aparelho.modelo)
     elif objeto == 'unidade':
-        tabela = DAO.buscar_todos(Unidade)
+        tabela = DAO.buscar_todos(Unidade, Unidade.nome)
     elif objeto == 'endereco':
-        tabela = DAO.buscar_todos(Endereco)
+        tabela = DAO.buscar_todos(Endereco, Endereco.cidade, Endereco.rua)
 
     if not (len(tabela) > 0):
         if objeto == 'usuario':
@@ -100,15 +100,21 @@ def cadastrar_unidade():
 
         if list_end:
             unid_end = DAO.buscar_por_criterio(Unidade, endereco_id=list_end.id)
+            pess_end = DAO.buscar_por_criterio(Unidade, endereco_id=list_end.id)
             if unid_end:
                 flash('Unidade não cadastrada!')
                 flash('Endereço associado a unidade %s' % unid_end.nome)
+            elif pess_end:
+                flash('Unidade não cadastrada!')
+                flash('Endereço associado a pessoa %s' % pess_end.nome)
+            else:
+                unidade.endereco = list_end
+                DAO.transacao(list_end)
         else:
             unidade.endereco = endereco
             DAO.transacao(unidade)
             flash('Unidade cadastrada com sucesso!')
         return redirect(url_for('database_manipulation.cadastro', objeto='unidade'))
-
     return render_template('cadastro_unidade.html', eform=eform, uform=uform, table=tabela)
 
 
@@ -130,7 +136,6 @@ def deletar(objeto, id):
     if request.method == 'POST':
         DAO.deletar(registro)
         return redirect(url_for('database_manipulation.cadastro', objeto=objeto))
-
     return render_template('deletar.html', registro=registro, objeto=objeto)
 
 
@@ -153,3 +158,9 @@ def editar(objeto, id):
             flash('Alterações efetuadas com sucesso!')
         return redirect(url_for('database_manipulation.cadastro', objeto=objeto))
     return render_template('editar.html', registro=registro, objeto=objeto)
+
+
+@login_required
+@database_manipulation.route('/cg/msform/')
+def msform():
+    return render_template('msform.html')
