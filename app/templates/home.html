@@ -1,8 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}{{ super() }} - Home{% endblock %}
-{% block head %}
+{% block style %}
     {{ super() }}
-    <style>
         /* For mobile phones: */
         [class*="col-"] {
             width: 100%;
@@ -74,7 +73,6 @@
         input{
             color: darkred;
         }
-    </style>
 {% endblock %}
 {% block content %}
     <div class="home">

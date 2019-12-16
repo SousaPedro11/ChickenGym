@@ -2,19 +2,28 @@
 <html lang="pt-br, en">
 <head>
     {% block head %}
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-        <meta name="description" content="">
-        <meta name="author" content="Pedro Sousa">
-        <link rel="icon" href="{{ url_for('static', filename="img/icon.png") }}">
-        <link rel="canonical" href="https://getbootstrap.com/docs/3.4/examples/jumbotron-narrow/">
 
-        <title>{% block title %}CGManager{% endblock %}</title>
+        {% block meta %}
+            <meta charset="utf-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+            <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+            <meta name="description" content="">
+            <meta name="author" content="Pedro Sousa">
+        {% endblock %}
 
-        <!-- Bootstrap core CSS -->
-        <link href="{{ url_for('static', filename="css/bootstrap.min.css") }}" rel="stylesheet">
+        {% block link %}
+            <link rel="icon" href="{{ url_for('static', filename="img/icon.png") }}">
+            <link rel="canonical" href="https://getbootstrap.com/docs/3.4/examples/jumbotron-narrow/">
+            <!-- Bootstrap core CSS -->
+            <link href="{{ url_for('static', filename="css/bootstrap.min.css") }}" rel="stylesheet">
+        {% endblock %}
+
+        <title>
+            {% block title %}
+                CGManager
+            {% endblock %}
+        </title>
 
         <div class="banner">
             <a href="{{ url_for('home.index') }}">
@@ -24,41 +33,40 @@
         </div>
 
         <style>
-            body {
-                background-size: cover;
-                background: url({{ url_for('static', filename="img/background.jpg") }}) fixed center center;
-                {#background-size: 100vw;#}
-                min-height: 40vh;
-                position: relative;
-                margin: auto;
-                padding-bottom: auto;
-            }
+            {% block style %}
+                body {
+                    background-size: cover;
+                    background: url({{ url_for('static', filename="img/background.jpg") }}) fixed center center;
+                {#background-size: 100vw;#} min-height: 40vh;
+                    position: relative;
+                    margin: auto;
+                    padding-bottom: auto;
+                }
 
-            .footer {
-                position: fixed;
-                left: 0;
-                bottom: 0;
-                width: 100%;
-                background-color: darkred;
-                color: darkgray;
-                text-align: center;
-            }
+                .footer {
+                    position: fixed;
+                    left: 0;
+                    bottom: 0;
+                    width: 100%;
+                    background-color: darkred;
+                    color: darkgray;
+                    text-align: center;
+                }
 
-            img.banner {
-                max-width: 60vw;
-            }
+                img.banner {
+                    max-width: 60vw;
+                }
+
+            {% endblock %}
         </style>
     {% endblock %}
 </head>
 
 <body>
-
 <div class="container">
-
     {% with messages = get_flashed_messages() %}
         {% if messages %}
             <div class="alert alert-danger" role="alert">
-
                 <ul class=flashes>
                     {#<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span#}
                     {#aria-hidden="true">&times;</span>#}
@@ -88,11 +96,13 @@
     {% endblock %}
 </div>
 
-<script src="https://code.jquery.com/jquery-1.12.4.min.js"
-        integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ"
-        crossorigin="anonymous"></script>
-<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-<script src="{{ url_for('static', filename='js/alerthide.js') }}"></script>
+{% block script %}
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"
+            integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ"
+            crossorigin="anonymous"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/alerthide.js') }}"></script>
+{% endblock %}
 </body>
 </html>

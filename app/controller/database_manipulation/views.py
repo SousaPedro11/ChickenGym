@@ -163,4 +163,5 @@ def editar(objeto, id):
 @login_required
 @database_manipulation.route('/cg/msform/')
 def msform():
-    return render_template('msform.html')
+    form = EquipamentoForm()
+    return render_template('cadastro_generico.html', form=form)

@@ -2,9 +2,8 @@
 {% block title %}
     CGManager - Cadastro de {{ objeto }}
 {% endblock %}
-{% block head %}
+{% block style %}
     {{ super() }}
-    <style>
         /* For mobile phones: */
         [class*="registrar"] {
             padding-top: 5vh
@@ -12,9 +11,10 @@
 
         @media only screen and (min-width: 600px) {
             .cadastro {
-            {#color: darkred;#}{#padding-bottom: 10vh;#} margin-left: auto;
+            {#color: darkred;#}{#padding-bottom: 10vh;#}
+                margin-left: auto;
                 padding-right: 0;
-                position: absolute;
+                position: relative;
                 min-width: 50vw;
             }
 
@@ -48,7 +48,6 @@
             color: black;
         }
 
-    </style>
 {% endblock %}
 {% block content %}
     {{ super() }}

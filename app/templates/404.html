@@ -2,9 +2,8 @@
 {% block title %}
     {{ super() }} - Página Não Encontrada
 {% endblock %}
-{% block head %}
+{% block style %}
     {{ super() }}
-    <style>
         /* For mobile phones: */
         [class*="corpo"] {
             width: 100%;
@@ -25,7 +24,6 @@
                 min-width: 50vw;
             }
         }
-    </style>
 {% endblock %}
 {% block content %}
     <div class="corpo col-md-6 col-md-offset-6">

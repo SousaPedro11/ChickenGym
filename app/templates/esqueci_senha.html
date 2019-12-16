@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
-{% block head %}
+{% block style %}
     {{ super() }}
-    <style>
         /* For mobile phones: */
         [class*="registrar"] {
             padding-top: 5vh
@@ -24,7 +23,6 @@
                 color: darkred;
             }
         }
-    </style>
 {% endblock %}
 {% block content %}
     {{ super() }}
