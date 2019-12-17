@@ -8,7 +8,7 @@ def __generate_id__():
 
 
 def __gerar_num_matricula__():
-    matricula = str(datetime.now()).replace('-', '').replace(':', '').replace(' ', '')
+    matricula = str(datetime.now()).replace('-', '').replace(':', '').replace(' ', '').replace('.', '')
     return matricula
 # print(len(__generate_id__()))
 

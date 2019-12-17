@@ -3,19 +3,19 @@
 {% endblock %}
 {% block form %}
     <h2 class="titulo" style="text-transform: uppercase">
-        Cadastro de Cargo
+        Cadastro de Modalidade
     </h2>
     <form action="" method="post" autocomplete="on">
         {{ form.csrf_token }}
-        <div class="nome">
-            {{ form.nome.label }}<br>
-            {{ form.nome(size=20, class="form-control", placeholder='Informe o nome do cargo') }}<br>
-            {% for error in form.nome.errors %}
+        <div class="form-group">
+            {{ form.horario.label }}<br>
+            {{ form.horario(size=5, class="form-control", type="time") }}<br>
+            {% for error in form.horario.errors %}
                 <span class="alert-info">{{ error }}</span>
             {% endfor %}
         </div>
         <input type="submit" name="cadastrar" value="Cadastrar">
-        <a href="{{ url_for('database_manipulation.cadastro', objeto='cargo') }}">
+        <a href="{{ url_for('database_manipulation.cadastro', objeto='modalidade') }}">
             <input type="button" name="cancelar" value="Cancelar">
         </a>
     </form>

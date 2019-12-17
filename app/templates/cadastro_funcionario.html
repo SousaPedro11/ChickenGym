@@ -1,0 +1,147 @@
+{% extends 'cadastro.html' %}
+{% block title %}
+    {{ super() }}Aluno
+{% endblock %}
+{% block tabela %}
+{% endblock %}
+{% block form %}
+    <h2 class="titulo" style="text-transform: uppercase">
+        Cadastro de Funcionário
+    </h2>
+    <form action="" method="post" autocomplete="on">
+        {{ pform.csrf_token }}
+        {{ uform.csrf_token }}
+        {{ eform.csrf_token }}
+
+        {#Dados Pessoais#}
+        <h3>1 - DADOS PESSOAIS</h3>
+        <div class="form-group">
+            {{ uform.name.label }}<br>
+            {{ uform.name(size=50, class="form-control", placeholder='Informe seu nome') }}<br>
+            {% for error in uform.name.errors %}
+                <span class="alert-info">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div class="form-group">
+            {{ pform.nome_mae.label }}<br>
+            {{ pform.nome_mae(size=50, class="form-control", placeholder='Informe Nome de Sua Mãe') }}<br>
+            {% for error in pform.nome_mae.errors %}
+                <span class="alert-info">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div class="form-group">
+            {{ pform.documento_tipo.label }}<br>
+            {{ pform.documento_tipo(class="form-control", type="checkbox") }}<br>
+            {% for error in pform.documento_tipo.errors %}
+                <span class="alert-info">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div class="form-group">
+            {{ pform.documento_num.label }}<br>
+            {{ pform.documento_num(size=20, class="form-control", placeholder='Informe o número do seu Documento') }}<br>
+            {% for error in pform.documento_num.errors %}
+                <span class="alert-info">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div class="form-group">
+            {{ pform.telefone.label }}<br>
+            {{ pform.telefone(size=20, class="form-control", placeholder='Informe seu telefone') }}<br>
+            {% for error in pform.telefone.errors %}
+                <span class="alert-info">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        {# Endereco #}
+        <h3>2 - ENDEREÇO</h3>
+        <div class="form-group">
+            {{ eform.rua.label }}<br>
+            {{ eform.rua(size=50, class="form-control", placeholder='Informe seu logradouro') }}<br>
+            {% for error in eform.rua.errors %}
+                <span class="alert-info">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div class="form-group">
+            {{ eform.numero.label }}<br>
+            {{ eform.numero(size=10, class="form-control", placeholder='Número da casa') }}<br>
+            {% for error in eform.numero.errors %}
+                <span class="alert-info">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div class="form-group">
+            {{ eform.cep.label }}<br>
+            {{ eform.cep(size=15, class="form-control", placeholder='Informe seu CEP') }}<br>
+            {% for error in eform.cep.errors %}
+                <span class="alert-info">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div class="form-group">
+            {{ eform.bairro.label }}<br>
+            {{ eform.bairro(size=50, class="form-control", placeholder='Informe seu Bairro') }}<br>
+            {% for error in eform.bairro.errors %}
+                <span class="alert-info">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div class="form-group">
+            {{ eform.cidade.label }}<br>
+            {{ eform.cidade(size=50, class="form-control", placeholder='Informe sua Cidade') }}<br>
+            {% for error in eform.cidade.errors %}
+                <span class="alert-info">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div class="form-group">
+            {{ eform.complemento.label }}<br>
+            {{ eform.complemento(size=50, class="form-control", placeholder='Informe uma informação complementar') }}<br>
+            {% for error in pform.telefone.errors %}
+                <span class="alert-info">{{ error }}</span>
+            {% endfor %}
+        </div>
+        {# DADOS PROFISSIONAIS #}
+        <h3>3 - DADOS PROFISSIONAIS</h3>
+        <div class="form-group">
+            <p>
+                <strong>Cargo</strong>
+            </p>
+            <select name="comp_select" class="selectpicker form-control">
+                {% for o in listacargo %}
+                    <option value="{{ o[0] }}">{{ o[1] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        {# USUARIO #}
+        <h3>4 - ACESSO</h3>
+        <div class="form-group">
+            {{ uform.username.label }}<br>
+            {{ uform.username(size=50, class="form-control", placeholder='Cadastre um nome de usuário') }}<br>
+            {% for error in uform.username.errors %}
+                <span class="alert-info">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div class="form-group">
+            {{ uform.email.label }}<br>
+            {{ uform.email(size=50, class="form-control", placeholder='Informe seu e-mail') }}<br>
+            {% for error in uform.email.errors %}
+                <span class="alert-info">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div class="form-group">
+            {{ uform.password.label }}<br>
+            {{ uform.password(size=32, class="form-control", placeholder='Cadastre uma senha') }}<br>
+            {% for error in uform.password.errors %}
+                <span class="alert-info">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div class="form-group">
+            {{ uform.password2.label }}<br>
+            {{ uform.password2(size=32, class="form-control", placeholder='Repita a senha cadastrada') }}<br>
+            {% for error in uform.password2.errors %}
+                <span class="alert-info">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <input type="submit" name="cadastrar" value="Cadastrar">
+        <a href="{{ url_for('database_manipulation.cadastro', objeto='usuario') }}">
+            <input type="button" name="cancelar" value="Cancelar">
+        </a>
+    </form>
+{% endblock %}

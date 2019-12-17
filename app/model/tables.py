@@ -14,7 +14,7 @@ class Aluno(db.Model):
     __tablename__ = 'aluno'
 
     id = db.Column(db.VARCHAR(36), primary_key=True, default=Util.__generate_id__())
-    matricula = db.Column(db.VARCHAR(15), nullable=False, unique=True, default=('A' + Util.__gerar_num_matricula__()))
+    matricula = db.Column(db.VARCHAR(25), nullable=False, unique=True, default=('A' + Util.__gerar_num_matricula__()))
     ativado = db.Column(db.BOOLEAN, default=True)
     pessoa_id = db.Column(db.VARCHAR(36), db.ForeignKey('pessoa.id', name='FK_aluno_pessoa'), nullable=False)
 
@@ -37,7 +37,7 @@ class Aluno(db.Model):
 
     @property
     def dict_fieldname(self):
-        return {'Matricula': 'matricula', 'Pessoa': 'pessoa_id'}
+        return {'Matricula': 'matricula', 'Pessoa': 'Pessoa'}
 
     def __repr__(self):
         return '<Aluno %r: %r, %r>' % (self.id, self.matricula, self.pessoa_id)
@@ -137,7 +137,7 @@ class Cargo(db.Model):
         return {'Cargo': 'nome'}
 
     def __repr__(self):
-        return '<Cargo %r: %r>' % (self.id, self.nome)
+        return '%s' % self.nome
 
 
 class Endereco(db.Model):
@@ -194,7 +194,7 @@ class Funcionario(db.Model):
     __tablename__ = 'funcionario'
 
     id = db.Column(db.VARCHAR(36), primary_key=True, default=Util.__generate_id__())
-    registro = db.Column(db.VARCHAR(15), unique=True, default=('F' + Util.__gerar_num_matricula__()))
+    registro = db.Column(db.VARCHAR(25), unique=True, default=('F' + Util.__gerar_num_matricula__()))
     ativado = db.Column(db.BOOLEAN, default=True)
     cargo_id = db.Column(db.VARCHAR(36), db.ForeignKey('cargo.id', name='FK_funcionario_cargo'), nullable=False)
     pessoa_id = db.Column(db.VARCHAR(36), db.ForeignKey('pessoa.id', name='FK_funcionario_pessoa'), nullable=False)
@@ -210,13 +210,13 @@ class Funcionario(db.Model):
     @property
     def dict_class(self):
         dicionario = [{'Registro': self.registro},
-                      {'Cargo': self.cargo},
+                      {'Cargo': DAO.buscar_por_criterio(Cargo, id=self.cargo_id)},
                       {'Pessoa': DAO.buscar_por_criterio(Pessoa, id=self.pessoa_id)}]
         return dicionario
 
     @property
     def dict_fieldname(self):
-        return {'Registro': 'registro', 'Cargo': 'cargo_id', 'Pessoa': 'pessoa_id'}
+        return {'Registro': 'registro', 'Cargo': 'Cargo', 'Pessoa': 'Pessoa'}
 
     def __repr__(self):
         return '<Funcionario %r: %r, %r>' % (self.id, self.registro, self.cargo)
@@ -269,7 +269,8 @@ class Modalidade(db.Model):
 
     @property
     def dict_class(self):
-        dicionario = [{'Categoria': self.categoria}, {'Nivel': self.nivel}, {'Categoria_Pai': self.categoria_pai_id}]
+        dicionario = [{'Categoria': self.categoria}, {'Nivel': self.nivel},
+                      {'Categoria_Pai': '' if self.categoria_pai_id is None else self.categoria_pai_id}]
         return dicionario
 
     @property
@@ -331,6 +332,20 @@ class Pessoa(db.Model):
     aluno = db.relationship('Aluno', backref=backref("pessoa", uselist=False, lazy='joined', cascade='save-update'))
     # Many to one
     endereco = db.relationship('Endereco', backref='pessoas')
+
+    @property
+    def dict_class(self):
+        dicionario = [{'Nome': self.nome}, {'Nome da Mae': self.nome_mae},
+                      {'Telefone': self.telefone},
+                      {'Endereco': self.endereco}]
+        return dicionario
+
+    @property
+    def dict_fieldname(self):
+        return {'Nome': 'nome', 'Nome da Mae': 'nome_mae', 'Telefone': 'telefone', 'Endereco': 'endereco'}
+
+    def __repr__(self):
+        return '%s - %s' % (self.nome, self.telefone)
 
 
 class Plano(db.Model):

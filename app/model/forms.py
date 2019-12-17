@@ -1,6 +1,6 @@
 from flask import flash
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, TimeField, SelectField
 from wtforms.validators import DataRequired, ValidationError, EqualTo, Email
 
 from app.controller.database_manipulation import DAO
@@ -69,12 +69,12 @@ class EquipamentoForm(FlaskForm):
 
 
 class EnderecoForm(FlaskForm):
-    rua = StringField('rua', validators=[DataRequired()])
-    numero = StringField('numero', validators=[DataRequired()])
-    cep = StringField('cep', validators=[DataRequired()])
-    complemento = StringField('complemento')
-    cidade = StringField('cidade', validators=[DataRequired()])
-    bairro = StringField('bairro', validators=[DataRequired()])
+    rua = StringField('Rua', validators=[DataRequired()])
+    numero = StringField('Número', validators=[DataRequired()])
+    cep = StringField('CEP', validators=[DataRequired()])
+    complemento = StringField('Complemento')
+    cidade = StringField('Cidade', validators=[DataRequired()])
+    bairro = StringField('Bairro', validators=[DataRequired()])
     submit = SubmitField('Cadastrar')
 
 
@@ -103,3 +103,34 @@ class CargoForm(FlaskForm):
         print(cargo)
         if cargo is not None:
             raise ValidationError('Cargo já existe!')
+
+
+class SalaForm(FlaskForm):
+    numero = StringField('Número da Sala', validators=[DataRequired()])
+    submit = SubmitField('Cadastrar')
+
+
+class ModalidadeForm(FlaskForm):
+    categoria = StringField('Modalidade', validators=[DataRequired()])
+    nivel = StringField('Nível')
+    submit = SubmitField('Cadastrar')
+
+
+class TurmaForm(FlaskForm):
+    horario = TimeField('Horario', validators=[DataRequired()])
+    submit = SubmitField('Cadastrar')
+
+
+class PessoaForm(FlaskForm):
+    nome = StringField('Nome', validators=[DataRequired()])
+    nome_mae = StringField('Nome da Mãe', validators=[DataRequired()])
+    documento_tipo = SelectField('Tipo de Documento', validators=[DataRequired],
+                                 choices=[('RG', 'RG'), ('CPF', 'CPF'), ('CNH', 'CNH'), ('PASSAPORTE', 'PASSAPORTE'),
+                                          ('OUTRO', 'OUTRO')])
+    documento_num = StringField('Número do Documento', validators=[DataRequired()])
+    telefone = StringField('Telefone')
+    submit = SubmitField('Cadastrar')
+
+
+class FuncionarioForm(FlaskForm):
+    cargo = SelectField('Cargo', validators=[DataRequired()], coerce=str)

@@ -3,9 +3,10 @@ from flask_login import login_required, current_user
 from werkzeug.security import generate_password_hash
 
 from app.controller.database_manipulation import DAO
-from app.model.forms import RegistrationForm, EquipamentoForm, UnidadeForm, EnderecoForm, CargoForm
+from app.model.forms import RegistrationForm, EquipamentoForm, UnidadeForm, EnderecoForm, CargoForm, SalaForm, \
+    ModalidadeForm, TurmaForm, PessoaForm, FuncionarioForm
 from app.model.tables import Usuario, Aparelho, Endereco, Unidade, Pessoa, Sala, Modalidade, Turma, Aluno, Funcionario, \
-    Cargo
+    Cargo, Role, RolesUsers
 from . import database_manipulation
 
 
@@ -109,7 +110,6 @@ def cadastrar_cargo():
         nome = form.nome.data.upper()
 
         cargo_lista = DAO.buscar_por_criterio(Cargo, nome=nome)
-        print(cargo_lista)
         if cargo_lista:
             flash('Cargo não cadastrado!')
             flash('Cargo já existe!')
@@ -119,6 +119,66 @@ def cadastrar_cargo():
             flash('Cargo cadastrado com sucesso!')
         return redirect(url_for('database_manipulation.cadastro', objeto='cargo'))
     return render_template('cadastro_cargo.html', form=form)
+
+
+@login_required
+@database_manipulation.route('/cg/cadastrar/sala/novo/', methods=['GET', 'POST'])
+def cadastrar_sala():
+    form = SalaForm()
+
+    if form.validate_on_submit():
+        numero = form.numero.data.upper()
+        sala_lista = DAO.buscar_por_criterio(Sala, numero=numero)
+        if sala_lista:
+            flash('Sala não cadastrado!')
+            flash('Sala já existe!')
+        else:
+            sala = Sala(numero)
+            DAO.transacao(sala)
+            flash('Sala cadastrado com sucesso!')
+        return redirect(url_for('database_manipulation.cadastro', objeto='sala'))
+    return render_template('cadastro_sala.html', form=form)
+
+
+@login_required
+@database_manipulation.route('/cg/cadastrar/modalidade/novo/', methods=['GET', 'POST'])
+def cadastrar_modalidade():
+    form = ModalidadeForm()
+
+    if form.validate_on_submit():
+        categoria = form.categoria.data.upper()
+        nivel = form.nivel.data.upper()
+
+        modalidade_lista = DAO.buscar_por_criterio(Modalidade, categoria=categoria, nivel=nivel)
+        if modalidade_lista:
+            flash('Modalidade não cadastrada!')
+            flash('Modalidade já existe!')
+        else:
+            modalidade = Modalidade(categoria, nivel)
+            DAO.transacao(modalidade)
+            flash('Modalidade cadastrada com sucesso!')
+        return redirect(url_for('database_manipulation.cadastro', objeto='modalidade'))
+    return render_template('cadastro_modalidade.html', form=form)
+
+
+@login_required
+@database_manipulation.route('/cg/cadastrar/turma/novo/', methods=['GET', 'POST'])
+def cadastrar_turma():
+    form = TurmaForm()
+
+    if form.validate_on_submit():
+        horario = form.horario.data
+
+        turma_lista = DAO.buscar_por_criterio(Turma, horario=horario)
+        if turma_lista:
+            flash('Turma não cadastrada!')
+            flash('Turma já existe!')
+        else:
+            turma = Turma(horario)
+            DAO.transacao(turma)
+            flash('Turma cadastrada com sucesso!')
+        return redirect(url_for('database_manipulation.cadastro', objeto='turma'))
+    return render_template('cadastro_turma.html', form=form)
 
 
 @login_required
@@ -203,3 +263,144 @@ def editar(objeto, id):
             flash('Alterações efetuadas com sucesso!')
         return redirect(url_for('database_manipulation.cadastro', objeto=objeto))
     return render_template('editar.html', registro=registro, objeto=objeto)
+
+
+@login_required
+@database_manipulation.route('/cg/cadastrar/aluno/novo/', methods=['GET', 'POST'])
+def cadastrar_aluno():
+    pform = PessoaForm(prefix='p')
+    eform = EnderecoForm(prefix='e')
+    uform = RegistrationForm()
+    if uform.validate_on_submit():
+        # Dados de usuário
+        name = uform.name.data.upper()
+        usename = uform.username.data.upper()
+        email = uform.email.data.upper()
+        password = generate_password_hash(uform.password.data)
+
+        usuario = Usuario(usename, password, name, email)
+
+        # Endereco
+        rua = eform.rua.data.upper()
+        numero = eform.numero.data.upper()
+        cep = eform.cep.data.upper()
+        complemento = eform.complemento.data.upper()
+        cidade = eform.cidade.data.upper()
+        bairro = eform.bairro.data.upper()
+
+        endereco = Endereco(rua, numero, cep, complemento, cidade, bairro)
+
+        # Dados Pessoais
+        nome = name
+        nome_mae = pform.nome_mae.data.upper()
+        documento_tipo = pform.documento_tipo.data.upper()
+        documento_num = pform.documento_num.data.upper()
+        telefone = pform.telefone.data.upper()
+
+        pessoa = Pessoa(nome, nome_mae, documento_tipo, documento_num, telefone)
+
+        pessoa.endereco = endereco
+        pessoa.usuario_id = usuario.id
+
+        query_endereco = DAO.buscar_por_criterio(Endereco, rua=rua, numero=numero, cidade=cidade, bairro=bairro)
+        if query_endereco:
+            endereco = query_endereco
+
+        query_pessoa = DAO.buscar_por_criterio(Pessoa, nome=nome, nome_mae=nome_mae, documento_num=documento_num)
+        if query_pessoa:
+            pessoa = query_pessoa
+            pessoa.endereco = endereco
+            usuario.pessoa = pessoa
+
+        role = DAO.buscar_por_criterio(Role, name='ALUNO')
+        role_users = RolesUsers()
+        role_users.user_id = usuario.id
+        role_users.role_id = role.id
+
+        aluno = Aluno()
+        query_aluno = DAO.buscar_por_criterio(Aluno, pessoa_id=pessoa.id)
+        if query_aluno:
+            aluno = query_aluno
+
+        aluno.pessoa_id = pessoa.id
+
+        DAO.transacao(usuario)
+        DAO.transacao(pessoa)
+        DAO.transacao(aluno)
+        DAO.transacao(role_users)
+        return redirect(url_for('database_manipulation.cadastro', objeto='aluno'))
+
+    return render_template('cadastro_aluno.html', eform=eform, uform=uform, pform=pform)
+
+
+@login_required
+@database_manipulation.route('/cg/cadastrar/funcionario/novo/', methods=['GET', 'POST'])
+def cadastrar_funcionario():
+    pform = PessoaForm(prefix='p')
+    eform = EnderecoForm(prefix='e')
+    uform = RegistrationForm(prefix='u')
+    listacargo = [(i.id, i.nome) for i in DAO.buscar_todos(Cargo, Cargo.nome)]
+
+    if uform.validate_on_submit():
+        # Dados de usuário
+        name = uform.name.data.upper()
+        usename = uform.username.data.upper()
+        email = uform.email.data.upper()
+        password = generate_password_hash(uform.password.data)
+
+        usuario = Usuario(usename, password, name, email)
+
+        # Endereco
+        rua = eform.rua.data.upper()
+        numero = eform.numero.data.upper()
+        cep = eform.cep.data.upper()
+        complemento = eform.complemento.data.upper()
+        cidade = eform.cidade.data.upper()
+        bairro = eform.bairro.data.upper()
+
+        endereco = Endereco(rua, numero, cep, complemento, cidade, bairro)
+
+        # Dados Pessoais
+        nome = name
+        nome_mae = pform.nome_mae.data.upper()
+        documento_tipo = pform.documento_tipo.data.upper()
+        documento_num = pform.documento_num.data.upper()
+        telefone = pform.telefone.data.upper()
+
+        pessoa = Pessoa(nome, nome_mae, documento_tipo, documento_num, telefone)
+
+        pessoa.endereco = endereco
+        pessoa.usuario_id = usuario.id
+
+        query_endereco = DAO.buscar_por_criterio(Endereco, rua=rua, numero=numero, cidade=cidade, bairro=bairro)
+        if query_endereco:
+            endereco = query_endereco
+
+        query_pessoa = DAO.buscar_por_criterio(Pessoa, nome=nome, nome_mae=nome_mae, documento_num=documento_num)
+        if query_pessoa:
+            pessoa = query_pessoa
+            pessoa.endereco = endereco
+            pessoa.usuario_id = usuario.id
+
+        role = DAO.buscar_por_criterio(Role, name='ALUNO')
+        role_users = RolesUsers()
+        role_users.user_id = usuario.id
+        role_users.role_id = role.id
+
+        select = request.form.get('comp_select')
+        cargo = DAO.buscar_por_criterio(Cargo, id=select)
+        print(cargo)
+        funcionario = Funcionario()
+        query_funcionario = DAO.buscar_por_criterio(Funcionario, pessoa_id=pessoa.id)
+        if query_funcionario:
+            funcionario = query_funcionario
+        funcionario.pessoa_id = pessoa.id
+        funcionario.cargo = cargo
+
+        DAO.transacao(usuario)
+        DAO.transacao(pessoa)
+        DAO.transacao(funcionario)
+        DAO.transacao(role_users)
+        return redirect(url_for('database_manipulation.cadastro', objeto='funcionario'))
+
+    return render_template('cadastro_funcionario.html', eform=eform, uform=uform, pform=pform, listacargo=listacargo)

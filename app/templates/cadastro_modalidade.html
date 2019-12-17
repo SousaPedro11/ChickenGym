@@ -1,0 +1,31 @@
+{% extends 'cadastro.html' %}
+{% block tabela %}
+{% endblock %}
+{% block form %}
+    <h2 class="titulo" style="text-transform: uppercase">
+        Cadastro de Modalidade
+    </h2>
+    <form action="" method="post" autocomplete="on">
+        {{ form.csrf_token }}
+        <div class="form-group">
+            {{ form.categoria.label }}<br>
+            {{ form.categoria(size=50, class="form-control", placeholder='Nome da modalidade') }}<br>
+            {% for error in form.categoria.errors %}
+                <span class="alert-info">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div class="form-group">
+            {{ form.nivel.label }}<br>
+            {{ form.nivel(size=20, class="form-control", placeholder='Nível da modalidade') }}<br>
+            {% for error in form.nivel.errors %}
+                <span class="alert-info">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <input type="submit" name="cadastrar" value="Cadastrar">
+        <a href="{{ url_for('database_manipulation.cadastro', objeto='modalidade') }}">
+            <input type="button" name="cancelar" value="Cancelar">
+        </a>
+    </form>
+{% endblock %}
+{% block botao %}
+{% endblock %}
