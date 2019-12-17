@@ -210,7 +210,7 @@ class Funcionario(db.Model):
     @property
     def dict_class(self):
         dicionario = [{'Registro': self.registro},
-                      {'Cargo': DAO.buscar_por_criterio(Cargo, id=self.cargo_id)},
+                      {'Cargo': self.cargo},
                       {'Pessoa': DAO.buscar_por_criterio(Pessoa, id=self.pessoa_id)}]
         return dicionario
 
@@ -219,7 +219,7 @@ class Funcionario(db.Model):
         return {'Registro': 'registro', 'Cargo': 'Cargo', 'Pessoa': 'Pessoa'}
 
     def __repr__(self):
-        return '<Funcionario %r: %r, %r>' % (self.id, self.registro, self.cargo)
+        return '<Funcionario %s: %s, %s>' % (self.id, self.registro, self.cargo)
 
 
 class LinhasFicha(db.Model):

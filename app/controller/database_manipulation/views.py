@@ -249,18 +249,23 @@ def deletar(objeto, id):
 def editar(objeto, id):
     string = objeto.capitalize()
     registro = DAO.buscar_por_criterio(globals()[string], id=id)
-    hold = hash(frozenset(vars(registro).items()))
+    hold = ''
+    hregistro = ''
+    if objeto != 'funcionario':
+        hold = hash(frozenset(vars(registro).items()))
     if request.method == 'POST':
         for x in registro.dict_fieldname:
             attr = registro.dict_fieldname[x]
             attr_val = request.form.get(x).upper()
             setattr(registro, attr, attr_val)
-        hregistro = hash(frozenset(vars(registro).items()))
+        if objeto != 'funcionario':
+            hregistro = hash(frozenset(vars(registro).items()))
         DAO.transacao(registro)
-        if hold == hregistro:
-            flash('Sem alterações')
-        else:
-            flash('Alterações efetuadas com sucesso!')
+        if objeto != 'funcionario':
+            if hold == hregistro:
+                flash('Sem alterações')
+            else:
+                flash('Alterações efetuadas com sucesso!')
         return redirect(url_for('database_manipulation.cadastro', objeto=objeto))
     return render_template('editar.html', registro=registro, objeto=objeto)
 
@@ -395,7 +400,7 @@ def cadastrar_funcionario():
         if query_funcionario:
             funcionario = query_funcionario
         funcionario.pessoa_id = pessoa.id
-        funcionario.cargo = cargo
+        funcionario.cargo_id = cargo.id
 
         DAO.transacao(usuario)
         DAO.transacao(pessoa)
