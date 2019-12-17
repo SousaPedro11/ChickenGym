@@ -1,0 +1,24 @@
+{% extends 'cadastro.html' %}
+{% block tabela %}
+{% endblock %}
+{% block form %}
+    <h2 class="titulo" style="text-transform: uppercase">
+        Cadastro de Equipamento
+    </h2>
+    <form action="" method="post" autocomplete="on">
+        {{ form.csrf_token }}
+        <div class="nome">
+            {{ form.nome.label }}<br>
+            {{ form.nome(size=20, class="form-control", placeholder='Informe o nome do cargo') }}<br>
+            {% for error in form.nome.errors %}
+                <span class="alert-info">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <input type="submit" name="cadastrar" value="Cadastrar">
+        <a href="{{ url_for('database_manipulation.cadastro', objeto='cargo') }}">
+            <input type="button" name="cancelar" value="Cancelar">
+        </a>
+    </form>
+{% endblock %}
+{% block botao %}
+{% endblock %}

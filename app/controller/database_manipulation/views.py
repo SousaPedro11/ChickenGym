@@ -3,8 +3,9 @@ from flask_login import login_required, current_user
 from werkzeug.security import generate_password_hash
 
 from app.controller.database_manipulation import DAO
-from app.model.forms import RegistrationForm, EquipamentoForm, UnidadeForm, EnderecoForm
-from app.model.tables import Usuario, Aparelho, Endereco, Unidade, Pessoa
+from app.model.forms import RegistrationForm, EquipamentoForm, UnidadeForm, EnderecoForm, CargoForm
+from app.model.tables import Usuario, Aparelho, Endereco, Unidade, Pessoa, Sala, Modalidade, Turma, Aluno, Funcionario, \
+    Cargo
 from . import database_manipulation
 
 
@@ -48,6 +49,18 @@ def cadastro(objeto, tabela=None, tabela2=None):
         tabela = DAO.buscar_todos(Unidade, Unidade.nome)
     elif objeto == 'endereco':
         tabela = DAO.buscar_todos(Endereco, Endereco.cidade, Endereco.rua)
+    elif objeto == 'sala':
+        tabela = DAO.buscar_todos(Sala, Sala.numero)
+    elif objeto == 'modalidade':
+        tabela = DAO.buscar_todos(Modalidade, Modalidade.categoria)
+    elif objeto == 'turma':
+        tabela = DAO.buscar_todos(Turma, Turma.horario)
+    elif objeto == 'aluno':
+        tabela = DAO.buscar_todos(Aluno, Aluno.matricula)
+    elif objeto == 'funcionario':
+        tabela = DAO.buscar_todos(Funcionario, Funcionario.registro)
+    elif objeto == 'cargo':
+        tabela = DAO.buscar_todos(Cargo, Cargo.nome)
 
     if not (len(tabela) > 0):
         if objeto == 'usuario':
@@ -58,6 +71,18 @@ def cadastro(objeto, tabela=None, tabela2=None):
             tabela2 = Unidade('', '')
         elif objeto == 'endereco':
             tabela2 = Endereco('', '', '', '', '', '')
+        elif objeto == 'sala':
+            tabela2 = Sala('')
+        elif objeto == 'modalidade':
+            tabela2 = Modalidade('', '')
+        elif objeto == 'turma':
+            tabela2 = Turma('')
+        elif objeto == 'aluno':
+            tabela2 = Aluno()
+        elif objeto == 'funcionario':
+            tabela2 = Funcionario()
+        elif objeto == 'cargo':
+            tabela2 = Cargo('')
 
     return render_template('cadastro.html', objeto=objeto, table=tabela, tabela2=tabela2)
 
@@ -74,6 +99,26 @@ def cadastrar_equipamento():
         flash('Equipamento cadastrado com sucesso!')
         return redirect(url_for('database_manipulation.cadastro', objeto='aparelho'))
     return render_template('cadastro_equipamento.html', form=form)
+
+
+@login_required
+@database_manipulation.route('/cg/cadastrar/cargo/novo/', methods=['GET', 'POST'])
+def cadastrar_cargo():
+    form = CargoForm()
+    if form.validate_on_submit():
+        nome = form.nome.data.upper()
+
+        cargo_lista = DAO.buscar_por_criterio(Cargo, nome=nome)
+        print(cargo_lista)
+        if cargo_lista:
+            flash('Cargo não cadastrado!')
+            flash('Cargo já existe!')
+        else:
+            cargo = Cargo(nome)
+            DAO.transacao(cargo)
+            flash('Cargo cadastrado com sucesso!')
+        return redirect(url_for('database_manipulation.cadastro', objeto='cargo'))
+    return render_template('cadastro_cargo.html', form=form)
 
 
 @login_required
@@ -158,10 +203,3 @@ def editar(objeto, id):
             flash('Alterações efetuadas com sucesso!')
         return redirect(url_for('database_manipulation.cadastro', objeto=objeto))
     return render_template('editar.html', registro=registro, objeto=objeto)
-
-
-@login_required
-@database_manipulation.route('/cg/msform/')
-def msform():
-    form = EquipamentoForm()
-    return render_template('cadastro_generico.html', form=form)

@@ -6,8 +6,10 @@ from sqlalchemy.orm import backref
 
 from app import db, Util, app
 
-
 # TODO falta fazer os relacionamentos de algumas tabelas
+from app.controller.database_manipulation import DAO
+
+
 class Aluno(db.Model):
     __tablename__ = 'aluno'
 
@@ -26,6 +28,19 @@ class Aluno(db.Model):
     # one to many
     avaliacoes = db.relationship('AvaliacaoFisica', backref=backref('aluno', lazy='joined'))
     fichas = db.relationship('Ficha', backref=backref('aluno', lazy='joined'))
+
+    @property
+    def dict_class(self):
+        dicionario = [{'Matricula': self.matricula},
+                      {'Pessoa': DAO.buscar_por_criterio(Pessoa, id=self.pessoa_id)}]
+        return dicionario
+
+    @property
+    def dict_fieldname(self):
+        return {'Matricula': 'matricula', 'Pessoa': 'pessoa_id'}
+
+    def __repr__(self):
+        return '<Aluno %r: %r, %r>' % (self.id, self.matricula, self.pessoa_id)
 
 
 class Aparelho(db.Model):
@@ -112,6 +127,18 @@ class Cargo(db.Model):
         self.id = Util.__generate_id__()
         self.nome = nome
 
+    @property
+    def dict_class(self):
+        dicionario = [{'Cargo': self.nome}]
+        return dicionario
+
+    @property
+    def dict_fieldname(self):
+        return {'Cargo': 'nome'}
+
+    def __repr__(self):
+        return '<Cargo %r: %r>' % (self.id, self.nome)
+
 
 class Endereco(db.Model):
     __tablename__ = 'endereco'
@@ -180,6 +207,20 @@ class Funcionario(db.Model):
     # many to one
     cargo = db.relationship('Cargo', backref=backref('funcionarios', lazy='dynamic'))
 
+    @property
+    def dict_class(self):
+        dicionario = [{'Registro': self.registro},
+                      {'Cargo': self.cargo},
+                      {'Pessoa': DAO.buscar_por_criterio(Pessoa, id=self.pessoa_id)}]
+        return dicionario
+
+    @property
+    def dict_fieldname(self):
+        return {'Registro': 'registro', 'Cargo': 'cargo_id', 'Pessoa': 'pessoa_id'}
+
+    def __repr__(self):
+        return '<Funcionario %r: %r, %r>' % (self.id, self.registro, self.cargo)
+
 
 class LinhasFicha(db.Model):
     __tablename__ = 'linhas_ficha'
@@ -225,6 +266,18 @@ class Modalidade(db.Model):
                                    backref=backref('modalidade', lazy='dynamic'))
     salas = db.relationship('Sala', secondary='modalidades_salas',
                             backref=backref('modalidade', lazy='dynamic'))
+
+    @property
+    def dict_class(self):
+        dicionario = [{'Categoria': self.categoria}, {'Nivel': self.nivel}, {'Categoria_Pai': self.categoria_pai_id}]
+        return dicionario
+
+    @property
+    def dict_fieldname(self):
+        return {'Categoria': 'categoria', 'Nivel': 'nivel', 'Categoria_Pai': 'categoria_pai_id'}
+
+    def __repr__(self):
+        return '<Modalidade %r: %r, %r>' % (self.id, self.categoria, self.nivel)
 
 
 class Pagamento(db.Model):
@@ -332,6 +385,18 @@ class Sala(db.Model):
     turmas = db.relationship('Sala', secondary='salas_turmas',
                              backref=backref('turma', lazy='dynamic'))
 
+    @property
+    def dict_class(self):
+        dicionario = [{'Sala': self.numero}]
+        return dicionario
+
+    @property
+    def dict_fieldname(self):
+        return {'Sala': 'sala'}
+
+    def __repr__(self):
+        return '<Sala %r: %r>' % (self.id, self.numero)
+
 
 class Turma(db.Model):
     __tablename__ = 'turma'
@@ -343,6 +408,19 @@ class Turma(db.Model):
     def __init__(self, horario):
         self.id = Util.__generate_id__()
         self.horario = horario
+
+    @property
+    def dict_class(self):
+        dicionario = [{'Horario': self.horario},
+                      {'Modalidade': DAO.buscar_por_criterio(Modalidade, id=self.modalidade_id)}]
+        return dicionario
+
+    @property
+    def dict_fieldname(self):
+        return {'Horario': 'horario', 'Modalidade': 'modalidade'}
+
+    def __repr__(self):
+        return '<Turma %r: %r, %r>' % (self.id, self.horario, self.modalidade_id)
 
 
 class Unidade(db.Model):
