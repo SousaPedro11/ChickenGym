@@ -315,7 +315,7 @@ class Pagamento(db.Model):
                    default=Util.__generate_id__())
     tipo = db.Column(db.Enum('DEBITO', 'CREDITO', 'DINHEIRO',
                              name='pagamento_tipo'), nullable=False)
-    vencimento_data = db.Column(db.DATETIME, nullable=False)
+    vencimento_data = db.Column(db.DateTime, nullable=False)
     referencia = db.Column(db.DATE, nullable=False)
     status_pagamento = db.Column(db.Enum(
         'EFETUADO', 'ATRASADO', 'PENDENTE', name='pagamento_status'), nullable=False)
