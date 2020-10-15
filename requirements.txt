@@ -29,6 +29,7 @@ passlib==1.7.2
 PyMySQL==0.9.3
 python-dateutil==2.8.1
 python-editor==1.0.4
+python-dotenv==0.12.0
 pytz==2019.3
 six==1.13.0
 speaklater==1.3
