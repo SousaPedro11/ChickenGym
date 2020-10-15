@@ -526,7 +526,7 @@ class Usuario(db.Model, UserMixin):
     nome = db.Column(db.VARCHAR(200), nullable=False)
     email = db.Column(db.VARCHAR(120), unique=True, nullable=False)
     active = db.Column(db.BOOLEAN, default=True)
-    confirmed_at = db.Column(db.DATETIME)
+    confirmed_at = db.Column(db.DateTime)
 
     # RELATIONSHIP
     # One to one
