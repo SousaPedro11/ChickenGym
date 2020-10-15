@@ -11,6 +11,7 @@ from app.controller.database_manipulation import usuario
 basedir = os.path.abspath(os.path.dirname(__file__))
 load_dotenv(os.path.join(basedir, '.env'))
 
+app = manager
 
 if __name__ == '__main__':
-    manager.run()
+    app.run()
