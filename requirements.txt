@@ -22,7 +22,7 @@ greenlet==0.4.15
 gunicorn==20.0.4
 itsdangerous==1.1.0
 Jinja2==2.11.3
-Mako==1.1.0
+Mako==1.2.2
 MarkupSafe==1.1.1
 mysql-connector==2.2.9
 passlib==1.7.2
